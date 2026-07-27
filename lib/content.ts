@@ -24,10 +24,10 @@ export const centre = {
   email: "info@kinderlandeducare.co.nz",
   hours: {
     days: "Monday – Friday",
-    open: "7:00 AM",
+    open: "7:30 AM",
     close: "6:00 PM",
   },
-  ages: "6 weeks to 5 years",
+  ages: "3 months to 6 years",
 } as const;
 
 export const fullAddress = `${centre.address.street}, ${centre.address.suburb}, ${centre.address.city} ${centre.address.postcode}`;
@@ -73,7 +73,7 @@ export const values = [
   {
     icon: "Blocks",
     title: "Room to learn",
-    body: "A purpose-built centre with safe, spacious indoor rooms and outdoor play areas, designed for children from six weeks to five years old.",
+    body: "A purpose-built centre with safe, spacious indoor rooms and outdoor play areas, designed for children from three months to six years old.",
   },
 ] as const;
 
@@ -102,7 +102,7 @@ export const ageGroups = [
   {
     id: "under-2",
     label: "Under 2s",
-    ageRange: "6 weeks – 2 years",
+    ageRange: "3 months – 2 years",
     blurb:
       "Our youngest room, with the higher teacher-to-child ratios required for infants and unhurried routines built around each child's own sleeping and feeding rhythm.",
     subsidy: null,
@@ -130,7 +130,7 @@ export const ageGroups = [
   {
     id: "3-plus",
     label: "3+ Years",
-    ageRange: "3 – 5 years",
+    ageRange: "3 – 6 years",
     blurb:
       "School-readiness in the fullest sense: children who see themselves as capable, competent learners able to direct their own learning as they grow.",
     subsidy: "20 Hours ECE",
@@ -148,7 +148,7 @@ export const feeFacts = {
   registration: "$40",
   sessions: [
     { name: "Short day", window: "9:00 AM – 3:00 PM" },
-    { name: "Long day", window: "7:00 AM – 6:00 PM" },
+    { name: "Long day", window: "7:30 AM – 6:00 PM" },
   ],
   policies: [
     {
@@ -172,7 +172,7 @@ export const feeFacts = {
 export const faqs = [
   {
     q: "What ages do you take?",
-    a: "We care for children from six weeks old right through to five years, across three rooms: under 2s, 2–3 years, and 3+ years. Because we take infants from six weeks, we're a practical option for parents returning to work early.",
+    a: "We care for children from three months old right through to six years, across three rooms: under 2s, 2–3 years, and 3+ years. Because we take babies from three months, we're a practical option for parents returning to work early.",
   },
   {
     q: "Am I eligible for the 20 Hours ECE subsidy?",
@@ -184,7 +184,7 @@ export const faqs = [
   },
   {
     q: "What are your opening hours and session options?",
-    a: `We're open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. You can choose a short day (9:00 AM – 3:00 PM) or a long day (7:00 AM – 6:00 PM), depending on what suits your family and work.`,
+    a: `We're open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. You can choose a short day (9:00 AM – 3:00 PM) or a long day (7:30 AM – 6:00 PM), depending on what suits your family and work.`,
   },
   {
     q: "How does enrolment work, and what does it cost to start?",

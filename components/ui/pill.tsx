@@ -23,7 +23,7 @@ export function Pill({
     <motion.span
       variants={fadeUp}
       className={cn(
-        "glass inline-flex items-center gap-2 rounded-full py-2 pl-3 pr-4 text-sm font-medium text-slate-700 shadow-card dark:text-slate-200",
+        "glass inline-flex items-center gap-2 rounded-full py-2 pl-3 pr-4 text-sm font-medium text-slate-700 shadow-card",
         "transition-[transform,box-shadow] duration-200 ease-out-strong",
         "[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5",
         "[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lift",
@@ -31,7 +31,7 @@ export function Pill({
       )}
     >
       {icon && (
-        <span className={cn("text-brand-600 dark:text-brand-400", iconClassName)}>
+        <span className={cn("text-brand-600", iconClassName)}>
           {icon}
         </span>
       )}

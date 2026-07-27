@@ -24,14 +24,14 @@ export function Visit() {
   return (
     <section
       id="visit"
-      className="border-t border-slate-200/70 bg-white/40 dark:border-slate-800/70 dark:bg-white/[0.02]"
+      className="border-t border-slate-200/70 bg-white/40"
     >
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="mb-10 max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-slate-50">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Come and see us
           </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
+          <p className="mt-4 text-lg text-slate-600">
             The best way to choose a centre is to stand in it. Pick a weekday that
             suits and we&apos;ll show you the rooms, the playground and the kitchen.
           </p>
@@ -57,18 +57,18 @@ export function Visit() {
               />
             </Card>
 
-            <Card className="divide-y divide-slate-200/70 dark:divide-slate-700/60">
+            <Card className="divide-y divide-slate-200/70">
               {details.map((d) => {
                 const content = (
                   <div className="flex items-start gap-3.5 p-5">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sky-100 text-brand-700 dark:bg-sky-900/60 dark:text-brand-300">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sky-100 text-brand-700">
                       <d.icon className="size-4" aria-hidden />
                     </span>
                     <div className="min-w-0">
-                      <p className="text-[13px] font-medium text-slate-500 dark:text-slate-400">
+                      <p className="text-[13px] font-medium text-slate-500">
                         {d.label}
                       </p>
-                      <p className="text-[15px] font-medium text-slate-900 dark:text-slate-100">
+                      <p className="text-[15px] font-medium text-slate-900">
                         {d.value}
                       </p>
                     </div>
@@ -82,7 +82,7 @@ export function Visit() {
                     {...(d.external
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="block transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-50/80 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/5"
+                    className="block transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-50/80"
                   >
                     {content}
                   </a>

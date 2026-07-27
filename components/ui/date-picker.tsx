@@ -54,10 +54,14 @@ export function DatePicker({
   label = "Preferred tour date",
   error,
   name,
+  footnote,
 }: {
   value: Date | null;
   onChange: (d: Date) => void;
   label?: string;
+  /* Passed in rather than hardcoded so opening hours live only in lib/content.ts —
+     a hardcoded copy here is exactly how the stale 7:00 AM value survived. */
+  footnote?: string;
   error?: string | null;
   name?: string;
 }) {
@@ -107,28 +111,27 @@ export function DatePicker({
           "transition-[border-color,box-shadow,transform,background-color] duration-150 ease-out-strong",
           "active:scale-[0.995]",
           "focus-visible:border-brand-500 focus-visible:shadow-[0_0_0_3px_var(--color-sky-100)]",
-          "dark:bg-white/5 dark:focus-visible:shadow-[0_0_0_3px_var(--color-sky-900)]",
           error
             ? "border-red-400"
-            : "border-slate-200/90 dark:border-slate-700/70",
+            : "border-slate-200/90",
         )}
       >
         <span className="min-w-0">
-          <span className="block text-[13px] text-slate-500 dark:text-slate-400">{label}</span>
+          <span className="block text-[13px] text-slate-600">{label}</span>
           <span
             className={cn(
               "block truncate text-[15px]",
-              value ? "text-slate-900 dark:text-slate-100" : "text-slate-400 dark:text-slate-500",
+              value ? "text-slate-900" : "text-slate-500",
             )}
           >
             {value ? formatLong(value) : "Choose a weekday"}
           </span>
         </span>
-        <CalendarDays className="size-5 shrink-0 text-brand-600 dark:text-brand-400" />
+        <CalendarDays className="size-5 shrink-0 text-brand-600" />
       </button>
 
       {error && (
-        <p role="alert" className="pt-1.5 text-[13px] text-red-600 dark:text-red-400">
+        <p role="alert" className="pt-1.5 text-[13px] text-red-600">
           {error}
         </p>
       )}
@@ -151,18 +154,18 @@ export function DatePicker({
                 onClick={() => shiftMonth(-1)}
                 disabled={!canGoBack}
                 aria-label="Previous month"
-                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 disabled:pointer-events-none disabled:opacity-30 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100 dark:text-slate-300 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/50"
+                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 disabled:pointer-events-none disabled:opacity-30 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100"
               >
                 <ChevronLeft className="size-4" />
               </button>
-              <span className="font-jakarta text-sm font-semibold text-slate-900 dark:text-slate-100">
+              <span className="font-jakarta text-sm font-semibold text-slate-900">
                 {view.toLocaleDateString("en-NZ", { month: "long", year: "numeric" })}
               </span>
               <button
                 type="button"
                 onClick={() => shiftMonth(1)}
                 aria-label="Next month"
-                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100 dark:text-slate-300 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/50"
+                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100"
               >
                 <ChevronRight className="size-4" />
               </button>
@@ -172,7 +175,7 @@ export function DatePicker({
               {WEEKDAY_LABELS.map((d) => (
                 <div
                   key={d}
-                  className="grid h-7 place-items-center text-[11px] font-medium uppercase tracking-wide text-slate-400"
+                  className="grid h-7 place-items-center text-[11px] font-medium uppercase tracking-wide text-slate-600"
                 >
                   {d.slice(0, 1)}
                 </div>
@@ -203,10 +206,10 @@ export function DatePicker({
                       "grid h-9 cursor-pointer place-items-center rounded-lg text-[13px] font-medium",
                       "transition-[transform,background-color,color] duration-150 ease-out-strong",
                       "active:scale-90",
-                      "disabled:pointer-events-none disabled:text-slate-300 dark:disabled:text-slate-600",
+                      "disabled:pointer-events-none disabled:text-slate-300",
                       selected
-                        ? "bg-brand-600 text-white dark:bg-brand-400 dark:text-brand-950"
-                        : "text-slate-700 dark:text-slate-200 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/50",
+                        ? "bg-brand-600 text-white"
+                        : "text-slate-700 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100",
                     )}
                   >
                     {i + 1}
@@ -215,9 +218,11 @@ export function DatePicker({
               })}
             </div>
 
-            <p className="mt-3 border-t border-slate-200/70 pt-3 text-[12px] text-slate-500 dark:border-slate-700/60 dark:text-slate-400">
-              Tours run weekdays only, between 7:00 AM and 6:00 PM.
-            </p>
+            {footnote && (
+              <p className="mt-3 border-t border-slate-200/70 pt-3 text-[12px] text-slate-600">
+                {footnote}
+              </p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

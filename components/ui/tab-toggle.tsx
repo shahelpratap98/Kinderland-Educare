@@ -64,15 +64,15 @@ export function TabToggle({
               "transition-[color,transform] duration-150 ease-out-strong active:scale-[0.98]",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500",
               isActive
-                ? "text-white dark:text-brand-950"
-                : "text-slate-600 dark:text-slate-400 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-200",
+                ? "text-white"
+                : "text-slate-600 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900",
             )}
           >
             {isActive && (
               <motion.span
                 layoutId={layoutId}
                 transition={reduce ? { duration: 0 } : springLayout}
-                className="absolute inset-0 -z-10 rounded-full bg-brand-600 shadow-card dark:bg-brand-400"
+                className="absolute inset-0 -z-10 rounded-full bg-brand-600 shadow-card"
               />
             )}
             <span className="relative">{tab.label}</span>

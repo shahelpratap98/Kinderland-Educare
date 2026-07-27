@@ -78,7 +78,7 @@ export function SiteHeader() {
                 className={cn(
                   "rounded-full px-3 py-2 text-sm font-medium transition-[color,background-color] duration-150 ease-out-strong",
                   scrolled
-                    ? "text-slate-600 dark:text-slate-300 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/40 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-white"
+                    ? "text-slate-600 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900"
                     : "text-white/90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/20 [@media(hover:hover)_and_(pointer:fine)]:hover:text-white",
                 )}
               >
@@ -93,7 +93,7 @@ export function SiteHeader() {
               className={cn(
                 "hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-[color,background-color] duration-150 ease-out-strong sm:inline-flex",
                 scrolled
-                  ? "text-slate-700 dark:text-slate-200 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/40"
+                  ? "text-slate-700 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70"
                   : "text-white [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/20",
               )}
             >
@@ -117,7 +117,7 @@ export function SiteHeader() {
               className={cn(
                 "grid size-9 cursor-pointer place-items-center rounded-full transition-[transform,background-color,color] duration-150 ease-out-strong active:scale-90 lg:hidden",
                 scrolled
-                  ? "text-slate-700 dark:text-slate-200 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70 dark:[@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-900/40"
+                  ? "text-slate-700 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100/70"
                   : "text-white [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/20",
               )}
             >
@@ -159,16 +159,16 @@ export function SiteHeader() {
                   <a
                     href={l.href}
                     onClick={() => setMenuOpen(false)}
-                    className="block rounded-xl px-3.5 py-3 text-[15px] font-medium text-slate-700 transition-[background-color,color] duration-150 ease-out-strong active:bg-sky-100 dark:text-slate-200 dark:active:bg-sky-900/50"
+                    className="block rounded-xl px-3.5 py-3 text-[15px] font-medium text-slate-700 transition-[background-color,color] duration-150 ease-out-strong active:bg-sky-100"
                   >
                     {l.label}
                   </a>
                 </li>
               ))}
-              <li className="border-t border-slate-200/70 pt-1 dark:border-slate-700/60">
+              <li className="border-t border-slate-200/70 pt-1">
                 <a
                   href={centre.phoneHref}
-                  className="flex items-center gap-2.5 rounded-xl px-3.5 py-3 text-[15px] font-medium text-brand-700 transition-[background-color] duration-150 ease-out-strong active:bg-sky-100 dark:text-brand-300 dark:active:bg-sky-900/50"
+                  className="flex items-center gap-2.5 rounded-xl px-3.5 py-3 text-[15px] font-medium text-brand-700 transition-[background-color] duration-150 ease-out-strong active:bg-sky-100"
                 >
                   <Phone className="size-4" />
                   {centre.phone}

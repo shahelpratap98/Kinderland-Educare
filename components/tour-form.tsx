@@ -7,6 +7,7 @@ import { requestTour, type TourRequestState } from "@/app/actions";
 import { Field, TextareaField } from "@/components/ui/field";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
+import { centre } from "@/lib/content";
 import { springSnappy } from "@/lib/motion";
 
 const initialState: TourRequestState = { status: "idle" };
@@ -143,6 +144,7 @@ export function TourForm() {
           setEditedSinceSubmit((e) => ({ ...e, date: true }));
         }}
         error={errorFor("date")}
+        footnote={`Tours run weekdays only, between ${centre.hours.open} and ${centre.hours.close}.`}
       />
 
       <TextareaField
@@ -180,8 +182,8 @@ export function TourForm() {
             <div
               className={
                 state.status === "success"
-                  ? "flex gap-2.5 rounded-xl border border-sun-300/70 bg-sun-50 p-3.5 text-[14px] text-sun-900 dark:border-sun-700/50 dark:bg-sun-900/20 dark:text-sun-100"
-                  : "flex gap-2.5 rounded-xl border border-red-300/70 bg-red-50 p-3.5 text-[14px] text-red-800 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-200"
+                  ? "flex gap-2.5 rounded-xl border border-sun-300/70 bg-sun-50 p-3.5 text-[14px] text-sun-900"
+                  : "flex gap-2.5 rounded-xl border border-red-300/70 bg-red-50 p-3.5 text-[14px] text-red-800"
               }
             >
               <Info className="mt-0.5 size-4 shrink-0" />

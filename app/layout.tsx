@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { centre, fullAddress } from "@/lib/content";
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: `%s | ${centre.name}`,
   },
   description:
-    "Kinderland Educare is a purpose-built early childhood centre in Māngere, South Auckland, caring for children from six weeks to five years. 20 Hours ECE funded, fresh halal meals daily.",
+    "Kinderland Educare is a purpose-built early childhood centre in Māngere, South Auckland, caring for children from three months to six years. 20 Hours ECE funded, fresh halal meals daily.",
   keywords: [
     "early childhood education Māngere",
     "childcare South Auckland",
@@ -34,10 +34,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${centre.legalName} — Early Childhood Education in Māngere`,
     description:
-      "Consistent, high-standard care and education for children from six weeks to five years in South Auckland.",
+      "Consistent, high-standard care and education for children from three months to six years in South Auckland.",
     locale: "en_NZ",
     type: "website",
   },
+};
+
+/*
+  Emits <meta name="color-scheme" content="light">. This lands before the
+  stylesheet, so a phone in dark mode never gets a flash of dark UA-styled form
+  controls or scrollbars before globals.css applies.
+*/
+export const viewport: Viewport = {
+  colorScheme: "light",
 };
 
 /* Helps the centre surface correctly in local search results. */
@@ -58,7 +67,7 @@ const jsonLd = {
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "07:00",
+    opens: "07:30",
     closes: "18:00",
   },
   description: `Early childhood education and care for children from ${centre.ages} at ${fullAddress}.`,
@@ -72,7 +81,7 @@ export default function RootLayout({
       lang="en-NZ"
       className={`${inter.variable} ${jakarta.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-sky-50 text-slate-900 dark:bg-[#08131f] dark:text-slate-100">
+      <body className="min-h-full flex flex-col bg-sky-50 text-slate-900">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

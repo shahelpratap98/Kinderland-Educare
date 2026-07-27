@@ -93,16 +93,24 @@
   --shadow-modal: 0 24px 64px -12px rgb(12 42 64 / 0.34);
 }
 
+/*
+  This site is light-only by design — it must look identical regardless of the
+  visitor's device theme.
+
+  `color-scheme: light` is the part that's easy to miss: without it the browser
+  still renders its OWN chrome dark on a phone set to dark mode — form fields,
+  the caret, select menus, scrollbars and autofill backgrounds — even when every
+  author-supplied colour is light. Declaring it here opts the whole document out.
+
+  There are correspondingly no `dark:` utilities and no prefers-color-scheme
+  blocks anywhere in the project. If a dark theme is ever wanted, it should be an
+  explicit user toggle (a `.dark` class + `@custom-variant`), never tied to the
+  system setting.
+*/
 :root {
+  color-scheme: light;
   --background: var(--color-sky-50);
   --foreground: var(--color-slate-900);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #08131f;
-    --foreground: var(--color-slate-100);
-  }
 }
 
 @layer base {
@@ -149,13 +157,6 @@
   background: color-mix(in oklab, white 74%, transparent);
   backdrop-filter: blur(12px) saturate(140%);
   border: 1px solid color-mix(in oklab, var(--color-sky-200) 80%, transparent);
-}
-
-@media (prefers-color-scheme: dark) {
-  .glass {
-    background: color-mix(in oklab, #0f2033 74%, transparent);
-    border-color: color-mix(in oklab, var(--color-sky-800) 60%, transparent);
-  }
 }
 
 /*

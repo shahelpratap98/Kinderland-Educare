@@ -9,17 +9,14 @@ const inputBase = cn(
   "placeholder-transparent outline-none",
   "transition-[border-color,box-shadow,background-color] duration-150 ease-out-strong",
   "focus:border-brand-500 focus:bg-white focus:shadow-[0_0_0_3px_var(--color-sky-100)]",
-  "dark:bg-white/5 dark:text-slate-100 dark:focus:bg-white/10",
-  "dark:focus:shadow-[0_0_0_3px_var(--color-sky-900)]",
 );
 
 const labelBase = cn(
-  "pointer-events-none absolute left-4 top-4 origin-left text-[15px] text-slate-500",
+  "pointer-events-none absolute left-4 top-4 origin-left text-[15px] text-slate-600",
   "transition-[transform,color] duration-150 ease-out-strong",
   "peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100",
   "-translate-y-2.5 scale-[0.82]",
   "peer-focus:-translate-y-2.5 peer-focus:scale-[0.82] peer-focus:text-brand-700",
-  "dark:text-slate-400 dark:peer-focus:text-brand-300",
 );
 
 type Common = {
@@ -65,7 +62,7 @@ export function Field({
             inputBase,
             error
               ? "border-red-400 focus:border-red-500 focus:shadow-[0_0_0_3px_var(--color-red-100)]"
-              : "border-slate-200/90 dark:border-slate-700/70",
+              : "border-slate-200/90",
           )}
           {...props}
         />
@@ -75,7 +72,7 @@ export function Field({
         {valid && !error && (
           <Check
             aria-hidden
-            className="absolute right-4 top-1/2 size-4 -translate-y-1/2 text-brand-600 dark:text-brand-400"
+            className="absolute right-4 top-1/2 size-4 -translate-y-1/2 text-brand-600"
             strokeWidth={3}
           />
         )}
@@ -109,7 +106,7 @@ export function TextareaField({
             "min-h-28 resize-y",
             error
               ? "border-red-400 focus:border-red-500"
-              : "border-slate-200/90 dark:border-slate-700/70",
+              : "border-slate-200/90",
           )}
           {...props}
         />
@@ -152,7 +149,7 @@ function FieldMessage({
       <p
         id={errorId}
         role="alert"
-        className="field-msg flex items-center gap-1.5 pt-1.5 text-[13px] text-red-600 dark:text-red-400"
+        className="field-msg flex items-center gap-1.5 pt-1.5 text-[13px] text-red-600"
       >
         <AlertCircle className="size-3.5 shrink-0" aria-hidden />
         {error}
@@ -162,7 +159,7 @@ function FieldMessage({
 
   if (hint) {
     return (
-      <p id={hintId} className="pt-1.5 text-[13px] text-slate-500 dark:text-slate-500">
+      <p id={hintId} className="pt-1.5 text-[13px] text-slate-600">
         {hint}
       </p>
     );

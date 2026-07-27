@@ -39,7 +39,7 @@ export function Hero() {
       {/* Fades the section into the page background so the photo has no hard edge. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-sky-50 dark:to-[#08131f]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-sky-50"
       />
 
       {/* Top padding clears the overlaying sticky header (see site-header.tsx). */}
@@ -79,7 +79,7 @@ export function Hero() {
                 key={pill.label}
                 icon={<Icon name={pill.icon} className="size-4" />}
                 /* Solid-ish white on the photo: glass alone doesn't separate from cloud. */
-                className="border-white/40 bg-white/85 text-slate-800 dark:bg-white/85 dark:text-slate-800"
+                className="border-white/40 bg-white/85 text-slate-800"
                 iconClassName="text-brand-600"
               >
                 {pill.label}

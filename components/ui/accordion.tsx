@@ -27,7 +27,7 @@ export function Accordion({ items }: { items: readonly Item[] }) {
   const baseId = useId();
 
   return (
-    <div className="divide-y divide-slate-200/80 dark:divide-slate-700/60">
+    <div className="divide-y divide-slate-200/80">
       {items.map((item, i) => {
         const isOpen = open === i;
         const panelId = `${baseId}-panel-${i}`;
@@ -45,19 +45,18 @@ export function Accordion({ items }: { items: readonly Item[] }) {
                   "group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left",
                   "transition-colors duration-150 ease-out-strong",
                   "[@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-700",
-                  "dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-300",
                 )}
               >
-                <span className="font-jakarta text-[17px] font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                <span className="font-jakarta text-[17px] font-semibold tracking-tight text-slate-900">
                   {item.q}
                 </span>
                 <span
                   aria-hidden
                   className={cn(
                     "grid size-8 shrink-0 place-items-center rounded-full",
-                    "bg-sky-100 text-brand-700 dark:bg-sky-900/60 dark:text-brand-300",
+                    "bg-sky-100 text-brand-700",
                     "transition-[transform,background-color] duration-200 ease-out-strong",
-                    isOpen && "rotate-45 bg-brand-600 text-white dark:bg-brand-500",
+                    isOpen && "rotate-45 bg-brand-600 text-white",
                   )}
                 >
                   <Plus className="size-4" strokeWidth={2.5} />
@@ -79,7 +78,7 @@ export function Accordion({ items }: { items: readonly Item[] }) {
               <div className="overflow-hidden">
                 <p
                   className={cn(
-                    "max-w-prose pb-6 pr-12 text-slate-600 dark:text-slate-400",
+                    "max-w-prose pb-6 pr-12 text-slate-600",
                     "transition-opacity duration-200 ease-out-strong",
                     isOpen ? "opacity-100" : "opacity-0",
                   )}
