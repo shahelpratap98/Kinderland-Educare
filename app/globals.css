@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/*
+  Kinderland Educare design tokens, derived from the centre's logo.
+
+  The logo supplies five colours: vermillion "Kinder", purple "Educare", the green
+  tree, the yellow sun, and the periwinkle sky it all sits on. Those map to:
+
+    brand  vermillion — primary actions, the logo's dominant colour
+    plum   purple     — secondary actions and accents
+    sky    blue       — page surfaces; also matches the hero cloud photograph
+    sun    yellow     — highlights and callouts
+    leaf   green      — positive/supporting accents
+
+  Saturated brand colours are kept to small areas (buttons, chips, icons) with
+  tints carrying the large surfaces, so the palette reads cheerful rather than loud.
+*/
+@theme {
+  /* "Kinder" vermillion */
+  --color-brand-50: #fff4f0;
+  --color-brand-100: #ffe4da;
+  --color-brand-200: #ffc4b0;
+  --color-brand-300: #ff9c7c;
+  --color-brand-400: #fa6f45;
+  --color-brand-500: #ee4b24;
+  --color-brand-600: #ce3a14;
+  --color-brand-700: #a62d10;
+  --color-brand-800: #85260f;
+  --color-brand-900: #6e2210;
+  --color-brand-950: #5a1c0d;
+
+  /* "Educare" purple */
+  --color-plum-50: #f9f4fc;
+  --color-plum-100: #f1e4f8;
+  --color-plum-200: #e0c6ef;
+  --color-plum-300: #c89ee2;
+  --color-plum-400: #aa72ce;
+  --color-plum-500: #8b4fb4;
+  --color-plum-600: #6b2e8f;
+  --color-plum-700: #592577;
+  --color-plum-800: #491f61;
+  --color-plum-900: #3d1b50;
+
+  /* Sky — logo background and the hero photograph */
+  --color-sky-50: #f1f8fd;
+  --color-sky-100: #e0f0fa;
+  --color-sky-200: #bee0f5;
+  --color-sky-300: #8fcaed;
+  --color-sky-400: #55afe3;
+  --color-sky-500: #2596d9;
+  --color-sky-600: #1878b4;
+  --color-sky-700: #155f90;
+  --color-sky-800: #154f76;
+  --color-sky-900: #144161;
+  --color-sky-950: #0c2a40;
+
+  /* Sun */
+  --color-sun-50: #fffceb;
+  --color-sun-100: #fff6c6;
+  --color-sun-200: #ffec88;
+  --color-sun-300: #ffde49;
+  --color-sun-400: #ffd01c;
+  --color-sun-500: #f2b500;
+  --color-sun-600: #cc9000;
+  --color-sun-700: #a36c02;
+  --color-sun-800: #86550a;
+  --color-sun-900: #71460d;
+
+  /* Tree */
+  --color-leaf-50: #f3fbef;
+  --color-leaf-100: #e3f7da;
+  --color-leaf-200: #c6efb6;
+  --color-leaf-300: #9de184;
+  --color-leaf-400: #6fcc50;
+  --color-leaf-500: #4caf33;
+  --color-leaf-600: #3a8e26;
+  --color-leaf-700: #2f711f;
+  --color-leaf-800: #285c1c;
+  --color-leaf-900: #234d1a;
+
+  /*
+    Easing. The built-in CSS easings are too weak to read as intentional, so
+    these are stronger custom curves. There is deliberately no ease-in token:
+    ease-in delays the initial movement, which is the exact moment the user is
+    watching most closely, and it makes UI feel sluggish.
+  */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --shadow-card: 0 1px 2px rgb(20 65 97 / 0.05), 0 4px 12px -2px rgb(20 65 97 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(20 65 97 / 0.06), 0 12px 28px -6px rgb(20 65 97 / 0.16);
+  --shadow-modal: 0 24px 64px -12px rgb(12 42 64 / 0.34);
+}
+
+:root {
+  --background: var(--color-sky-50);
+  --foreground: var(--color-slate-900);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #08131f;
+    --foreground: var(--color-slate-100);
+  }
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    /* Generous leading for body copy; headings tighten this locally. */
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+    One consistent focus ring for every interactive element. focus-visible only,
+    so pointer users never see it but keyboard users always do.
+  */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-sun-200);
+    color: var(--color-brand-900);
+  }
+}
+
+@utility glass {
+  background: color-mix(in oklab, white 74%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--color-sky-200) 80%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass {
+    background: color-mix(in oklab, #0f2033 74%, transparent);
+    border-color: color-mix(in oklab, var(--color-sky-800) 60%, transparent);
+  }
+}
+
+/*
+  Hero sky. The cloud photograph is a CSS background rather than <Image> so a
+  gradient in the same blue sits underneath it — if the file is ever missing or
+  still loading, the hero degrades to a plausible sky instead of a white gap or a
+  broken-image icon. `background-position: center bottom` keeps the cumulus band
+  low in the frame, leaving the clear upper blue for the headline.
+*/
+.hero-sky {
+  background-color: var(--color-sky-500);
+  background-image:
+    linear-gradient(to bottom, rgb(37 150 217 / 0.55) 0%, rgb(37 150 217 / 0) 45%),
+    image-set(url("/hero-clouds.webp") type("image/webp"), url("/hero-clouds.jpg") type("image/jpeg")),
+    linear-gradient(to bottom, var(--color-sky-600), var(--color-sky-300));
+  background-size: cover, cover, cover;
+  background-position: center top, center bottom, center;
+  background-repeat: no-repeat;
+}
+
+/*
+  Tab-panel enter, CSS-only and keyed on the active panel.
+
+  Content must never be gated on an animation finishing: AnimatePresence with
+  mode="wait" holds the incoming panel until the outgoing one has finished exiting,
+  which doubles perceived latency on a control users click repeatedly — and strands
+  stale content entirely if frames stop arriving. Here the new panel is in the DOM
+  immediately and merely fades up.
+*/
+.panel-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 180ms var(--ease-out-strong),
+    transform 180ms var(--ease-out-strong);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/*
+  Validation-message enter, CSS-only. @starting-style animates the mount without
+  JS, so the message can never be stranded at its initial values the way an
+  AnimatePresence child can. Browsers without support simply show it immediately.
+  Opacity and a 2px nudge only — no height animation, so nothing can trap layout.
+*/
+.field-msg {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 140ms var(--ease-out-strong),
+    transform 140ms var(--ease-out-strong);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+/*
+  Reduced motion means fewer and gentler animations, not zero. Opacity and colour
+  transitions still aid comprehension, so they are preserved; movement is removed.
+  Framer Motion components additionally branch on useReducedMotion().
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: opacity, background-color, border-color, color, fill, stroke !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}

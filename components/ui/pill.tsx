@@ -1,0 +1,41 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { fadeUp } from "@/lib/motion";
+
+/**
+ * Hero feature pill. Decorative and seen once per visit, so a little movement is
+ * earned here — but it stays subtle, and hover lift is gated to fine pointers.
+ */
+export function Pill({
+  children,
+  icon,
+  className,
+  iconClassName,
+}: {
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+  className?: string;
+  iconClassName?: string;
+}) {
+  return (
+    <motion.span
+      variants={fadeUp}
+      className={cn(
+        "glass inline-flex items-center gap-2 rounded-full py-2 pl-3 pr-4 text-sm font-medium text-slate-700 shadow-card dark:text-slate-200",
+        "transition-[transform,box-shadow] duration-200 ease-out-strong",
+        "[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5",
+        "[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lift",
+        className,
+      )}
+    >
+      {icon && (
+        <span className={cn("text-brand-600 dark:text-brand-400", iconClassName)}>
+          {icon}
+        </span>
+      )}
+      {children}
+    </motion.span>
+  );
+}

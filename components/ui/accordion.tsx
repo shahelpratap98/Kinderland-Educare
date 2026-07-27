@@ -1,0 +1,96 @@
+"use client";
+
+import { useId, useState } from "react";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+type Item = { q: string; a: string };
+
+/**
+ * Single-open accordion.
+ *
+ * Open/close is a CSS `grid-template-rows: 0fr → 1fr` transition rather than a
+ * JS height animation. Three reasons:
+ *
+ * 1. It runs off the main thread, so it stays smooth while the page is still
+ *    hydrating or fetching.
+ * 2. CSS transitions retarget from their current position when interrupted, which
+ *    is what you want for a control users toggle rapidly — keyframes would restart
+ *    from zero.
+ * 3. Panel height is never gated on an animation completing, so content cannot end
+ *    up stranded at height 0 if frames stop arriving.
+ *
+ * The icon rotation and content fade are transform/opacity only.
+ */
+export function Accordion({ items }: { items: readonly Item[] }) {
+  const [open, setOpen] = useState<number | null>(0);
+  const baseId = useId();
+
+  return (
+    <div className="divide-y divide-slate-200/80 dark:divide-slate-700/60">
+      {items.map((item, i) => {
+        const isOpen = open === i;
+        const panelId = `${baseId}-panel-${i}`;
+        const buttonId = `${baseId}-button-${i}`;
+
+        return (
+          <div key={item.q}>
+            <h3>
+              <button
+                id={buttonId}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                onClick={() => setOpen(isOpen ? null : i)}
+                className={cn(
+                  "group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left",
+                  "transition-colors duration-150 ease-out-strong",
+                  "[@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-700",
+                  "dark:[@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-300",
+                )}
+              >
+                <span className="font-jakarta text-[17px] font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                  {item.q}
+                </span>
+                <span
+                  aria-hidden
+                  className={cn(
+                    "grid size-8 shrink-0 place-items-center rounded-full",
+                    "bg-sky-100 text-brand-700 dark:bg-sky-900/60 dark:text-brand-300",
+                    "transition-[transform,background-color] duration-200 ease-out-strong",
+                    isOpen && "rotate-45 bg-brand-600 text-white dark:bg-brand-500",
+                  )}
+                >
+                  <Plus className="size-4" strokeWidth={2.5} />
+                </span>
+              </button>
+            </h3>
+
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              /* inert keeps collapsed copy out of the tab order and off screen readers. */
+              inert={!isOpen}
+              className={cn(
+                "grid transition-[grid-template-rows] duration-300 ease-out-strong",
+                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+              )}
+            >
+              <div className="overflow-hidden">
+                <p
+                  className={cn(
+                    "max-w-prose pb-6 pr-12 text-slate-600 dark:text-slate-400",
+                    "transition-opacity duration-200 ease-out-strong",
+                    isOpen ? "opacity-100" : "opacity-0",
+                  )}
+                >
+                  {item.a}
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
