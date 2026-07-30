@@ -19,10 +19,10 @@ export function FeeExplorer() {
   return (
     <section id="programmes" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <div className="mb-8 max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        <h2 className="text-4xl font-normal text-ink sm:text-5xl">
           Programmes &amp; fees
         </h2>
-        <p className="mt-4 text-lg text-slate-600">
+        <p className="mt-4 text-lg text-muted">
           Three rooms, each shaped around where your child is right now. Choose an
           age group to see what a day looks like and what it costs.
         </p>
@@ -42,12 +42,12 @@ export function FeeExplorer() {
         pricing reaching a real parent. See lib/content.ts.
       */}
       {FEES_UNCONFIRMED && (
-        <div className="mb-6 flex gap-3 rounded-xl border border-sun-400/70 bg-sun-50 p-4 text-[14px] text-sun-900">
+        <div className="mb-6 flex gap-3 rounded-xl border-2 border-ink bg-wash p-4 text-[14px] text-ink">
           <AlertTriangle className="mt-0.5 size-4 shrink-0" />
           <p>
             <strong className="font-semibold">Placeholder pricing.</strong> The
             weekly rates below are not real. Replace them in{" "}
-            <code className="rounded bg-sun-200/60 px-1 py-0.5 font-mono text-[13px]">
+            <code className="rounded bg-ink/10 px-1 py-0.5 font-mono text-[13px]">
               lib/content.ts
             </code>{" "}
             and set <code className="font-mono text-[13px]">FEES_UNCONFIRMED</code> to{" "}
@@ -68,27 +68,27 @@ export function FeeExplorer() {
           */}
           <div key={group.id} className="panel-enter">
               <div className="flex flex-wrap items-center gap-3">
-                <h3 className="font-jakarta text-2xl font-bold tracking-tight text-slate-900">
+                <h3 className="font-display text-2xl font-normal text-ink">
                   {group.label}
                 </h3>
-                <span className="rounded-full bg-sky-100 px-3 py-1 text-[13px] font-medium text-plum-700">
+                <span className="rounded-full bg-wash px-3 py-1 text-[13px] font-medium text-muted">
                   {group.ageRange}
                 </span>
                 {group.subsidy && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-sun-100 px-3 py-1 text-[13px] font-medium text-sun-900">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-[13px] font-medium text-background">
                     <Sparkles className="size-3.5" />
                     {group.subsidy}
                   </span>
                 )}
               </div>
 
-              <p className="mt-4 text-slate-600">{group.blurb}</p>
+              <p className="mt-4 text-muted">{group.blurb}</p>
 
               <ul className="mt-6 space-y-2.5">
                 {group.highlights.map((h) => (
-                  <li key={h} className="flex gap-2.5 text-[15px] text-slate-700">
+                  <li key={h} className="flex gap-2.5 text-[15px] text-ink">
                     <Check
-                      className="mt-1 size-4 shrink-0 text-brand-600"
+                      className="mt-1 size-4 shrink-0 text-ink"
                       strokeWidth={3}
                       aria-hidden
                     />
@@ -103,28 +103,28 @@ export function FeeExplorer() {
                   return (
                     <div
                       key={session.name}
-                      className="rounded-xl border border-slate-200/80 bg-white/50 p-4"
+                      className="rounded-xl border border-hairline bg-background p-4"
                     >
-                      <p className="text-[13px] font-medium text-slate-500">
+                      <p className="text-[13px] font-medium text-muted">
                         {session.name}
                       </p>
-                      <p className="mt-0.5 text-[13px] text-slate-500">
+                      <p className="mt-0.5 text-[13px] text-muted">
                         {session.window}
                       </p>
                       <p className="mt-2 flex items-baseline gap-1.5">
                         <span
                           className={
                             FEES_UNCONFIRMED
-                              ? "font-jakarta text-2xl font-bold tracking-tight text-slate-400 line-through decoration-sun-500/60 decoration-2"
-                              : "font-jakarta text-2xl font-bold tracking-tight text-slate-900"
+                              ? "font-display text-2xl font-normal text-muted line-through decoration-ink/50 decoration-2"
+                              : "font-display text-2xl font-normal text-ink"
                           }
                         >
                           {rate}
                         </span>
-                        <span className="text-[13px] text-slate-500">/ week</span>
+                        <span className="text-[13px] text-muted">/ week</span>
                       </p>
                       {FEES_UNCONFIRMED && (
-                        <p className="mt-1 text-[12px] font-medium text-sun-700">
+                        <p className="mt-1 text-[12px] font-semibold text-ink">
                           Rate not confirmed
                         </p>
                       )}
@@ -137,12 +137,12 @@ export function FeeExplorer() {
 
         <div className="space-y-4">
           <Card className="p-6">
-            <h4 className="font-jakarta font-semibold tracking-tight text-slate-900">
+            <h4 className="font-display font-normal text-ink">
               Getting started
             </h4>
-            <p className="mt-2 text-[15px] text-slate-600">
+            <p className="mt-2 text-[15px] text-muted">
               A one-off registration fee of{" "}
-              <strong className="font-semibold text-slate-900">
+              <strong className="font-semibold text-ink">
                 {feeFacts.registration}
               </strong>{" "}
               secures your child&apos;s place.
@@ -156,14 +156,14 @@ export function FeeExplorer() {
           {feeFacts.policies.map((policy) => (
             <Card key={policy.title} interactive className="p-5">
               <div className="flex gap-3.5">
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sky-100 text-brand-700">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-wash text-ink">
                   <Icon name={policy.icon} className="size-4.5" />
                 </span>
                 <div>
-                  <p className="font-jakarta text-[15px] font-semibold tracking-tight text-slate-900">
+                  <p className="font-display text-[15px] font-normal text-ink">
                     {policy.title}
                   </p>
-                  <p className="mt-1 text-[14px] text-slate-600">
+                  <p className="mt-1 text-[14px] text-muted">
                     {policy.body}
                   </p>
                 </div>

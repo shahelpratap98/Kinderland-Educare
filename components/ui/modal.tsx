@@ -99,7 +99,7 @@ export function Modal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-ink/40 backdrop-blur-sm"
           />
 
           <motion.div
@@ -124,14 +124,14 @@ export function Modal({
                   }
             }
             transition={reduce ? { duration: 0.15 } : springSoft}
-            className="glass relative max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-t-3xl p-6 shadow-modal sm:rounded-3xl sm:p-8"
+            className="hairline bg-background relative max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-t-3xl p-6 shadow-modal sm:rounded-3xl sm:p-8"
           >
             <div className="mb-6 pr-10">
-              <h2 className="font-jakarta text-2xl font-bold tracking-tight text-slate-900">
+              <h2 className="font-display text-2xl font-normal text-ink">
                 {title}
               </h2>
               {description && (
-                <p className="mt-2 text-[15px] text-slate-600">
+                <p className="mt-2 text-[15px] text-muted">
                   {description}
                 </p>
               )}
@@ -140,7 +140,7 @@ export function Modal({
             <button
               onClick={onClose}
               aria-label="Close dialog"
-              className="absolute right-5 top-5 grid size-9 cursor-pointer place-items-center rounded-full text-slate-500 transition-[transform,background-color,color] duration-150 ease-out-strong active:scale-[0.94] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-slate-900/5 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900"
+              className="absolute right-5 top-5 grid size-9 cursor-pointer place-items-center rounded-full text-muted transition-[transform,background-color,color] duration-150 ease-out-strong active:scale-[0.94] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
             >
               <X className="size-5" />
             </button>

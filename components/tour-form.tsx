@@ -182,7 +182,7 @@ export function TourForm() {
             <div
               className={
                 state.status === "success"
-                  ? "flex gap-2.5 rounded-xl border border-sun-300/70 bg-sun-50 p-3.5 text-[14px] text-sun-900"
+                  ? "flex gap-2.5 rounded-xl border-2 border-ink bg-wash p-3.5 text-[14px] text-ink"
                   : "flex gap-2.5 rounded-xl border border-red-300/70 bg-red-50 p-3.5 text-[14px] text-red-800"
               }
             >

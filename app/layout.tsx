@@ -1,18 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import { centre, fullAddress } from "@/lib/content";
 
+/* Body copy and navigation. */
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-/* Geometric and friendly without tipping into cartoonish — a childcare site
-   still has to read as trustworthy to a parent comparing centres. */
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+/*
+  Display face for headings and the wordmark.
+
+  Loaded via next/font rather than an @import in a fonts.css, which is what the
+  spec described for a Vite build. next/font self-hosts the files, emits a preload
+  and reserves metrics, so there is no render-blocking request to Google and no
+  layout shift as the serif swaps in — both of which a CSS @import would reintroduce.
+*/
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  weight: "400",
+  style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -79,9 +88,9 @@ export default function RootLayout({
   return (
     <html
       lang="en-NZ"
-      className={`${inter.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-sky-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-background text-ink">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

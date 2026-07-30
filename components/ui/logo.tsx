@@ -6,20 +6,14 @@ import { cn } from "@/lib/utils";
  * Brand mark.
  *
  * Renders the real logo artwork when LOGO_SRC is set. Until then it falls back to
- * a CSS wordmark using the logo's own colours — vermillion "Kinder", purple
- * "land Educare" — so nothing renders broken and the header stays sharp at small
- * sizes. See the TODO on LOGO_SRC in lib/content.ts.
+ * a wordmark set in the display serif — matching the spec's `text-3xl
+ * tracking-tight` treatment. See the TODO on LOGO_SRC in lib/content.ts.
  *
- * `onLight` inverts the wordmark for placement over the blue hero, where the
- * purple half would otherwise sit at poor contrast.
+ * Note this is NOT the centre's actual logo: the tree, sun and custom lettering
+ * are missing. The monochrome wordmark suits this branch's aesthetic, but the real
+ * mark is full-colour and will need its own treatment against a white ground.
  */
-export function Logo({
-  className,
-  onLight = true,
-}: {
-  className?: string;
-  onLight?: boolean;
-}) {
+export function Logo({ className }: { className?: string }) {
   if (LOGO_SRC) {
     return (
       <Image
@@ -38,21 +32,12 @@ export function Logo({
       className={cn(
         /* nowrap: at 375px the wordmark otherwise breaks onto two lines and
            doubles the header's height. */
-        "font-jakarta whitespace-nowrap text-[17px] font-extrabold tracking-tight",
+        "font-display whitespace-nowrap text-2xl tracking-tight text-ink sm:text-3xl",
         className,
       )}
     >
-      <span className={onLight ? "text-brand-600" : "text-white"}>Kinder</span>
-      <span className={onLight ? "text-plum-600" : "text-sun-300"}>land</span>
-      <span
-        className={cn(
-          "font-semibold",
-          onLight ? "text-plum-600" : "text-white/90",
-        )}
-      >
-        {" "}
-        Educare
-      </span>
+      Kinderland
+      <span className="text-muted"> Educare</span>
     </span>
   );
 }

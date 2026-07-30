@@ -5,18 +5,18 @@ import { AlertCircle, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const inputBase = cn(
-  "peer w-full rounded-xl border bg-white/60 px-4 pb-2.5 pt-6 text-[15px] text-slate-900",
+  "peer w-full rounded-xl border bg-background px-4 pb-2.5 pt-6 text-[15px] text-ink",
   "placeholder-transparent outline-none",
   "transition-[border-color,box-shadow,background-color] duration-150 ease-out-strong",
-  "focus:border-brand-500 focus:bg-white focus:shadow-[0_0_0_3px_var(--color-sky-100)]",
+  "focus:border-ink focus:bg-white focus:shadow-[0_0_0_3px_var(--color-wash)]",
 );
 
 const labelBase = cn(
-  "pointer-events-none absolute left-4 top-4 origin-left text-[15px] text-slate-600",
+  "pointer-events-none absolute left-4 top-4 origin-left text-[15px] text-muted",
   "transition-[transform,color] duration-150 ease-out-strong",
   "peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100",
   "-translate-y-2.5 scale-[0.82]",
-  "peer-focus:-translate-y-2.5 peer-focus:scale-[0.82] peer-focus:text-brand-700",
+  "peer-focus:-translate-y-2.5 peer-focus:scale-[0.82] peer-focus:text-ink",
 );
 
 type Common = {
@@ -62,7 +62,7 @@ export function Field({
             inputBase,
             error
               ? "border-red-400 focus:border-red-500 focus:shadow-[0_0_0_3px_var(--color-red-100)]"
-              : "border-slate-200/90",
+              : "border-hairline",
           )}
           {...props}
         />
@@ -72,7 +72,7 @@ export function Field({
         {valid && !error && (
           <Check
             aria-hidden
-            className="absolute right-4 top-1/2 size-4 -translate-y-1/2 text-brand-600"
+            className="absolute right-4 top-1/2 size-4 -translate-y-1/2 text-ink"
             strokeWidth={3}
           />
         )}
@@ -106,7 +106,7 @@ export function TextareaField({
             "min-h-28 resize-y",
             error
               ? "border-red-400 focus:border-red-500"
-              : "border-slate-200/90",
+              : "border-hairline",
           )}
           {...props}
         />
@@ -159,7 +159,7 @@ function FieldMessage({
 
   if (hint) {
     return (
-      <p id={hintId} className="pt-1.5 text-[13px] text-slate-600">
+      <p id={hintId} className="pt-1.5 text-[13px] text-muted">
         {hint}
       </p>
     );

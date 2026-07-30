@@ -4,30 +4,30 @@ type Variant = "primary" | "secondary" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-brand-600 text-white shadow-card hover:bg-brand-700 hover:shadow-lift",
-  secondary:
-    "glass text-slate-800 hover:shadow-lift",
-  ghost:
-    "text-slate-700 hover:bg-sky-100/70",
+  /* Solid ink pill with inverted label — the spec's CTA treatment. */
+  primary: "bg-ink text-background",
+  secondary: "hairline bg-background text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lift",
+  ghost: "text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-sm gap-1.5",
-  md: "h-11 px-5 text-[15px] gap-2",
-  lg: "h-13 px-7 text-base gap-2.5",
+  sm: "px-6 py-2.5 text-sm gap-1.5",
+  md: "px-8 py-3 text-[15px] gap-2",
+  lg: "px-14 py-5 text-base gap-2.5",
 };
 
 /**
  * Press and hover feedback are plain CSS transitions rather than springs, on
  * purpose: they must be instant, and CSS runs off the main thread so they stay
- * smooth even while the page is still loading and hydrating.
+ * smooth even while the page is still loading and the hero video is streaming.
  *
- * - `active:scale-[0.98]` gives the tactile "the interface heard me" response.
- * - Hover elevation is gated behind `hover:hover` / `pointer:fine` because touch
- *   devices fire hover on tap, which would leave the state stuck after a press.
- * - Only `transform`, `box-shadow`, `background-color` and `color` transition —
- *   never `all`, which would sweep in layout-triggering properties.
+ * - Hover is `scale(1.03)` per the spec, gated behind `hover:hover` /
+ *   `pointer:fine` because touch devices fire hover on tap, which would leave the
+ *   state stuck after a press.
+ * - `active:scale-[0.98]` still gives the tactile "the interface heard me" response
+ *   on press; the spec only defines the hover half.
+ * - Only `transform` and colour transition — never `all`, which would sweep in
+ *   layout-triggering properties.
  */
 export const buttonClasses = (
   variant: Variant = "primary",
@@ -35,12 +35,12 @@ export const buttonClasses = (
   className?: string,
 ) =>
   cn(
-    "relative inline-flex items-center justify-center rounded-full font-medium",
+    "relative inline-flex items-center justify-center rounded-full font-normal",
     "select-none whitespace-nowrap cursor-pointer",
-    "transition-[transform,box-shadow,background-color,color] duration-150 ease-out-strong",
+    "transition-[transform,box-shadow,background-color,color] duration-200 ease-out-strong",
     "active:scale-[0.98]",
-    "[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5",
-    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500",
+    "[@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
     "disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
     sizes[size],

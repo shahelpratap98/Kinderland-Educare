@@ -107,27 +107,27 @@ export function DatePicker({
         aria-haspopup="dialog"
         aria-expanded={open}
         className={cn(
-          "flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border bg-white/60 px-4 py-3.5 text-left",
+          "flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border bg-background px-4 py-3.5 text-left",
           "transition-[border-color,box-shadow,transform,background-color] duration-150 ease-out-strong",
           "active:scale-[0.995]",
-          "focus-visible:border-brand-500 focus-visible:shadow-[0_0_0_3px_var(--color-sky-100)]",
+          "focus-visible:border-ink focus-visible:shadow-[0_0_0_3px_var(--color-wash)]",
           error
             ? "border-red-400"
-            : "border-slate-200/90",
+            : "border-hairline",
         )}
       >
         <span className="min-w-0">
-          <span className="block text-[13px] text-slate-600">{label}</span>
+          <span className="block text-[13px] text-muted">{label}</span>
           <span
             className={cn(
               "block truncate text-[15px]",
-              value ? "text-slate-900" : "text-slate-500",
+              value ? "text-ink" : "text-muted",
             )}
           >
             {value ? formatLong(value) : "Choose a weekday"}
           </span>
         </span>
-        <CalendarDays className="size-5 shrink-0 text-brand-600" />
+        <CalendarDays className="size-5 shrink-0 text-ink" />
       </button>
 
       {error && (
@@ -146,7 +146,7 @@ export function DatePicker({
             exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "scale(0.98) translateY(-2px)" }}
             transition={reduce ? { duration: 0.12 } : { ...springSnappy, opacity: { duration: 0.14 } }}
             style={{ transformOrigin: "top center" }}
-            className="glass absolute left-0 right-0 top-[calc(100%+8px)] z-30 rounded-2xl p-4 shadow-lift"
+            className="hairline bg-background absolute left-0 right-0 top-[calc(100%+8px)] z-30 rounded-2xl p-4 shadow-lift"
           >
             <div className="mb-3 flex items-center justify-between">
               <button
@@ -154,18 +154,18 @@ export function DatePicker({
                 onClick={() => shiftMonth(-1)}
                 disabled={!canGoBack}
                 aria-label="Previous month"
-                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 disabled:pointer-events-none disabled:opacity-30 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100"
+                className="grid size-8 cursor-pointer place-items-center rounded-full text-muted transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 disabled:pointer-events-none disabled:opacity-30 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash"
               >
                 <ChevronLeft className="size-4" />
               </button>
-              <span className="font-jakarta text-sm font-semibold text-slate-900">
+              <span className="font-display text-sm font-normal text-ink">
                 {view.toLocaleDateString("en-NZ", { month: "long", year: "numeric" })}
               </span>
               <button
                 type="button"
                 onClick={() => shiftMonth(1)}
                 aria-label="Next month"
-                className="grid size-8 cursor-pointer place-items-center rounded-full text-slate-600 transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100"
+                className="grid size-8 cursor-pointer place-items-center rounded-full text-muted transition-[transform,background-color] duration-150 ease-out-strong active:scale-90 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash"
               >
                 <ChevronRight className="size-4" />
               </button>
@@ -175,7 +175,7 @@ export function DatePicker({
               {WEEKDAY_LABELS.map((d) => (
                 <div
                   key={d}
-                  className="grid h-7 place-items-center text-[11px] font-medium uppercase tracking-wide text-slate-600"
+                  className="grid h-7 place-items-center text-[11px] font-medium uppercase tracking-wide text-muted"
                 >
                   {d.slice(0, 1)}
                 </div>
@@ -206,10 +206,10 @@ export function DatePicker({
                       "grid h-9 cursor-pointer place-items-center rounded-lg text-[13px] font-medium",
                       "transition-[transform,background-color,color] duration-150 ease-out-strong",
                       "active:scale-90",
-                      "disabled:pointer-events-none disabled:text-slate-300",
+                      "disabled:pointer-events-none disabled:text-muted/35",
                       selected
-                        ? "bg-brand-600 text-white"
-                        : "text-slate-700 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-sky-100",
+                        ? "bg-ink text-white"
+                        : "text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash",
                     )}
                   >
                     {i + 1}
@@ -219,7 +219,7 @@ export function DatePicker({
             </div>
 
             {footnote && (
-              <p className="mt-3 border-t border-slate-200/70 pt-3 text-[12px] text-slate-600">
+              <p className="mt-3 border-t border-hairline pt-3 text-[12px] text-muted">
                 {footnote}
               </p>
             )}

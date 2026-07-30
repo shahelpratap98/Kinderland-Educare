@@ -27,7 +27,7 @@ export function Accordion({ items }: { items: readonly Item[] }) {
   const baseId = useId();
 
   return (
-    <div className="divide-y divide-slate-200/80">
+    <div className="divide-y divide-hairline">
       {items.map((item, i) => {
         const isOpen = open === i;
         const panelId = `${baseId}-panel-${i}`;
@@ -44,19 +44,19 @@ export function Accordion({ items }: { items: readonly Item[] }) {
                 className={cn(
                   "group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left",
                   "transition-colors duration-150 ease-out-strong",
-                  "[@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-700",
+                  "[@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
                 )}
               >
-                <span className="font-jakarta text-[17px] font-semibold tracking-tight text-slate-900">
+                <span className="font-display text-[17px] font-normal text-ink">
                   {item.q}
                 </span>
                 <span
                   aria-hidden
                   className={cn(
                     "grid size-8 shrink-0 place-items-center rounded-full",
-                    "bg-sky-100 text-brand-700",
+                    "bg-wash text-ink",
                     "transition-[transform,background-color] duration-200 ease-out-strong",
-                    isOpen && "rotate-45 bg-brand-600 text-white",
+                    isOpen && "rotate-45 bg-ink text-white",
                   )}
                 >
                   <Plus className="size-4" strokeWidth={2.5} />
@@ -78,7 +78,7 @@ export function Accordion({ items }: { items: readonly Item[] }) {
               <div className="overflow-hidden">
                 <p
                   className={cn(
-                    "max-w-prose pb-6 pr-12 text-slate-600",
+                    "max-w-prose pb-6 pr-12 text-muted",
                     "transition-opacity duration-200 ease-out-strong",
                     isOpen ? "opacity-100" : "opacity-0",
                   )}

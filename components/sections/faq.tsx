@@ -7,14 +7,14 @@ export function Faq() {
     <section id="faq" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-4xl font-normal text-ink sm:text-5xl">
             Questions parents ask
           </h2>
-          <p className="mt-4 text-slate-600">
+          <p className="mt-4 text-muted">
             If yours isn&apos;t here, call us on{" "}
             <a
               href={centre.phoneHref}
-              className="font-medium text-brand-700 underline decoration-brand-300 decoration-2 underline-offset-2 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-900"
+              className="font-medium text-ink underline decoration-hairline decoration-2 underline-offset-2 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
             >
               {centre.phone}
             </a>{" "}

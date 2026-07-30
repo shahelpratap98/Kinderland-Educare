@@ -46,7 +46,7 @@ export function TabToggle({
       aria-label="Age group"
       onKeyDown={onKeyDown}
       className={cn(
-        "glass inline-flex w-full gap-1 rounded-full p-1 shadow-card sm:w-auto",
+        "hairline bg-background inline-flex w-full gap-1 rounded-full p-1 shadow-card sm:w-auto",
         className,
       )}
     >
@@ -62,20 +62,20 @@ export function TabToggle({
             className={cn(
               "relative flex-1 cursor-pointer rounded-full px-4 py-2.5 text-sm font-medium sm:flex-none sm:px-5",
               "transition-[color,transform] duration-150 ease-out-strong active:scale-[0.98]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
               isActive
                 ? "text-white"
-                : "text-slate-600 [@media(hover:hover)_and_(pointer:fine)]:hover:text-slate-900",
+                : "text-muted [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
             )}
           >
             {isActive && (
               <motion.span
                 layoutId={layoutId}
                 transition={reduce ? { duration: 0 } : springLayout}
-                className="absolute inset-0 -z-10 rounded-full bg-brand-600 shadow-card"
+                className="absolute inset-0 z-0 rounded-full bg-ink shadow-card"
               />
             )}
-            <span className="relative">{tab.label}</span>
+            <span className="relative z-10">{tab.label}</span>
           </button>
         );
       })}
