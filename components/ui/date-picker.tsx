@@ -110,7 +110,7 @@ export function DatePicker({
           "flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl border bg-background px-4 py-3.5 text-left",
           "transition-[border-color,box-shadow,transform,background-color] duration-150 ease-out-strong",
           "active:scale-[0.995]",
-          "focus-visible:border-ink focus-visible:shadow-[0_0_0_3px_var(--color-wash)]",
+          "focus-visible:border-brand-500 focus-visible:shadow-[0_0_0_3px_var(--color-brand-100)]",
           error
             ? "border-red-400"
             : "border-hairline",
@@ -208,7 +208,7 @@ export function DatePicker({
                       "active:scale-90",
                       "disabled:pointer-events-none disabled:text-muted/35",
                       selected
-                        ? "bg-ink text-white"
+                        ? "bg-brand-600 text-white"
                         : "text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash",
                     )}
                   >

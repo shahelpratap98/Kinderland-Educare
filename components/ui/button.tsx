@@ -5,7 +5,7 @@ type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
   /* Solid ink pill with inverted label — the spec's CTA treatment. */
-  primary: "bg-ink text-background",
+  primary: "bg-brand-600 text-background",
   secondary: "hairline bg-background text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lift",
   ghost: "text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-wash",
 };
@@ -40,7 +40,7 @@ export const buttonClasses = (
     "transition-[transform,box-shadow,background-color,color] duration-200 ease-out-strong",
     "active:scale-[0.98]",
     "[@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]",
-    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500",
     "disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
     sizes[size],

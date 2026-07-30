@@ -3,22 +3,91 @@
 /*
   Kinderland Educare — "3d" branch.
 
-  A monochrome editorial treatment: white ground, black display type in Instrument
-  Serif, mid-grey body copy, and a cinematic looping video behind the hero. This
-  deliberately replaces the logo-derived colour palette used on `main`; the only
-  colour left is functional (validation errors, and the placeholder-pricing
-  warning, which must not blend in).
+  An editorial treatment — white ground, Instrument Serif display type, a cinematic
+  looping video behind the hero — drawn in the centre's own logo colours rather
+  than monochrome: vermillion "Kinder" for actions, purple "Educare" for display
+  type, with the sun and sky tones as supporting accents.
+
+  Saturated brand colours stay on small areas (buttons, chips, emphasis) while
+  white and neutral grey carry the large surfaces and long copy, so the palette
+  reads warm rather than loud.
 */
 @theme {
-  /* `background` is a named token so the video's gradient overlay can use
-     from-background / to-background exactly as the spec describes. */
+  /* ---------------------------------------------------------------- */
+  /*  Logo palette — carried over from main                            */
+  /* ---------------------------------------------------------------- */
+
+  /* "Kinder" vermillion */
+  --color-brand-50: #fff4f0;
+  --color-brand-100: #ffe4da;
+  --color-brand-200: #ffc4b0;
+  --color-brand-300: #ff9c7c;
+  --color-brand-400: #fa6f45;
+  --color-brand-500: #ee4b24;
+  --color-brand-600: #ce3a14;
+  --color-brand-700: #a62d10;
+  --color-brand-800: #85260f;
+  --color-brand-900: #6e2210;
+
+  /* "Educare" purple */
+  --color-plum-50: #f9f4fc;
+  --color-plum-100: #f1e4f8;
+  --color-plum-200: #e0c6ef;
+  --color-plum-300: #c89ee2;
+  --color-plum-400: #aa72ce;
+  --color-plum-500: #8b4fb4;
+  --color-plum-600: #6b2e8f;
+  --color-plum-700: #592577;
+  --color-plum-800: #491f61;
+  --color-plum-900: #3d1b50;
+
+  /* Sky — the logo's ground */
+  --color-sky-50: #f1f8fd;
+  --color-sky-100: #e0f0fa;
+  --color-sky-200: #bee0f5;
+  --color-sky-300: #8fcaed;
+  --color-sky-400: #55afe3;
+  --color-sky-500: #2596d9;
+  --color-sky-600: #1878b4;
+  --color-sky-700: #155f90;
+
+  /* Sun */
+  --color-sun-100: #fff6c6;
+  --color-sun-200: #ffec88;
+  --color-sun-300: #ffde49;
+  --color-sun-400: #ffd01c;
+  --color-sun-500: #f2b500;
+  --color-sun-700: #a36c02;
+  --color-sun-900: #71460d;
+
+  /* Tree */
+  --color-leaf-400: #6fcc50;
+  --color-leaf-500: #4caf33;
+  --color-leaf-600: #3a8e26;
+  --color-leaf-700: #2f711f;
+
+  /* ---------------------------------------------------------------- */
+  /*  Semantic roles                                                   */
+  /* ---------------------------------------------------------------- */
+
+  /*
+    `background` stays white and is a named token so the video's gradient overlay
+    can use from-background / to-background as the spec describes — the scrim
+    compositing in hero-video.tsx assumes a white ground.
+  */
   --color-background: #ffffff;
-  --color-ink: #000000;
+
+  /*
+    Display type takes the logo's deep purple rather than black: it echoes
+    "Educare" and still reads ~10:1 on white. Body copy stays a neutral grey so
+    long passages don't fight the brand colours.
+  */
+  --color-ink: #491f61;
   --color-muted: #6f6f6f;
 
-  /* Hairlines and wash tones, derived from ink so everything stays neutral. */
-  --color-hairline: rgb(0 0 0 / 0.1);
-  --color-wash: rgb(0 0 0 / 0.04);
+  /* Hairlines and wash tones tinted with the plum so nothing reads as pure grey. */
+  --color-hairline: rgb(73 31 97 / 0.14);
+  --color-wash: rgb(73 31 97 / 0.05);
 
   --font-display: var(--font-instrument-serif);
   --font-body: var(--font-inter);
@@ -71,7 +140,7 @@
 
   /* One focus ring everywhere. focus-visible only, so pointer users never see it. */
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-brand-500);
     outline-offset: 2px;
     border-radius: 4px;
   }

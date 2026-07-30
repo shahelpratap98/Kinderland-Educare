@@ -21,11 +21,11 @@ export function Philosophy() {
           </RevealItem>
           <RevealItem>
             {/* Pulled out as a quote — it's the centre's own language, and it earns the emphasis. */}
-            <figure className="border-l-2 border-ink pl-5">
+            <figure className="border-l-2 border-brand-400 pl-5">
               <blockquote className="text-[17px] leading-relaxed text-ink">
                 {visionMission.mission}
               </blockquote>
-              <figcaption className="mt-3 text-sm font-medium text-ink">
+              <figcaption className="mt-3 text-sm font-medium text-brand-700">
                 Our mission
               </figcaption>
             </figure>

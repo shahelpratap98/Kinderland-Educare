@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
  * tracking-tight` treatment. See the TODO on LOGO_SRC in lib/content.ts.
  *
  * Note this is NOT the centre's actual logo: the tree, sun and custom lettering
- * are missing. The monochrome wordmark suits this branch's aesthetic, but the real
- * mark is full-colour and will need its own treatment against a white ground.
+ * are missing. The two-tone split mirrors the real mark's — vermillion "Kinder",
+ * purple "Educare" — but it is a stand-in until the artwork lands.
  */
 export function Logo({ className }: { className?: string }) {
   if (LOGO_SRC) {
@@ -32,12 +32,12 @@ export function Logo({ className }: { className?: string }) {
       className={cn(
         /* nowrap: at 375px the wordmark otherwise breaks onto two lines and
            doubles the header's height. */
-        "font-display whitespace-nowrap text-2xl tracking-tight text-ink sm:text-3xl",
+        "font-display whitespace-nowrap text-2xl tracking-tight sm:text-3xl",
         className,
       )}
     >
-      Kinderland
-      <span className="text-muted"> Educare</span>
+      <span className="text-brand-600">Kinder</span>
+      <span className="text-plum-600">land Educare</span>
     </span>
   );
 }

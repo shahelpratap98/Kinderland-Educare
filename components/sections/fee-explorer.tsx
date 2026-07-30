@@ -42,7 +42,7 @@ export function FeeExplorer() {
         pricing reaching a real parent. See lib/content.ts.
       */}
       {FEES_UNCONFIRMED && (
-        <div className="mb-6 flex gap-3 rounded-xl border-2 border-ink bg-wash p-4 text-[14px] text-ink">
+        <div className="mb-6 flex gap-3 rounded-xl border-2 border-brand-500 bg-brand-50 p-4 text-[14px] text-brand-900">
           <AlertTriangle className="mt-0.5 size-4 shrink-0" />
           <p>
             <strong className="font-semibold">Placeholder pricing.</strong> The
@@ -75,7 +75,7 @@ export function FeeExplorer() {
                   {group.ageRange}
                 </span>
                 {group.subsidy && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-[13px] font-medium text-background">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1 text-[13px] font-medium text-plum-900">
                     <Sparkles className="size-3.5" />
                     {group.subsidy}
                   </span>

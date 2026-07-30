@@ -20,7 +20,7 @@ const links = [
  *
  * Sits in normal flow rather than overlaying the hero. On `main` the hero was a
  * blue photograph, so the header had to float above it with white text; here the
- * ground is white, so black-on-white in flow is both spec-faithful and removes the
+ * ground is white, so dark type in flow is both spec-faithful and removes the
  * overlay's failure mode entirely.
  *
  * Sticky is kept — there are five sections below and a persistent CTA is worth it.
@@ -70,7 +70,7 @@ export function SiteHeader() {
               href={l.href}
               className={cn(
                 "text-sm transition-colors duration-150 ease-out-strong",
-                /* The spec marks the current page in ink and the rest in grey. */
+                /* The spec marks the current page in the display colour and the rest in grey. */
                 i === 0 ? "text-ink" : "text-muted",
                 "[@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
               )}
@@ -83,7 +83,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <button
             onClick={open}
-            className="hidden cursor-pointer rounded-full bg-ink px-6 py-2.5 text-sm text-background transition-transform duration-200 ease-out-strong active:scale-[0.98] sm:inline-flex [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]"
+            className="hidden cursor-pointer rounded-full bg-brand-600 px-6 py-2.5 text-sm text-background transition-transform duration-200 ease-out-strong active:scale-[0.98] sm:inline-flex [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]"
           >
             Schedule a tour
           </button>
@@ -121,7 +121,7 @@ export function SiteHeader() {
                   setMenuOpen(false);
                   open();
                 }}
-                className="w-full cursor-pointer rounded-full bg-ink px-6 py-3 text-sm text-background transition-transform duration-200 ease-out-strong active:scale-[0.98]"
+                className="w-full cursor-pointer rounded-full bg-brand-600 px-6 py-3 text-sm text-background transition-transform duration-200 ease-out-strong active:scale-[0.98]"
               >
                 Schedule a tour
               </button>

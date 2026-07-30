@@ -8,7 +8,7 @@ const inputBase = cn(
   "peer w-full rounded-xl border bg-background px-4 pb-2.5 pt-6 text-[15px] text-ink",
   "placeholder-transparent outline-none",
   "transition-[border-color,box-shadow,background-color] duration-150 ease-out-strong",
-  "focus:border-ink focus:bg-white focus:shadow-[0_0_0_3px_var(--color-wash)]",
+  "focus:border-brand-500 focus:bg-white focus:shadow-[0_0_0_3px_var(--color-brand-100)]",
 );
 
 const labelBase = cn(

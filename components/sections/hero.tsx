@@ -30,8 +30,8 @@ export function Hero() {
           style={{ lineHeight: 0.95, letterSpacing: "-2.46px" }}
         >
           A place where your child is{" "}
-          <em className="italic text-muted">known,</em> not just{" "}
-          <em className="italic text-muted">minded.</em>
+          <em className="italic text-brand-600">known,</em> not just{" "}
+          <em className="italic text-brand-600">minded.</em>
         </h1>
 
         <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
@@ -42,7 +42,7 @@ export function Hero() {
 
         <button
           onClick={open}
-          className="animate-fade-rise-delay-2 mt-12 cursor-pointer rounded-full bg-ink px-14 py-5 text-base text-background transition-transform duration-200 ease-out-strong active:scale-[0.98] [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]"
+          className="animate-fade-rise-delay-2 mt-12 cursor-pointer rounded-full bg-brand-600 px-14 py-5 text-base text-background transition-transform duration-200 ease-out-strong active:scale-[0.98] [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.03]"
         >
           Schedule a tour
         </button>

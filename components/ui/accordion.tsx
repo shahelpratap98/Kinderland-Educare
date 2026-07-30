@@ -56,7 +56,7 @@ export function Accordion({ items }: { items: readonly Item[] }) {
                     "grid size-8 shrink-0 place-items-center rounded-full",
                     "bg-wash text-ink",
                     "transition-[transform,background-color] duration-200 ease-out-strong",
-                    isOpen && "rotate-45 bg-ink text-white",
+                    isOpen && "rotate-45 bg-brand-600 text-white",
                   )}
                 >
                   <Plus className="size-4" strokeWidth={2.5} />
