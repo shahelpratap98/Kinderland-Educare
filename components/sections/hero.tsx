@@ -29,9 +29,9 @@ export function Hero() {
           className="animate-fade-rise max-w-7xl text-5xl font-normal text-ink sm:text-7xl md:text-8xl"
           style={{ lineHeight: 0.95, letterSpacing: "-2.46px" }}
         >
-          A place where your child is{" "}
-          <em className="italic text-brand-600">known,</em> not just{" "}
-          <em className="italic text-brand-600">minded.</em>
+          Nurturing <em className="italic text-brand-600">enquiring minds</em> and a
+          lifelong love of{" "}
+          <em className="italic text-brand-600">discovery.</em>
         </h1>
 
         <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">

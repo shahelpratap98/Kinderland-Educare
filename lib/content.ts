@@ -41,11 +41,16 @@ export const mapLinkUrl = `https://www.google.com/maps/search/?api=1&query=${enc
   `${centre.legalName}, ${fullAddress}`,
 )}`;
 
+/*
+ * Verbatim from the centre's own wording, including the "Our vision/mission is to"
+ * openings. Rendered as-is under Vision and Mission labels in the philosophy
+ * section — do not paraphrase or trim these.
+ */
 export const visionMission = {
   vision:
-    "To provide a consistent, high standard care and education to children in South Auckland. We believe that to nurture enquiring minds, we need to educate and encourage individualism, critical thinking skills, initiative, choice and appreciation of differences.",
+    "Our vision is to provide a consistent, high standard care and education to children in South Auckland. We believe that to nurture enquiring minds, we need to educate and encourage individualism, critical thinking skills, initiative, choice and appreciation of differences.",
   mission:
-    "To provide excellence in the education and care of young children so that the children gain a strong sense of identity and a lifelong passion for learning and discovery. Furthermore, they see themselves as capable and competent learners; being able to direct and control their own learning as they grow.",
+    "Our mission is to provide excellence in the education and care of young children so that the children gain a strong sense of identity and a lifelong passion for learning and discovery. Furthermore, they see themselves as capable and competent learners; being able to direct and control their own learning as they grow.",
 } as const;
 
 export const heroPills = [
@@ -57,8 +62,11 @@ export const heroPills = [
 export const values = [
   {
     icon: "Compass",
-    title: "Vision & Mission",
-    body: "Consistent, high-standard care that nurtures enquiring minds — encouraging individualism, critical thinking, initiative and an appreciation of difference.",
+    /* Was "Vision & Mission", which paraphrased text now shown in full directly
+       above this grid. Retargeted to the mission's learner-agency idea, which no
+       other card covers. */
+    title: "Capable, competent learners",
+    body: "Children who see themselves as capable and competent — able to direct and control their own learning as they grow, with the initiative and critical thinking to follow their own questions.",
   },
   {
     icon: "Moon",

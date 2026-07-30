@@ -10,26 +10,39 @@ export function Philosophy() {
       className="border-y border-hairline bg-wash"
     >
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <Reveal className="mb-12 grid gap-8 lg:grid-cols-2 lg:gap-16">
+        <Reveal className="mb-12">
           <RevealItem>
-            <h2 className="text-4xl font-normal text-ink sm:text-5xl">
+            <h2 className="max-w-2xl text-4xl font-normal text-ink sm:text-5xl">
               What we believe
             </h2>
-            <p className="mt-4 text-lg text-muted">
-              {visionMission.vision}
-            </p>
           </RevealItem>
-          <RevealItem>
-            {/* Pulled out as a quote — it's the centre's own language, and it earns the emphasis. */}
-            <figure className="border-l-2 border-brand-400 pl-5">
-              <blockquote className="text-[17px] leading-relaxed text-ink">
-                {visionMission.mission}
-              </blockquote>
-              <figcaption className="mt-3 text-sm font-medium text-brand-700">
-                Our mission
-              </figcaption>
-            </figure>
-          </RevealItem>
+        </Reveal>
+
+        {/*
+          Vision and Mission are presented as two labelled statements rather than
+          one paragraph and one pull-quote. The centre's wording opens with "Our
+          vision is to…" / "Our mission is to…", so it needs its own heading to sit
+          under — a generic quote attribution read as a duplicate of the sentence.
+          Both are verbatim; see the note in lib/content.ts.
+        */}
+        <Reveal className="mb-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          {(
+            [
+              ["Vision", visionMission.vision],
+              ["Mission", visionMission.mission],
+            ] as const
+          ).map(([label, body]) => (
+            <RevealItem key={label}>
+              <div className="border-l-2 border-brand-400 pl-5 sm:pl-6">
+                <h3 className="font-display text-2xl font-normal text-ink">
+                  {label}
+                </h3>
+                <p className="mt-3 text-[17px] leading-relaxed text-muted">
+                  {body}
+                </p>
+              </div>
+            </RevealItem>
+          ))}
         </Reveal>
 
         <Reveal className="grid gap-4 sm:grid-cols-2">
