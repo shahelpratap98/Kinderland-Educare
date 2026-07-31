@@ -346,6 +346,82 @@ export const slides: readonly Slide[] = [
 export const SLIDESHOW_AUDIO_SRC: string | null = null;
 
 /* ------------------------------------------------------------------ */
+/*  Our approach — statement of beliefs                                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The centre's "We believe" statement, condensed from 24 points to 19 and
+ * lightly edited. Every idea in the original survives; what went was repetition.
+ *
+ * Merges made:
+ * - Children: the two programme points (play-based/evaluated, and
+ *   flexible/interest-led) were the same claim twice, now one. "Here and now"
+ *   and "each child is unique" both argue for the child as they are today, now
+ *   one. "Learning is a journey" folded in with relationships, which it echoed.
+ * - Parents: family-to-centre relationships and staff-to-parent relationships
+ *   were two statements of one idea.
+ * - Employees: involvement in learning and planning purposeful experiences
+ *   described the same practice.
+ *
+ * Wording changes, all flagged to the centre:
+ * - "program" -> "programme", matching NZ usage and the rest of the site.
+ * - "Maori" -> "Māori"; the site uses macrons elsewhere (Māngere, Te Whāriki).
+ * - The Treaty point had no verb ("Treaty of Waitangi and respect Maori as
+ *   Tangata Whenua"); it now reads "In the Treaty of Waitangi, and respect
+ *   Māori as tangata whenua."
+ * - "respected at all time" -> "at all times".
+ * - "birth to five" -> "the early years". The original conflicts with the
+ *   centre's own stated range of 3 months to 6 years, so the specific numbers
+ *   were dropped rather than contradict the rest of the site.
+ */
+export const beliefs = [
+  {
+    title: "Children",
+    items: [
+      "Every child is entitled to quality education and care, and we strive to provide the best of both at all times.",
+      "Children belong first to a family, a cultural group, a neighbourhood and a wider community. Belonging acknowledges their interdependence with others, and builds positive relationships and self-worth.",
+      "We recognise the significance of the here and now. Each child is encouraged to be who they are today, rather than only who they might become — every child is unique, and their rights and choices are respected at all times.",
+      "Children are active, capable learners whose identities, knowledge, skills and relationships change rapidly, so our environment gives them opportunities to participate fully and actively in it.",
+      "Our play-based programme is flexible, built around each child's interests and continually evaluated by knowledgeable teachers. Children organise and make sense of their world by engaging actively with people, objects and representations.",
+      "Confidence and self-esteem grow through meaningful relationships with other children and with their teachers. Each child's learning is a journey, and we build the foundations for it.",
+    ],
+  },
+  {
+    title: "Parents",
+    items: [
+      "Parents are their child's first teachers, so we encourage parent participation in the centre day to day, and in developing our programme.",
+      "Relationships — between families and the centre, between families and teachers, and among families themselves — are crucial to children's education and wellbeing. We build them through varied communication and occasions that bring people together socially.",
+      "The centre is a focal point for continuing education and support as parents take on this important, lifelong role, and we encourage parents to use the information available to them.",
+    ],
+  },
+  {
+    title: "Teachers",
+    items: [
+      "Our teachers are the centre's greatest asset, and we value and respect what each person brings with them.",
+      "We provide guidance and ongoing support so they reach professional satisfaction and growth.",
+      "They are closely involved in children's learning — responding to each child's sense of being, belonging and becoming, planning deliberate and purposeful experiences, and including children and families in decisions.",
+    ],
+  },
+  {
+    title: "Community",
+    items: [
+      "In the Treaty of Waitangi, and respect Māori as tangata whenua.",
+      "Our community is diverse and multicultural, and we reflect that diversity within the centre as an integral part of the programme and of daily experience.",
+      "Early childhood services are an essential and valuable part of the local community, and we serve that community by providing a quality service to families and businesses.",
+      "Organisations responsible for educating early childhood professionals play a fundamental role, and we support them as they prepare students for their professional future.",
+    ],
+  },
+  {
+    title: "Our environment",
+    items: [
+      "The environment supports and validates a child's learning, so we create and maintain surroundings suited to each child's learning and comfort.",
+      "The early years are when crucial life skills develop, so our spaces promote self-help skills, independence and an appreciation for materials.",
+      "Children and teachers spend a large part of their day here, so comfort, safety and aesthetics are considered throughout.",
+    ],
+  },
+] as const;
+
+/* ------------------------------------------------------------------ */
 /*  Enrolment                                                          */
 /* ------------------------------------------------------------------ */
 
