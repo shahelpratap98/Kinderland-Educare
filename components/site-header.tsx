@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { href: "/", label: "Home" },
   { href: "/age-groups", label: "Age groups" },
+  { href: "/enrolment", label: "Enrolment" },
   { href: "/#philosophy", label: "Our approach" },
   { href: "/faqs", label: "FAQs" },
   { href: "/#visit", label: "Visit us" },

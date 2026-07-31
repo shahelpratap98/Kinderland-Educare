@@ -345,6 +345,55 @@ export const slides: readonly Slide[] = [
  */
 export const SLIDESHOW_AUDIO_SRC: string | null = null;
 
+/* ------------------------------------------------------------------ */
+/*  Enrolment                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Documents offered on /enrolment.
+ *
+ * `href` is null until the file is added to /public/documents. A null entry
+ * renders as "ask us for a copy" with the centre's phone number rather than a
+ * download button — a dead download is worse than an honest absence, and a parent
+ * who clicks one assumes the centre's admin is equally unreliable.
+ *
+ * TODO(kinderland): `Kinderland-Info-Pack_7th-April-2013.pdf` exists in the
+ * owner's Downloads folder. It is dated 2013, so it should not be published until
+ * someone confirms the fees, policies and staff details in it are still current.
+ */
+export const enrolmentDocs = [
+  {
+    id: "info-pack",
+    name: "Parent information pack",
+    description:
+      "What a day looks like, what we provide, what to pack, and the policies you'll want to read before your child starts.",
+    href: null as string | null,
+  },
+  {
+    id: "enrolment-form",
+    name: "Enrolment form",
+    description:
+      "Your child's details, emergency contacts and the sessions you'd like. Bring it to your visit or email it back to us.",
+    href: null as string | null,
+  },
+] as const;
+
+/** The steps as the centre described them: visit first, then paperwork. */
+export const enrolmentSteps = [
+  {
+    title: "Come and see us",
+    body: "Book a visit and look around while the centre is running. Meet the teachers in the room your child would join, and ask everything you want to.",
+  },
+  {
+    title: "Fill in the forms",
+    body: "Complete the enrolment form and return it with your child's birth certificate or passport and immunisation record. We'll confirm which sessions are available.",
+  },
+  {
+    title: "Settle in",
+    body: "We'll agree a start date and, if it helps, some shorter settling-in visits first so the room is familiar before the first full day.",
+  },
+] as const;
+
 /**
  * TODO(kinderland): no parent-information PDF exists in the repo yet. Until one
  * is added to /public, the hero's secondary action scrolls to the enrolment
