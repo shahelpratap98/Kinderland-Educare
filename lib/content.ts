@@ -238,6 +238,100 @@ export const faqs = [
   },
 ] as const;
 
+/* ------------------------------------------------------------------ */
+/*  Home page slideshow                                                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * ⚠️  CONSENT — read before adding photographs of children.
+ *
+ * Every slide with an identifiable child needs signed parental media consent on
+ * file, and that applies to the repository as well as the site: committing an
+ * image publishes it to GitHub whether or not the site itself is live. Slides
+ * flagged `hasChildren` are the ones that need it.
+ *
+ * The two centre photographs have no children in them and carry no such
+ * requirement.
+ */
+export type Slide =
+  | {
+      kind: "photo";
+      /** Base name in /public/slides — .webp is served, .jpg is the fallback. */
+      src: string;
+      alt: string;
+      caption?: string;
+      hasChildren: boolean;
+    }
+  | { kind: "text"; heading: string; body?: string };
+
+export const slides: readonly Slide[] = [
+  {
+    kind: "photo",
+    src: "centre-exterior",
+    alt: "The Kinderland Educare centre seen from Kohinoor Ave, with a painted mural along the fence.",
+    caption: "Our purpose-built centre in Māngere",
+    hasChildren: false,
+  },
+  {
+    kind: "text",
+    heading: centre.logoTagline,
+    body: `Early childhood education for children from ${centre.ages}.`,
+  },
+  {
+    kind: "photo",
+    src: "nature-play",
+    alt: "A child smiling up from a table, holding dough decorated with leaves, seed heads and acorns.",
+    caption: "Enquiring minds, following their own questions",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "outdoor-play",
+    alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
+    caption: "Room to move, every day",
+    hasChildren: true,
+  },
+  {
+    kind: "text",
+    heading: "Leaders of tomorrow",
+    body: "A strong sense of identity, and a lifelong love of discovery.",
+  },
+  {
+    kind: "photo",
+    src: "leaders-of-tomorrow",
+    alt: "Two children pulling happy faces beneath a neon star reading 'Kinderland — Leaders of Tomorrow'.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "end-of-year-concert",
+    alt: "Children on stage in front of a hand-painted backdrop for the End of Year Concert 2025.",
+    caption: "End of year concert",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "centre-entrance",
+    alt: "The entrance to Kinderland Educare, with the centre's logo above the door.",
+    caption: "Come and see us",
+    hasChildren: false,
+  },
+] as const;
+
+/**
+ * TODO(kinderland): supply a music bed and set this to its path in /public.
+ *
+ * It stays null deliberately. Audio cannot autoplay — every modern browser blocks
+ * sound until the user has interacted with the page — so the slideshow ships with
+ * a sound button that is off by default and the track only starts when a visitor
+ * asks for it. WCAG 1.4.2 also requires a way to stop any audio running past three
+ * seconds, which that button provides.
+ *
+ * Whatever track is used must be licensed for commercial web use; a recognisable
+ * song would need a synchronisation licence.
+ */
+export const SLIDESHOW_AUDIO_SRC: string | null = null;
+
 /**
  * TODO(kinderland): no parent-information PDF exists in the repo yet. Until one
  * is added to /public, the hero's secondary action scrolls to the enrolment
