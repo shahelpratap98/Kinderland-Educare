@@ -17,7 +17,7 @@ export default function AgeGroupsIndex() {
       <section className="border-b border-hairline bg-wash">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
           <h1 className="max-w-3xl text-4xl font-normal text-ink sm:text-5xl md:text-6xl">
-            Three rooms, {centre.ages}
+            Growing up at Kinderland
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted">
             Each room is shaped around where your child is right now — from
