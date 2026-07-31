@@ -90,6 +90,14 @@ export const values = [
 /* ------------------------------------------------------------------ */
 
 /**
+ * A photograph on a room page.
+ *
+ * `src` is the base name in /public/rooms — .webp is served with .jpg as the
+ * fallback, both produced by scripts/build-slides.mjs.
+ */
+export type RoomPhoto = { src: string; alt: string; caption?: string };
+
+/**
  * One entry per room, each with its own page at /age-groups/[slug].
  *
  * No rates here by design. Fees were removed from the site entirely, which also
@@ -102,8 +110,13 @@ export const values = [
  * needing the centre's sign-off is listed in COPY_TO_CONFIRM below rather than
  * asserted here.
  *
- * `photo` is null until artwork is supplied; the UI falls back rather than
- * rendering a broken image.
+ * `photos` starts empty. The page renders the first as a wide lead image and any
+ * others as a grid, and omits both sections while the array is empty — so the
+ * pages stand up now and gain photographs without a layout change.
+ *
+ * Same consent rule as the slideshow: any photograph showing an identifiable
+ * child needs signed parental media consent before it is committed, since
+ * committing publishes it to the repository.
  */
 export const ageGroups = [
   {
@@ -117,7 +130,7 @@ export const ageGroups = [
       "Our youngest room. Days here follow your baby rather than a timetable — feeding, sleeping and playing as they need to, in a purpose-built space designed to feel calm and safe.",
     body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
     subsidy: null,
-    photo: null as string | null,
+    photos: [] as readonly RoomPhoto[],
     highlights: [
       "Fresh, nutritious halal meals once solids begin",
       "Wipes provided — parents supply nappies or pull-ups",
@@ -135,7 +148,7 @@ export const ageGroups = [
       "A busy, language-rich room for toddlers finding their independence, with the space to move and plenty of time outdoors.",
     body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
-    photo: null as string | null,
+    photos: [] as readonly RoomPhoto[],
     highlights: [
       "Purpose-built outdoor play areas for active toddlers",
       "Fresh, nutritious halal meals provided daily",
@@ -153,7 +166,7 @@ export const ageGroups = [
       "Children who see themselves as capable, competent learners — able to direct and control their own learning as they grow.",
     body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here.",
     subsidy: "20 Hours ECE",
-    photo: null as string | null,
+    photos: [] as readonly RoomPhoto[],
     highlights: [
       "20 Hours ECE government funding fully supported",
       "Te Whāriki curriculum with an Islamic perspective",

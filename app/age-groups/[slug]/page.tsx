@@ -40,6 +40,8 @@ export default async function AgeGroupPage({
   if (!group) notFound();
 
   const others = ageGroups.filter((g) => g.slug !== slug);
+  /* First photo leads the page; the rest form a grid further down. */
+  const [lead, ...gallery] = group.photos;
 
   return (
     <>
@@ -71,6 +73,36 @@ export default async function AgeGroupPage({
           <p className="mt-5 max-w-2xl text-lg text-muted">{group.lead}</p>
         </div>
       </section>
+
+      {/*
+        Lead photograph. Absent until this room has photos, so the page reads as
+        finished either way rather than leaving an empty frame. 3:2 to match the
+        derivatives, so the browser does no cropping of its own.
+      */}
+      {lead && (
+        <section className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
+          <figure>
+            <div className="aspect-[3/2] w-full overflow-hidden rounded-3xl bg-wash hairline">
+              <picture>
+                <source srcSet={`/rooms/${lead.src}.webp`} type="image/webp" />
+                <img
+                  src={`/rooms/${lead.src}.jpg`}
+                  alt={lead.alt}
+                  /* The lead image is above the fold on this page, so it is not lazy. */
+                  loading="eager"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </picture>
+            </div>
+            {lead.caption && (
+              <figcaption className="mt-3 text-[14px] text-muted">
+                {lead.caption}
+              </figcaption>
+            )}
+          </figure>
+        </section>
+      )}
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
@@ -165,6 +197,39 @@ export default async function AgeGroupPage({
           </div>
         </div>
       </section>
+
+      {gallery.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-20">
+          <h2 className="mb-6 text-2xl font-normal text-ink sm:text-3xl">
+            Inside the room
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((photo) => (
+              <li key={photo.src}>
+                <figure>
+                  <div className="aspect-[3/2] w-full overflow-hidden rounded-2xl bg-wash hairline">
+                    <picture>
+                      <source srcSet={`/rooms/${photo.src}.webp`} type="image/webp" />
+                      <img
+                        src={`/rooms/${photo.src}.jpg`}
+                        alt={photo.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                      />
+                    </picture>
+                  </div>
+                  {photo.caption && (
+                    <figcaption className="mt-2 text-[13px] text-muted">
+                      {photo.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="border-t border-hairline bg-wash">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">

@@ -18,12 +18,31 @@
  * derivatives are committed.
  */
 import sharp from "sharp";
-import { existsSync, mkdirSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
 
 const SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/kids/";
 const OUT = "public/slides";
 const ASPECT = 3 / 2;
 const WIDTH = 1800;
+
+/*
+ * Room photographs are picked up by convention rather than listed one by one:
+ * drop files into a folder named after the room's slug and they are processed on
+ * the next run. Centre-cropped, since there is no way to know where the subject
+ * sits — if one crops badly, give it an entry in `slides` above with an explicit
+ * band, the same as the carousel photographs.
+ *
+ *   Documents/kinder educare/rooms/under-2s/*.jpg      -> /public/rooms/under-2s-1
+ *   Documents/kinder educare/rooms/2-3-years/*.jpg     -> /public/rooms/2-3-years-1
+ *   Documents/kinder educare/rooms/3-plus-years/*.jpg  -> /public/rooms/3-plus-years-1
+ *
+ * The generated names then go into each room's `photos` array in lib/content.ts,
+ * with alt text written per image.
+ */
+const ROOM_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/rooms/";
+const ROOM_OUT = "public/rooms";
+const ROOM_SLUGS = ["under-2s", "2-3-years", "3-plus-years"];
+const ROOM_WIDTH = 1400;
 
 /**
  * `band` is the region to keep, as fractions of the original.
@@ -118,5 +137,50 @@ for (const slide of slides) {
     `${slide.name.padEnd(22)} ${WIDTH}x${Math.round(WIDTH / ASPECT)}  ` +
       `${kb(`${OUT}/${slide.name}.webp`)}KB webp  ${kb(`${OUT}/${slide.name}.jpg`)}KB jpg` +
       warn,
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Room photographs                                                   */
+/* ------------------------------------------------------------------ */
+
+if (!existsSync(ROOM_OUT)) mkdirSync(ROOM_OUT, { recursive: true });
+
+let roomTotal = 0;
+for (const slug of ROOM_SLUGS) {
+  const dir = `${ROOM_SOURCE}${slug}`;
+  if (!existsSync(dir)) continue;
+
+  const files = readdirSync(dir)
+    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
+    .sort();
+
+  for (const [i, file] of files.entries()) {
+    const name = `${slug}-${i + 1}`;
+    const pipe = sharp(`${dir}/${file}`)
+      .rotate()
+      .resize({
+        width: ROOM_WIDTH,
+        height: Math.round(ROOM_WIDTH / ASPECT),
+        fit: "cover",
+        position: "centre",
+      });
+
+    await pipe.clone().webp({ quality: 78 }).toFile(`${ROOM_OUT}/${name}.webp`);
+    await pipe
+      .clone()
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toFile(`${ROOM_OUT}/${name}.jpg`);
+
+    const kb = (statSync(`${ROOM_OUT}/${name}.webp`).size / 1024).toFixed(0);
+    console.log(`${name.padEnd(22)} ${ROOM_WIDTH}x${Math.round(ROOM_WIDTH / ASPECT)}  ${kb}KB webp   <- ${file}`);
+    roomTotal += 1;
+  }
+}
+
+if (roomTotal === 0) {
+  console.log(
+    `\nNo room photographs yet. Drop files into ${ROOM_SOURCE}<slug>/ ` +
+      `for ${ROOM_SLUGS.join(", ")} and re-run.`,
   );
 }
