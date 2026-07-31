@@ -35,11 +35,12 @@ const slides = [
   { file: "Kinderland-2.jpg", name: "centre-exterior" },
   { file: "Kinderland-28.jpg", name: "centre-entrance" },
   {
-    file: "486789155_1191142216139369_8150180346872761341_n.jpg",
-    name: "nature-play",
-    // Face sits 2-45% down and left of centre; the right of the frame is bare
-    // matting, so the band is trimmed to 82% width to recentre her.
-    band: { top: 0.03, width: 0.82 },
+    file: "487298229_1191140626139528_3576501818591827360_n.jpg",
+    name: "farm-visit",
+    // Child's face 44-59% down, the goat 62-95%. Starting at 42% keeps both in
+    // frame — the animal is the reason the photo works, so cropping to the face
+    // alone would lose the story.
+    band: { top: 0.42 },
   },
   {
     file: "489455250_1198712028715721_5382563851518139845_n.jpg",

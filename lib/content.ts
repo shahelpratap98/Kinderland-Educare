@@ -279,8 +279,8 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "nature-play",
-    alt: "A child smiling up from a table, holding dough decorated with leaves, seed heads and acorns.",
+    src: "farm-visit",
+    alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
     caption: "Enquiring minds, following their own questions",
     hasChildren: true,
   },
