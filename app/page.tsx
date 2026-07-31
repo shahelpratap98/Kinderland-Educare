@@ -1,33 +1,21 @@
-import { TourModalProvider } from "@/components/tour-modal-provider";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { Hero } from "@/components/sections/hero";
-import { FeeExplorer } from "@/components/sections/fee-explorer";
 import { Philosophy } from "@/components/sections/philosophy";
-import { Faq } from "@/components/sections/faq";
 import { Visit } from "@/components/sections/visit";
 
+/*
+  The shell — header, footer, tour dialog, skip link — lives in app/layout.tsx so
+  it is shared with the age group and FAQ pages.
+
+  The fee explorer has been removed along with all pricing, and the FAQs now live
+  at /faqs. The slideshow and the age-groups section will slot in here once
+  photographs are supplied.
+*/
 export default function Home() {
   return (
-    <TourModalProvider>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
-      >
-        Skip to content
-      </a>
-
-      <SiteHeader />
-
-      <main id="main" className="flex-1">
-        <Hero />
-        <FeeExplorer />
-        <Philosophy />
-        <Faq />
-        <Visit />
-      </main>
-
-      <SiteFooter />
-    </TourModalProvider>
+    <>
+      <Hero />
+      <Philosophy />
+      <Visit />
+    </>
   );
 }

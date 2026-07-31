@@ -86,74 +86,104 @@ export const values = [
 ] as const;
 
 /* ------------------------------------------------------------------ */
-/*  ⚠️  PLACEHOLDER DATA — NOT CONFIRMED BY THE CENTRE                */
+/*  Age groups                                                         */
 /* ------------------------------------------------------------------ */
 
 /**
- * TODO(kinderland): replace the `$XXX` placeholders in `ageGroups` with the
- * centre's real published rates, then set this to `false`.
+ * One entry per room, each with its own page at /age-groups/[slug].
  *
- * While `true`, the fee explorer renders an "unconfirmed" banner and every
- * placeholder rate is visually flagged, so the site cannot be shipped to
- * production with fabricated pricing by accident.
+ * No rates here by design. Fees were removed from the site entirely, which also
+ * retired the `$XXX` placeholders and their warning banner — there is no longer
+ * anywhere on the site that can display a fabricated price.
  *
- * Only the rate strings are unverified. The registration fee, session windows,
- * payment terms, sibling discount and holiday reduction below are all taken
- * from information supplied by the centre.
+ * `highlights` are restricted to facts the centre supplied: halal meals, the
+ * wipes/nappies split, the purpose-built indoor and outdoor spaces, 20 Hours ECE
+ * for over-threes, and Te Whāriki alongside an Islamic perspective. Anything
+ * needing the centre's sign-off is listed in COPY_TO_CONFIRM below rather than
+ * asserted here.
+ *
+ * `photo` is null until artwork is supplied; the UI falls back rather than
+ * rendering a broken image.
  */
-export const FEES_UNCONFIRMED = true;
-
-/** Deliberately not a plausible number — a fake figure could be mistaken for real. */
-const TBC = "$XXX";
-
 export const ageGroups = [
   {
     id: "under-2",
+    slug: "under-2s",
     label: "Under 2s",
+    shortLabel: "Babies",
     ageRange: "3 months – 2 years",
+    lead: "Unhurried days built around your baby's own rhythm.",
     blurb:
-      "Our youngest room, with the higher teacher-to-child ratios required for infants and unhurried routines built around each child's own sleeping and feeding rhythm.",
+      "Our youngest room. Days here follow your baby rather than a timetable — feeding, sleeping and playing as they need to, in a purpose-built space designed to feel calm and safe.",
+    body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
     subsidy: null,
-    rates: { shortDay: TBC, longDay: TBC },
+    photo: null as string | null,
     highlights: [
-      "Primary caregiver for every infant",
-      "Nappies and pull-ups supplied by parents; wipes provided",
-      "Fresh halal meals from the time solids begin",
+      "Fresh, nutritious halal meals once solids begin",
+      "Wipes provided — parents supply nappies or pull-ups",
+      "Purpose-built indoor room with outdoor play alongside",
     ],
   },
   {
     id: "2-to-3",
+    slug: "2-3-years",
     label: "2 – 3 Years",
+    shortLabel: "Toddlers",
     ageRange: "2 – 3 years",
+    lead: "Room to move, and the freedom to follow a question.",
     blurb:
-      "A busy, language-rich room for toddlers finding their independence, with plenty of outdoor time and the first steps toward group learning.",
+      "A busy, language-rich room for toddlers finding their independence, with the space to move and plenty of time outdoors.",
+    body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
-    rates: { shortDay: TBC, longDay: TBC },
+    photo: null as string | null,
     highlights: [
-      "Toilet-learning supported at the child's pace",
-      "Daily outdoor play in the purpose-built play areas",
-      "Fresh halal meals and morning and afternoon tea",
+      "Purpose-built outdoor play areas for active toddlers",
+      "Fresh, nutritious halal meals provided daily",
+      "An Islamic perspective woven through everyday learning",
     ],
   },
   {
     id: "3-plus",
+    slug: "3-plus-years",
     label: "3+ Years",
+    shortLabel: "Preschool",
     ageRange: "3 – 6 years",
+    lead: "Capable, competent learners, ready for what comes next.",
     blurb:
-      "School-readiness in the fullest sense: children who see themselves as capable, competent learners able to direct their own learning as they grow.",
+      "Children who see themselves as capable, competent learners — able to direct and control their own learning as they grow.",
+    body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here.",
     subsidy: "20 Hours ECE",
-    rates: { shortDay: TBC, longDay: TBC },
+    photo: null as string | null,
     highlights: [
       "20 Hours ECE government funding fully supported",
       "Te Whāriki curriculum with an Islamic perspective",
-      "Transition-to-school programme in the final year",
+      "Fresh, nutritious halal meals provided daily",
     ],
   },
 ] as const;
 
-/** Confirmed by the centre — safe to display without qualification. */
-export const feeFacts = {
-  registration: "$40",
+/**
+ * TODO(kinderland): confirm before publishing.
+ *
+ * These are reasonable for an ECE centre and appeared in earlier drafts, but the
+ * centre never supplied them, so they are held here rather than stated on the
+ * pages as fact. Confirm any that are true and I will fold them back in.
+ */
+export const COPY_TO_CONFIRM = [
+  "A named primary caregiver for each infant in the Under 2s room",
+  "Specific teacher-to-child ratios, if you want them published",
+  "Toilet learning supported at the child's own pace",
+  "A formal transition-to-school programme in the final preschool year",
+  "Morning and afternoon tea in addition to main meals",
+] as const;
+
+/**
+ * Session windows only — times, not prices. Every dollar figure was removed from
+ * the site along with the fee explorer, so enquiries about cost go to the centre
+ * directly. `policies` are enrolment terms expressed as percentages rather than
+ * amounts, and were supplied by the centre.
+ */
+export const enrolmentFacts = {
   sessions: [
     { name: "Short day", window: "9:00 AM – 3:00 PM" },
     { name: "Long day", window: "7:30 AM – 6:00 PM" },
@@ -196,7 +226,7 @@ export const faqs = [
   },
   {
     q: "How does enrolment work, and what does it cost to start?",
-    a: "Enrolment starts with a visit — come and see the rooms, meet the teachers and ask everything you need to. There's a standard $40 registration fee. Fees are paid one week in advance, and families with two or more children enrolled full-time receive a 5% discount.",
+    a: "Enrolment starts with a visit — come and see the rooms, meet the teachers and ask everything you need to. Fees are paid one week in advance, and families with two or more children enrolled full-time receive a 5% discount. Get in touch for current fees and a registration pack.",
   },
   {
     q: "What happens if we take a family holiday?",

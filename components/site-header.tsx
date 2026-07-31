@@ -1,18 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { useTourModal } from "@/components/tour-modal-provider";
 import { centre } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
+/*
+  Absolute paths throughout. Bare "#philosophy" only resolves on the home page —
+  from /faqs or an age group page it would silently do nothing, so the in-page
+  targets are written as "/#philosophy".
+*/
 const links = [
-  { href: "#top", label: "Home" },
-  { href: "#programmes", label: "Programmes" },
-  { href: "#philosophy", label: "Our approach" },
-  { href: "#faq", label: "FAQs" },
-  { href: "#visit", label: "Visit us" },
+  { href: "/", label: "Home" },
+  { href: "/age-groups", label: "Age groups" },
+  { href: "/#philosophy", label: "Our approach" },
+  { href: "/faqs", label: "FAQs" },
+  { href: "/#visit", label: "Visit us" },
 ];
 
 /**
@@ -27,9 +34,22 @@ const links = [
  * The scroll listener is passive and only flips a boolean; the visual change is a
  * CSS transition, so scrolling never runs animation work on the main thread.
  */
+/*
+  Same-page anchors ("/#philosophy") are only "current" while you are on the home
+  page, and even then they describe a section rather than a page — so they never
+  claim aria-current. Age group children like /age-groups/under-2s keep the
+  Age groups link marked.
+*/
+function isActive(href: string, pathname: string) {
+  if (href.includes("#")) return false;
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
   const { open } = useTourModal();
 
   useEffect(() => {
@@ -64,20 +84,24 @@ export function SiteHeader() {
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
-          {links.map((l, i) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className={cn(
-                "text-sm transition-colors duration-150 ease-out-strong",
-                /* The spec marks the current page in the display colour and the rest in grey. */
-                i === 0 ? "text-ink" : "text-muted",
-                "[@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
-              )}
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) => {
+            const active = isActive(l.href, pathname);
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "text-sm transition-colors duration-150 ease-out-strong",
+                  /* The spec marks the current page in the display colour, the rest in grey. */
+                  active ? "text-ink" : "text-muted",
+                  "[@media(hover:hover)_and_(pointer:fine)]:hover:text-ink",
+                )}
+              >
+                {l.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -128,13 +152,17 @@ export function SiteHeader() {
             </li>
             {links.map((l) => (
               <li key={l.href}>
-                <a
+                <Link
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-3 text-[15px] text-muted transition-colors duration-150 ease-out-strong active:text-ink"
+                  aria-current={isActive(l.href, pathname) ? "page" : undefined}
+                  className={cn(
+                    "block py-3 text-[15px] transition-colors duration-150 ease-out-strong active:text-ink",
+                    isActive(l.href, pathname) ? "text-ink" : "text-muted",
+                  )}
                 >
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li className="border-t border-hairline pt-3">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroVideo } from "@/components/hero-video";
 import { useTourModal } from "@/components/tour-modal-provider";
@@ -72,13 +73,13 @@ export function Hero() {
           <span aria-hidden className="text-muted/40">
             &middot;
           </span>
-          <a
-            href="#programmes"
+          <Link
+            href="/age-groups"
             className="inline-flex items-center gap-1 underline decoration-hairline decoration-2 underline-offset-4 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
           >
-            Programmes &amp; fees
+            Our age groups
             <ArrowRight className="size-3.5" aria-hidden />
-          </a>
+          </Link>
         </p>
       </div>
     </section>

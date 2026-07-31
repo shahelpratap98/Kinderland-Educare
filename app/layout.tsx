@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
+import { TourModalProvider } from "@/components/tour-modal-provider";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { centre, fullAddress } from "@/lib/content";
 
 /* Body copy and navigation. */
@@ -95,7 +98,28 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        {/*
+          The shell lives here rather than in page.tsx so every route — the age
+          group pages and the FAQs page as well as the home page — gets the same
+          header, footer and tour dialog, and the dialog keeps one instance across
+          navigations.
+        */}
+        <TourModalProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-background"
+          >
+            Skip to content
+          </a>
+
+          <SiteHeader />
+
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+
+          <SiteFooter />
+        </TourModalProvider>
       </body>
     </html>
   );
