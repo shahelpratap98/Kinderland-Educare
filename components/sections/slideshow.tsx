@@ -39,8 +39,18 @@ const INTERVAL = 5000;
  */
 export function Slideshow() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+  /*
+    Two kinds of pause, deliberately separate.
+
+    `userPaused` is the button and it is sticky. `transientPaused` covers hover,
+    keyboard focus and a hidden tab, and clears itself. Collapsing them into one
+    flag meant onMouseLeave silently un-paused a deck the user had explicitly
+    stopped — which is exactly the mechanism WCAG 2.2.2 requires to work.
+  */
+  const [userPaused, setUserPaused] = useState(false);
+  const [transientPaused, setTransientPaused] = useState(false);
   const [interacted, setInteracted] = useState(false);
+  const paused = userPaused || transientPaused;
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const reduce = useReducedMotion();
@@ -60,7 +70,7 @@ export function Slideshow() {
 
   /* A hidden tab should not keep cycling. */
   useEffect(() => {
-    const onVisibility = () => setPaused(document.hidden);
+    const onVisibility = () => setTransientPaused(document.hidden);
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
@@ -89,10 +99,10 @@ export function Slideshow() {
       aria-roledescription="carousel"
       aria-label="Life at Kinderland Educare"
       className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
+      onMouseEnter={() => setTransientPaused(true)}
+      onMouseLeave={() => setTransientPaused(false)}
+      onFocusCapture={() => setTransientPaused(true)}
+      onBlurCapture={() => setTransientPaused(false)}
       onKeyDown={onKeyDown}
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -107,10 +117,10 @@ export function Slideshow() {
 
         <div className="flex items-center gap-2">
           <ControlButton
-            onClick={() => setPaused((p) => !p)}
-            label={paused ? "Play slideshow" : "Pause slideshow"}
+            onClick={() => setUserPaused((p) => !p)}
+            label={userPaused ? "Play slideshow" : "Pause slideshow"}
           >
-            {paused ? <Play className="size-4" /> : <Pause className="size-4" />}
+            {userPaused ? <Play className="size-4" /> : <Pause className="size-4" />}
           </ControlButton>
 
           {SLIDESHOW_AUDIO_SRC && (
@@ -147,7 +157,15 @@ export function Slideshow() {
         </div>
       </div>
 
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl bg-wash hairline sm:aspect-[2/1]">
+      {/*
+        3:2, matching the derivatives in /public/slides exactly, so the browser
+        never crops. CSS object-cover can only crop from the centre, and at the
+        old 2:1 that discarded 63% of every portrait frame and cut children's
+        heads off. Cropping now happens in scripts/build-slides.mjs against
+        hand-picked regions — sharp's automatic `attention` strategy was tried and
+        chose the bright play equipment over a child's face.
+      */}
+      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-3xl bg-wash hairline">
         {slides.map((slide, i) => {
           const active = i === index;
           return (
