@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { HeroVideo } from "@/components/hero-video";
 import { TourCta } from "@/components/tour-cta";
 import { ageGroups, centre } from "@/lib/content";
 
@@ -14,12 +15,19 @@ export const metadata: Metadata = {
 export default function AgeGroupsIndex() {
   return (
     <>
-      <section className="border-b border-hairline bg-wash">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <h1 className="max-w-3xl text-4xl font-normal text-ink sm:text-5xl md:text-6xl">
+      {/*
+        The same clip as the home hero, in its compact placement. Copy goes white
+        over it — ink on a moving frame cannot be relied on — and the scrim in
+        hero-video.tsx darkens the left so it stays legible whatever the video is
+        doing at that moment.
+      */}
+      <section className="relative isolate overflow-hidden border-b border-hairline bg-plum-900">
+        <HeroVideo variant="compact" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+          <h1 className="max-w-3xl text-4xl font-normal text-background sm:text-5xl md:text-6xl">
             Growing up at Kinderland
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted">
+          <p className="mt-5 max-w-2xl text-lg text-background/85">
             Each room is shaped around where your child is right now — from
             unhurried days with our youngest, through to children who direct their
             own learning and are ready for school.
