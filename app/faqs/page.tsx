@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
+import { HeroVideo } from "@/components/hero-video";
 import { TourCta } from "@/components/tour-cta";
 import { centre, faqs } from "@/lib/content";
 
@@ -36,16 +37,22 @@ export default function FaqsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <section className="border-b border-hairline bg-wash">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <h1 className="max-w-3xl text-4xl font-normal text-ink sm:text-5xl md:text-6xl">
+      <section className="relative isolate overflow-hidden border-b border-hairline bg-plum-900">
+        <HeroVideo variant="compact" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+          <h1 className="max-w-3xl text-4xl font-normal text-background sm:text-5xl md:text-6xl">
             Questions parents ask
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted">
+          <p className="mt-5 max-w-2xl text-lg text-background/85">
             If yours isn&apos;t here, call us on{" "}
+            {/*
+              White rather than brand orange: vermillion on the darkened video
+              measures well under AA, and the underline is what marks it as a link
+              here, not the colour.
+            */}
             <a
               href={centre.phoneHref}
-              className="font-medium text-brand-700 underline decoration-hairline decoration-2 underline-offset-2 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-brand-900"
+              className="font-medium text-background underline decoration-background/50 decoration-2 underline-offset-2 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:decoration-background"
             >
               {centre.phone}
             </a>{" "}

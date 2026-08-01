@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, Clock, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { HeroVideo } from "@/components/hero-video";
 import { Icon } from "@/components/icon";
 import { TourCta } from "@/components/tour-cta";
 import { ageGroups, centre, enrolmentFacts } from "@/lib/content";
@@ -45,20 +46,26 @@ export default async function AgeGroupPage({
 
   return (
     <>
-      <section className="border-b border-hairline bg-wash">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+      <section className="relative isolate overflow-hidden border-b border-hairline bg-plum-900">
+        <HeroVideo variant="compact" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
           <Link
             href="/age-groups"
-            className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
+            className="inline-flex items-center gap-1.5 text-sm text-background/80 transition-colors duration-150 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:hover:text-background"
           >
             <ArrowLeft className="size-3.5" aria-hidden />
             All age groups
           </Link>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="rounded-full bg-background px-3 py-1 text-[13px] font-medium text-muted hairline">
+            {/*
+              A translucent chip rather than the solid white one used on light
+              sections — solid white here would punch a hole in the video.
+            */}
+            <span className="rounded-full bg-background/15 px-3 py-1 text-[13px] font-medium text-background ring-1 ring-inset ring-background/30 backdrop-blur-sm">
               {group.ageRange}
             </span>
+            {/* Sun yellow already carries dark text, so it works over the video unchanged. */}
             {group.subsidy && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-sun-400 px-3 py-1 text-[13px] font-medium text-plum-900">
                 <Sparkles className="size-3.5" aria-hidden />
@@ -67,10 +74,10 @@ export default async function AgeGroupPage({
             )}
           </div>
 
-          <h1 className="mt-4 max-w-3xl text-4xl font-normal text-ink sm:text-5xl md:text-6xl">
+          <h1 className="mt-4 max-w-3xl text-4xl font-normal text-background sm:text-5xl md:text-6xl">
             {group.label}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted">{group.lead}</p>
+          <p className="mt-5 max-w-2xl text-lg text-background/85">{group.lead}</p>
         </div>
       </section>
 

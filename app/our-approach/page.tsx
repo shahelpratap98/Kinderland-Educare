@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { HeroVideo } from "@/components/hero-video";
 import { TourCta } from "@/components/tour-cta";
 import { beliefs, centre, visionMission } from "@/lib/content";
 
@@ -15,12 +16,13 @@ export const metadata: Metadata = {
 export default function OurApproachPage() {
   return (
     <>
-      <section className="border-b border-hairline bg-wash">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <h1 className="max-w-3xl text-4xl font-normal text-ink sm:text-5xl md:text-6xl">
+      <section className="relative isolate overflow-hidden border-b border-hairline bg-plum-900">
+        <HeroVideo variant="compact" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+          <h1 className="max-w-3xl text-4xl font-normal text-background sm:text-5xl md:text-6xl">
             What we believe
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-muted">
+          <p className="mt-5 max-w-2xl text-lg text-background/85">
             The thinking behind an ordinary day at {centre.name} — about
             children, the families they belong to, and the people and places
             around them.
