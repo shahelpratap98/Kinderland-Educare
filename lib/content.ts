@@ -21,6 +21,15 @@ export const centre = {
   },
   phone: "09 275 0111",
   phoneHref: "tel:+6492750111",
+  /* Second line listed on the centre's own FAQ page. */
+  phoneAlt: "09 275 1984",
+  phoneAltHref: "tel:+6492751984",
+  /*
+    Note the live site's FAQ page gives this as info@kinderlandedcare.co.nz —
+    missing the "u" in educare. Assumed a typo there rather than a real alias,
+    since the domain itself is kinderlandeducare.co.nz. Worth fixing on the old
+    site too; anyone emailing from that page is bouncing.
+  */
   email: "info@kinderlandeducare.co.nz",
   hours: {
     days: "Monday – Friday",
@@ -133,7 +142,7 @@ export const ageGroups = [
     photos: [] as readonly RoomPhoto[],
     highlights: [
       "Fresh, nutritious halal meals once solids begin",
-      "Wipes provided — parents supply nappies or pull-ups",
+      "Wipes provided — parents supply nappies, pull-ups and formula",
       "Purpose-built indoor room with outdoor play alongside",
     ],
   },
@@ -151,7 +160,7 @@ export const ageGroups = [
     photos: [] as readonly RoomPhoto[],
     highlights: [
       "Purpose-built outdoor play areas for active toddlers",
-      "Fresh, nutritious halal meals provided daily",
+      "Morning tea, hot lunch, afternoon tea and a late snack",
       "An Islamic perspective woven through everyday learning",
     ],
   },
@@ -164,13 +173,13 @@ export const ageGroups = [
     lead: "Capable, competent learners, ready for what comes next.",
     blurb:
       "Children who see themselves as capable, competent learners — able to direct and control their own learning as they grow.",
-    body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here.",
+    body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
     subsidy: "20 Hours ECE",
     photos: [] as readonly RoomPhoto[],
     highlights: [
       "20 Hours ECE government funding fully supported",
+      "A transition programme through to primary school",
       "Te Whāriki curriculum with an Islamic perspective",
-      "Fresh, nutritious halal meals provided daily",
     ],
   },
 ] as const;
@@ -181,13 +190,15 @@ export const ageGroups = [
  * These are reasonable for an ECE centre and appeared in earlier drafts, but the
  * centre never supplied them, so they are held here rather than stated on the
  * pages as fact. Confirm any that are true and I will fold them back in.
+ *
+ * The transition-to-school programme and the morning/afternoon tea schedule were
+ * on this list until the centre's own FAQ page confirmed both; they are now
+ * stated on the relevant pages.
  */
 export const COPY_TO_CONFIRM = [
   "A named primary caregiver for each infant in the Under 2s room",
   "Specific teacher-to-child ratios, if you want them published",
   "Toilet learning supported at the child's own pace",
-  "A formal transition-to-school programme in the final preschool year",
-  "Morning and afternoon tea in addition to main meals",
 ] as const;
 
 /**
@@ -220,34 +231,76 @@ export const enrolmentFacts = {
   ],
 } as const;
 
+/**
+ * Rebuilt from the centre's own FAQ page at kinderlandeducare.co.nz/faq, keeping
+ * its questions and the substance of its answers. Four deliberate departures:
+ *
+ * 1. Hours and ages follow what the centre supplied directly (7:30am, and three
+ *    months to six years) rather than the live page, which still says 7:00am and
+ *    "6 weeks old to five years old". The live page is assumed stale — if it is
+ *    the accurate one, this site is wrong in a dozen other places too.
+ * 2. The $40 registration figure is gone, with pricing removed sitewide. The
+ *    question stays, because parents ask it; the answer points to the centre.
+ * 3. Two answers on the live page say only "please read parent handbook" —
+ *    holidays and the sibling discount. Both are answered properly here from
+ *    terms the centre supplied. A parent deciding whether to enrol cannot read a
+ *    handbook they do not have yet.
+ * 4. The named contact is omitted. That page is demonstrably out of date on hours
+ *    and ages, so a staff name on it is just as likely to have moved on; a wrong
+ *    name is worse than none. Add it back if it is current.
+ */
 export const faqs = [
   {
     q: "What ages do you take?",
     a: "We care for children from three months old right through to six years, across three rooms: under 2s, 2–3 years, and 3+ years. Because we take babies from three months, we're a practical option for parents returning to work early.",
   },
   {
-    q: "Am I eligible for the 20 Hours ECE subsidy?",
-    a: "The 20 Hours ECE government funding is available for children aged three and over, and we support it fully. It covers up to 20 hours of early childhood education per week. Talk to us about how it applies to the days and sessions you're after.",
+    q: "What hours are you open?",
+    a: `We're open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. You can choose a short day (9:00 AM – 3:00 PM) or a long day (${centre.hours.open} – ${centre.hours.close}), depending on what suits your family and work.`,
   },
   {
-    q: "What food is provided?",
-    a: "Fresh, nutritious halal meals are prepared and provided daily, along with morning and afternoon tea. There's no need to pack lunches. We also provide wipes — parents supply nappies or pull-ups.",
+    q: "Is Kinderland a purpose-built centre?",
+    a: "Yes. Kinderland Educare was purpose-built as a childcare centre, designed for 30 children and built to meet the educational standards of the Ministry of Education.",
   },
   {
-    q: "What are your opening hours and session options?",
-    a: `We're open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. You can choose a short day (9:00 AM – 3:00 PM) or a long day (7:30 AM – 6:00 PM), depending on what suits your family and work.`,
+    q: "Do you provide 20 Hours ECE?",
+    a: "Yes. The 20 Hours ECE government funding is fully supported here from age three, with sessions available. Talk to us about how it applies to the days you're after.",
   },
   {
-    q: "How does enrolment work, and what does it cost to start?",
-    a: "Enrolment starts with a visit — come and see the rooms, meet the teachers and ask everything you need to. Fees are paid one week in advance, and families with two or more children enrolled full-time receive a 5% discount. Get in touch for current fees and a registration pack.",
+    q: "What food is provided, and what do we need to pack?",
+    a: "We provide snacks and drinks for every child — morning tea, afternoon tea and a complimentary late snack — plus a hot lunch for short day and long day children. All meals are fresh, nutritious and halal, so there's no need to pack lunches. We also supply wipes. Parents supply nappies or pull-ups, and baby formula.",
+  },
+  {
+    q: "Do you offer a transition to school programme?",
+    a: "Yes. We run a transition programme to help children move smoothly on to primary school, and we can talk you through how it works for your child when the time comes.",
+  },
+  {
+    q: "Do you offer an Islamic programme?",
+    a: "Yes. We offer a basic Islamic programme, pitched to the age of the children, woven through daily life alongside Te Whāriki — New Zealand's early childhood curriculum. Children of all backgrounds are welcome, and the emphasis is on kindness, respect and an appreciation of difference.",
+  },
+  {
+    q: "How does enrolment work, and is there a registration fee?",
+    a: "Enrolment starts with a visit — come and see the rooms, meet the teachers and ask everything you need to. There is a one-off registration fee; call us for the current amount and we'll send you a registration pack.",
+  },
+  {
+    q: "Do fees need to be paid in advance?",
+    a: "Yes, all fees are paid one week in advance. That's what lets us keep staffing and meals at a consistent standard for your child.",
+  },
+  {
+    q: "Is there a sibling discount?",
+    a: "Yes. Families with two or more children enrolled full-time receive a 5% discount.",
   },
   {
     q: "What happens if we take a family holiday?",
-    a: "After six months of enrolment, you're entitled to a 50% fee reduction for up to two weeks of annual holiday, so a break doesn't come at full cost.",
+    a: "After six months of enrolment you're entitled to a 50% fee reduction for up to two weeks of annual holiday, so a break doesn't come at full cost. Please let us know in advance so we can plan around it.",
   },
   {
-    q: "How does the Islamic environment work alongside the NZ curriculum?",
-    a: "We follow Te Whāriki, New Zealand's national early childhood curriculum, and weave an Islamic perspective through daily life at the centre. Children of all backgrounds are welcome, and the emphasis is on kindness, respect and an appreciation of difference.",
+    q: "What happens in a medical emergency?",
+    a: "All of our registered teachers are first aid trained in New Zealand. We'll contact you straight away, and we keep emergency contacts and any medical details you give us on file for every child.",
+  },
+  {
+    q: "I have a question that isn't answered here — who do I talk to?",
+    a: `Call us on ${centre.phone} or ${centre.phoneAlt}, or email ${centre.email}. If it's easier, book a visit and ask in person — we'd rather talk it through.`,
   },
 ] as const;
 
