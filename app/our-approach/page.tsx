@@ -31,6 +31,19 @@ export default function OurApproachPage() {
         </div>
       </section>
 
+      {/*
+        Leads the page, straight after the header: the photographs show what the
+        words below then explain. Reuses the home page's slideshow rather than a
+        second implementation — only the slides and image folder differ.
+      */}
+      <Slideshow
+        slides={centreSlides}
+        heading="Have a look around"
+        description="The rooms, the grounds and the corners in between — photographed on an ordinary day, before everyone arrived."
+        label="Photographs of the centre"
+        basePath="/centre"
+      />
+
       {/* Vision and Mission verbatim; see the note in lib/content.ts. */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -89,20 +102,6 @@ export default function OurApproachPage() {
           </div>
         </div>
       </section>
-
-      {/*
-        Sits directly after the beliefs, and after "Our environment" in
-        particular — that section argues the surroundings do part of the teaching,
-        and these are the surroundings. Reuses the home page's slideshow rather
-        than a second implementation; only the slides and image folder differ.
-      */}
-      <Slideshow
-        slides={centreSlides}
-        heading="Have a look around"
-        description="The rooms, the grounds and the corners in between — photographed on an ordinary day, before everyone arrived."
-        label="Photographs of the centre"
-        basePath="/centre"
-      />
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
