@@ -3,8 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { HeroVideo } from "@/components/hero-video";
+import { Slideshow } from "@/components/sections/slideshow";
 import { TourCta } from "@/components/tour-cta";
-import { beliefs, centre, visionMission } from "@/lib/content";
+import { beliefs, centre, centreSlides, visionMission } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Our approach",
@@ -88,6 +89,20 @@ export default function OurApproachPage() {
           </div>
         </div>
       </section>
+
+      {/*
+        Sits directly after the beliefs, and after "Our environment" in
+        particular — that section argues the surroundings do part of the teaching,
+        and these are the surroundings. Reuses the home page's slideshow rather
+        than a second implementation; only the slides and image folder differ.
+      */}
+      <Slideshow
+        slides={centreSlides}
+        heading="Have a look around"
+        description="The rooms, the grounds and the corners in between — photographed on an ordinary day, before everyone arrived."
+        label="Photographs of the centre"
+        basePath="/centre"
+      />
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">

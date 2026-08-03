@@ -10,13 +10,19 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
-import { slides, SLIDESHOW_AUDIO_SRC } from "@/lib/content";
+import { slides as homeSlides, SLIDESHOW_AUDIO_SRC, type Slide } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 const INTERVAL = 5000;
 
 /**
- * Home page slideshow.
+ * Slideshow, shared by the home page and /our-approach.
+ *
+ * Everything that differs between the two decks is a prop — the slides, the
+ * heading, and which folder under /public the image names resolve against. The
+ * behaviour below is identical for both, so a fix to the pause logic or the
+ * announcement rules lands in both places rather than in whichever copy someone
+ * remembers to update.
  *
  * Advancing is a plain interval over an index rather than an animation timeline,
  * so the deck can never get stuck mid-transition: each slide is always either
@@ -37,7 +43,20 @@ const INTERVAL = 5000;
  * 1.4.2 requires a stop control for anything past three seconds. See
  * SLIDESHOW_AUDIO_SRC in lib/content.ts.
  */
-export function Slideshow() {
+export function Slideshow({
+  slides = homeSlides,
+  heading = "Life at Kinderland",
+  description = "A look at the centre, the garden and the days in between.",
+  label = "Life at Kinderland Educare",
+  /* Which folder under /public the `src` names resolve against. */
+  basePath = "/slides",
+}: {
+  slides?: readonly Slide[];
+  heading?: string;
+  description?: string;
+  label?: string;
+  basePath?: string;
+} = {}) {
   const [index, setIndex] = useState(0);
   /*
     Two kinds of pause, deliberately separate.
@@ -97,7 +116,7 @@ export function Slideshow() {
   return (
     <section
       aria-roledescription="carousel"
-      aria-label="Life at Kinderland Educare"
+      aria-label={label}
       className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20"
       onMouseEnter={() => setTransientPaused(true)}
       onMouseLeave={() => setTransientPaused(false)}
@@ -108,10 +127,10 @@ export function Slideshow() {
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-4xl font-normal text-ink sm:text-5xl">
-            Life at Kinderland
+            {heading}
           </h2>
           <p className="mt-3 max-w-xl text-lg text-muted">
-            A look at the centre, the garden and the days in between.
+            {description}
           </p>
         </div>
 
@@ -158,12 +177,12 @@ export function Slideshow() {
       </div>
 
       {/*
-        3:2, matching the derivatives in /public/slides exactly, so the browser
-        never crops. CSS object-cover can only crop from the centre, and at the
-        old 2:1 that discarded 63% of every portrait frame and cut children's
-        heads off. Cropping now happens in scripts/build-slides.mjs against
-        hand-picked regions — sharp's automatic `attention` strategy was tried and
-        chose the bright play equipment over a child's face.
+        3:2, matching every derivative that scripts/build-slides.mjs emits, so the
+        browser never crops. CSS object-cover can only crop from the centre, and
+        at the old 2:1 that discarded 63% of each portrait frame and cut children's
+        heads off. Cropping happens in that script against hand-picked regions —
+        sharp's automatic `attention` strategy was tried and chose the bright play
+        equipment over a child's face.
       */}
       <div className="relative aspect-[3/2] w-full overflow-hidden rounded-3xl bg-wash hairline">
         {slides.map((slide, i) => {
@@ -184,9 +203,9 @@ export function Slideshow() {
               {slide.kind === "photo" ? (
                 <figure className="relative h-full w-full">
                   <picture>
-                    <source srcSet={`/slides/${slide.src}.webp`} type="image/webp" />
+                    <source srcSet={`${basePath}/${slide.src}.webp`} type="image/webp" />
                     <img
-                      src={`/slides/${slide.src}.jpg`}
+                      src={`${basePath}/${slide.src}.jpg`}
                       alt={slide.alt}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"

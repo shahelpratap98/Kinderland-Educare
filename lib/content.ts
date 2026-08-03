@@ -332,6 +332,91 @@ export const slides: readonly Slide[] = [
 ] as const;
 
 /**
+ * Centre photographs for /our-approach, sitting under the "Our environment"
+ * beliefs.
+ *
+ * Professionally shot and, unlike the home page deck, containing no children —
+ * so no parental media consent applies. Ordered to alternate outside and inside
+ * rather than grouping them, which reads as two separate galleries stuck together.
+ */
+export const centreSlides: readonly Slide[] = [
+  {
+    kind: "photo",
+    src: "playground",
+    alt: "The centre's playground: a wooden climbing frame with a green slide, on grass beneath mature trees.",
+    caption: "Room to move, every day",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "tree-structure",
+    alt: "An indoor climbing and reading structure built to look like a tree, beside low tables and chairs.",
+    caption: "Built for climbing, reading and hiding",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "our-whare",
+    alt: "A wooden playhouse in the grounds with a thatched roof and a hand-painted sign reading 'Our Whare'.",
+    caption: "Our whare",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "under-2s-room",
+    alt: "The under-2s room, painted teal, with a cot, a soft rug and an arc of flags and greetings from many countries.",
+    caption: "Where our youngest belong",
+    hasChildren: false,
+  },
+  {
+    kind: "text",
+    heading: "An environment that teaches",
+    body: "Surroundings shaped for each child's learning, independence and comfort.",
+  },
+  {
+    kind: "photo",
+    src: "world-map-wall",
+    alt: "A wall map showing the countries our families come from, with greetings in each language and a carved waka below.",
+    caption: "Every family on the map",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "log-stools",
+    alt: "Log stools arranged on the grass under a covered outdoor area.",
+    caption: "Somewhere to sit and watch",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "dream-display",
+    alt: "A quiet corner with a curved table, children's artwork and a display headed 'Dream — Eid Al Adha'.",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "dining-room",
+    alt: "The dining and activity room, with low tables and chairs set out beneath a birthdays display.",
+    caption: "Fresh halal meals, every day",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "reading-nook",
+    alt: "A reading nook tucked beneath the stairs, with framed documents, books and a small table.",
+    caption: "Our philosophy, on the wall",
+    hasChildren: false,
+  },
+  {
+    kind: "photo",
+    src: "entrance-pencils",
+    alt: "Giant coloured pencil sculptures standing at the entrance to the centre.",
+    caption: "You'll know you're in the right place",
+    hasChildren: false,
+  },
+] as const;
+
+/**
  * TODO(kinderland): supply a music bed and set this to its path in /public.
  *
  * It stays null deliberately. Audio cannot autoplay — every modern browser blocks

@@ -184,3 +184,50 @@ if (roomTotal === 0) {
       `for ${ROOM_SLUGS.join(", ")} and re-run.`,
   );
 }
+
+/* ------------------------------------------------------------------ */
+/*  Centre photographs (Our approach)                                  */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Professionally shot facility photographs — rooms, grounds, displays. None
+ * contain children, so unlike the home page slides these carry no parental
+ * consent requirement.
+ *
+ * All sources are >=3000px and already landscape, so a centre crop to 3:2 is
+ * safe; there is no subject that a centre crop can decapitate.
+ */
+const CENTRE_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/Kinderland Pics/";
+const CENTRE_OUT = "public/centre";
+const centreSlides = [
+  ["Kinderland-43.jpg", "playground"],
+  ["Kinderland-54.jpg", "our-whare"],
+  ["Kinderland-46.jpg", "log-stools"],
+  ["Kinderland-137.jpg", "entrance-pencils"],
+  ["Kinderland-6.jpg", "tree-structure"],
+  ["Kinderland-41.jpg", "under-2s-room"],
+  ["Kinderland-3.jpg", "world-map-wall"],
+  ["Kinderland-30.jpg", "dining-room"],
+  ["Kinderland-39.jpg", "dream-display"],
+  ["Kinderland-66.jpg", "reading-nook"],
+];
+
+if (!existsSync(CENTRE_OUT)) mkdirSync(CENTRE_OUT, { recursive: true });
+
+for (const [file, name] of centreSlides) {
+  const src = CENTRE_SOURCE + file;
+  if (!existsSync(src)) {
+    console.warn(`skip ${name} — source missing`);
+    continue;
+  }
+  const pipe = sharp(src).rotate().resize({
+    width: WIDTH,
+    height: Math.round(WIDTH / ASPECT),
+    fit: "cover",
+    position: "centre",
+  });
+  await pipe.clone().webp({ quality: 78 }).toFile(`${CENTRE_OUT}/${name}.webp`);
+  await pipe.clone().jpeg({ quality: 80, mozjpeg: true }).toFile(`${CENTRE_OUT}/${name}.jpg`);
+  const kb = (statSync(`${CENTRE_OUT}/${name}.webp`).size / 1024).toFixed(0);
+  console.log(`${name.padEnd(22)} ${WIDTH}x${Math.round(WIDTH / ASPECT)}  ${kb}KB webp   <- ${file}`);
+}
