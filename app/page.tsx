@@ -1,6 +1,7 @@
 import { Hero } from "@/components/sections/hero";
 import { Slideshow } from "@/components/sections/slideshow";
 import { Philosophy } from "@/components/sections/philosophy";
+import { Reviews } from "@/components/sections/reviews";
 import { Visit } from "@/components/sections/visit";
 
 /*
@@ -17,6 +18,8 @@ export default function Home() {
       <Hero />
       <Slideshow />
       <Philosophy />
+      {/* Directly before the visit form: the last thing read before deciding. */}
+      <Reviews />
       <Visit />
     </>
   );

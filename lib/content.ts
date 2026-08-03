@@ -560,6 +560,62 @@ export const beliefs = [
 ] as const;
 
 /* ------------------------------------------------------------------ */
+/*  Reviews                                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Three of the centre's Google reviews.
+ *
+ * Chosen for being quotable in full: several of the others are truncated behind
+ * Google's "More" link, and quoting a sentence that stops mid-thought reads as
+ * either careless or selective. One strong review was left out because it is from
+ * a student who did her practicum here rather than a parent — glowing, but it
+ * answers a question no prospective parent is asking.
+ *
+ * ⚠️  Transcribed from screenshots. Worth checking each against the live listing
+ * before this goes public: misquoting a real person under their own name is worse
+ * than having no reviews at all.
+ *
+ * ⚠️  Do NOT add Review or AggregateRating structured data for these. Google's
+ * own guidelines forbid marking up reviews gathered from another platform as your
+ * site's own, and doing it risks a manual action against the listing. They are
+ * plain text here on purpose.
+ */
+export const reviews = [
+  {
+    quote:
+      "I have a very good experience with Kinderland as they have very helpful, friendly and efficient staff. A very educational and safe environment for kids to learn and grow. Great teachers and excellent parent support given.",
+    author: "Arifa Ali",
+    rating: 5,
+  },
+  {
+    quote:
+      "Our experience with Kinderland Educare has been absolutely phenomenal. The staff are incredibly attentive, caring, and committed to providing a nurturing environment for children.",
+    author: "M Alwan",
+    rating: 5,
+  },
+  {
+    quote:
+      "Thank you from the bottom of our hearts for taking such wonderful care of my child. You are truly amazing teachers, and we appreciate all the love, patience, and dedication you put into your work every single day.",
+    author: "Zaira Nisha",
+    rating: 5,
+  },
+] as const;
+
+/**
+ * TODO(kinderland): these go stale. Update when the listing moves, or drop the
+ * count and keep only the rating.
+ */
+export const reviewSummary = {
+  rating: "4.9",
+  count: 18,
+  source: "Google",
+  /* When the figures above were read, so nobody has to guess how old they are. */
+  asAt: "August 2026",
+  url: "https://www.google.com/maps/search/?api=1&query=Kinderland+Educare+New+Zealand",
+} as const;
+
+/* ------------------------------------------------------------------ */
 /*  Enrolment                                                          */
 /* ------------------------------------------------------------------ */
 
