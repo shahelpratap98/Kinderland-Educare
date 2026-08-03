@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { HeroVideo } from "@/components/hero-video";
 import { Icon } from "@/components/icon";
 import { TourCta } from "@/components/tour-cta";
+import { cn } from "@/lib/utils";
 import {
   centre,
   enrolmentDocs,
@@ -38,12 +39,20 @@ export default function EnrolmentPage() {
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
         <ol className="grid gap-5 lg:grid-cols-3">
+          {/*
+            The three step numbers run the logo's three colours in order —
+            vermillion, tree green, sun. All are used at 4xl, which is large text,
+            so each clears the 3:1 it needs; sun would fail as body copy.
+          */}
           {enrolmentSteps.map((step, i) => (
             <li key={step.title}>
               <Card className="h-full p-6 sm:p-7">
                 <span
                   aria-hidden
-                  className="font-display text-4xl text-brand-600"
+                  className={cn(
+                    "font-display text-4xl",
+                    ["text-brand-600", "text-leaf-700", "text-sun-700"][i % 3],
+                  )}
                 >
                   {i + 1}
                 </span>

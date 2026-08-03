@@ -128,7 +128,7 @@ export default async function AgeGroupPage({
               {group.highlights.map((h) => (
                 <li key={h} className="flex gap-3 text-[15px] text-ink">
                   <Check
-                    className="mt-1 size-4 shrink-0 text-brand-600"
+                    className="mt-1 size-4 shrink-0 text-leaf-600"
                     strokeWidth={3}
                     aria-hidden
                   />

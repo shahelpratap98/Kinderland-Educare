@@ -588,7 +588,9 @@ export const enrolmentDocs = [
     name: "Enrolment form",
     description:
       "Your child's details, emergency contacts and the sessions you'd like. Bring it to your visit or email it back to us.",
-    href: null as string | null,
+    /* The centre's own 2026 form. Dated in the filename on purpose — when 2027's
+       lands, the old link stops silently serving last year's terms. */
+    href: "/documents/kinderland-enrolment-form-2026.pdf" as string | null,
   },
 ] as const;
 

@@ -17,29 +17,38 @@
   /*  Logo palette — carried over from main                            */
   /* ---------------------------------------------------------------- */
 
-  /* "Kinder" vermillion */
-  --color-brand-50: #fff4f0;
-  --color-brand-100: #ffe4da;
-  --color-brand-200: #ffc4b0;
-  --color-brand-300: #ff9c7c;
-  --color-brand-400: #fa6f45;
-  --color-brand-500: #ee4b24;
-  --color-brand-600: #ce3a14;
-  --color-brand-700: #a62d10;
-  --color-brand-800: #85260f;
-  --color-brand-900: #6e2210;
+  /*
+    Anchors sampled from the master artwork ("Logo Final Colour (Big).jpg"),
+    taking the modal fill inside each shape rather than an edge pixel — edges are
+    JPEG-blended and read several shades off.
 
-  /* "Educare" purple */
-  --color-plum-50: #f9f4fc;
-  --color-plum-100: #f1e4f8;
-  --color-plum-200: #e0c6ef;
-  --color-plum-300: #c89ee2;
-  --color-plum-400: #aa72ce;
-  --color-plum-500: #8b4fb4;
-  --color-plum-600: #6b2e8f;
-  --color-plum-700: #592577;
-  --color-plum-800: #491f61;
-  --color-plum-900: #3d1b50;
+      Kinderland  #eb3915     tree  #438f2b
+      Educare     #530b7b     sun   #ffbc01
+  */
+
+  /* "Kinderland" vermillion — anchored at 500 */
+  --color-brand-50: #fff4f1;
+  --color-brand-100: #ffe3dc;
+  --color-brand-200: #ffc0b1;
+  --color-brand-300: #ff9478;
+  --color-brand-400: #f96440;
+  --color-brand-500: #eb3915;
+  --color-brand-600: #c62d0e;
+  --color-brand-700: #9e2409;
+  --color-brand-800: #7e1e0a;
+  --color-brand-900: #661a0b;
+
+  /* "Educare" violet — anchored at 600. Reads bluer on screen than it measures. */
+  --color-plum-50: #f8f3fb;
+  --color-plum-100: #eee1f6;
+  --color-plum-200: #dbc0ec;
+  --color-plum-300: #c194de;
+  --color-plum-400: #a266c9;
+  --color-plum-500: #7f3ba6;
+  --color-plum-600: #530b7b;
+  --color-plum-700: #450965;
+  --color-plum-800: #380752;
+  --color-plum-900: #2d0642;
 
   /* Sky — the logo's ground */
   --color-sky-50: #f1f8fd;
@@ -51,20 +60,30 @@
   --color-sky-600: #1878b4;
   --color-sky-700: #155f90;
 
-  /* Sun */
-  --color-sun-100: #fff6c6;
-  --color-sun-200: #ffec88;
-  --color-sun-300: #ffde49;
-  --color-sun-400: #ffd01c;
-  --color-sun-500: #f2b500;
-  --color-sun-700: #a36c02;
-  --color-sun-900: #71460d;
+  /*
+    Sun — anchored at 400. Yellow is a background colour here, never small text:
+    #ffbc01 on white is about 1.8:1, so it only ever carries dark type on top of
+    it, or appears as a graphic.
+  */
+  --color-sun-100: #fff4c2;
+  --color-sun-200: #ffe887;
+  --color-sun-300: #ffd647;
+  --color-sun-400: #ffbc01;
+  --color-sun-500: #e5a800;
+  --color-sun-700: #a37400;
+  --color-sun-900: #6e4e05;
 
-  /* Tree */
-  --color-leaf-400: #6fcc50;
-  --color-leaf-500: #4caf33;
-  --color-leaf-600: #3a8e26;
+  /*
+    Tree — anchored at 600. 600 is ~4:1 on white, which clears the 3:1 required
+    of graphics but not the 4.5:1 for body text; anything set in green as text
+    uses 700.
+  */
+  --color-leaf-300: #93da77;
+  --color-leaf-400: #6cc44b;
+  --color-leaf-500: #52a934;
+  --color-leaf-600: #438f2b;
   --color-leaf-700: #2f711f;
+  --color-leaf-800: #275c1b;
 
   /* ---------------------------------------------------------------- */
   /*  Semantic roles                                                   */
@@ -78,16 +97,16 @@
   --color-background: #ffffff;
 
   /*
-    Display type takes the logo's deep purple rather than black: it echoes
-    "Educare" and still reads ~10:1 on white. Body copy stays a neutral grey so
-    long passages don't fight the brand colours.
+    Display type takes the logo's violet rather than black: it echoes "Educare"
+    and reads ~14:1 on white. Body copy stays neutral grey so long passages don't
+    fight the brand colours.
   */
-  --color-ink: #491f61;
+  --color-ink: #3d0a58;
   --color-muted: #6f6f6f;
 
-  /* Hairlines and wash tones tinted with the plum so nothing reads as pure grey. */
-  --color-hairline: rgb(73 31 97 / 0.14);
-  --color-wash: rgb(73 31 97 / 0.05);
+  /* Hairlines and wash tones tinted violet so nothing reads as pure grey. */
+  --color-hairline: rgb(83 11 123 / 0.14);
+  --color-wash: rgb(83 11 123 / 0.05);
 
   --font-display: var(--font-instrument-serif);
   --font-body: var(--font-inter);

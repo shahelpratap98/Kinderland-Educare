@@ -79,10 +79,25 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-6 sm:px-8">
-        <a href="#top" aria-label={`${centre.legalName} — home`}>
-          <Logo />
-        </a>
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 sm:px-8 sm:py-4">
+        {/*
+          The logo is the home link. Kept on the left: that is where a masthead is
+          looked for, and it is where the wordmark already sat, so the rest of the
+          bar keeps its balance. Easy to move if you want it right.
+        */}
+        <Link
+          href="/"
+          aria-label={`${centre.legalName} — home`}
+          className="shrink-0 transition-transform duration-200 ease-out-strong active:scale-[0.98] [@media(hover:hover)_and_(pointer:fine)]:hover:scale-[1.02]"
+        >
+          {/*
+            The mark is an emblem — tree and sun above a two-line wordmark — not a
+            horizontal lockup, so it needs height to stay legible. At 48px the
+            wordmark was about 20px for both lines and read as a smudge. The
+            header's own padding is pulled in to pay for the extra height.
+          */}
+          <Logo className="h-14 sm:h-16" priority />
+        </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
           {links.map((l) => {

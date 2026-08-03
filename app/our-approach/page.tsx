@@ -86,7 +86,7 @@ export default function OurApproachPage() {
                     {group.items.map((item) => (
                       <li key={item} className="flex gap-3">
                         <Check
-                          className="mt-1.5 size-4 shrink-0 text-brand-600"
+                          className="mt-1.5 size-4 shrink-0 text-leaf-600"
                           strokeWidth={3}
                           aria-hidden
                         />
