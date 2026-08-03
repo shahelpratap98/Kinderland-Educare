@@ -26,8 +26,6 @@ import { existsSync, mkdirSync, statSync } from "node:fs";
 const SRC = "C:/Users/Shahel Pratap/Documents/kinder educare/Logo Final Colour (Big).jpg";
 const OUT = "public/brand";
 const WHITE = 248;
-/** Fraction of the trimmed height to keep for the header lockup. */
-const MARK_HEIGHT = 0.88;
 
 if (!existsSync(SRC)) {
   console.error(`Source missing: ${SRC}`);
@@ -67,14 +65,58 @@ const write = async (buf, name, width) => {
 
 await write(await base.clone().png().toBuffer(), "logo", 640);
 
+/**
+ * Find the gap between the violet "Educare" and the near-black tagline, and cut
+ * there.
+ *
+ * This was a fixed 0.88 of the height, which was eyeballed and wrong — it landed
+ * 14px inside "Educare" and sliced the letters in half. Measuring means the cut
+ * survives the artwork being re-exported at another size or with different
+ * spacing, and it fails loudly rather than quietly cropping the wordmark.
+ */
+function findTaglineCut() {
+  const at = (x, y) => {
+    const i = (y * info.width + x) * 4;
+    return [data[i], data[i + 1], data[i + 2], data[i + 3]];
+  };
+
+  let lastWordmark = -1;
+  let firstTagline = -1;
+
+  for (let y = 0; y < info.height; y++) {
+    let violet = 0;
+    let dark = 0;
+    for (let x = 0; x < info.width; x++) {
+      const [r, g, b, a] = at(x, y);
+      if (a === 0) continue;
+      if (b > r + 30 && b > g + 40 && b > 60) violet++;
+      else if (r < 110 && g < 110 && b < 110 && Math.abs(r - b) < 40) dark++;
+    }
+    if (violet > 3) {
+      lastWordmark = y;
+      firstTagline = -1; // violet after a dark run means that run was not the tagline
+    } else if (dark > 10 && firstTagline === -1 && lastWordmark !== -1) {
+      firstTagline = y;
+    }
+  }
+
+  if (lastWordmark === -1 || firstTagline === -1 || firstTagline <= lastWordmark) {
+    throw new Error(
+      "Could not locate the gap between the wordmark and the tagline. " +
+        "Check the artwork before trusting the header lockup.",
+    );
+  }
+  return Math.round(lastWordmark + (firstTagline - lastWordmark) / 2);
+}
+
+const cut = findTaglineCut();
+console.log(
+  `tagline cut at y=${cut} of ${info.height} (${((100 * cut) / info.height).toFixed(1)}%)`,
+);
+
 const markBuf = await base
   .clone()
-  .extract({
-    left: 0,
-    top: 0,
-    width: info.width,
-    height: Math.round(info.height * MARK_HEIGHT),
-  })
+  .extract({ left: 0, top: 0, width: info.width, height: cut })
   .trim({ threshold: 10 })
   .png()
   .toBuffer();

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import logoFull from "@/public/brand/logo.png";
+import logoMark from "@/public/brand/logo-mark.png";
 import { centre } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -9,8 +11,14 @@ import { cn } from "@/lib/utils";
  * "Logo Final Colour (Big).jpg":
  *
  *   mark  tree, sun and wordmark, tagline cropped off — for the header, where
- *         "WHERE DREAMS AND CREATIVITY MEET" would be an illegible smudge at 44px
+ *         "WHERE DREAMS AND CREATIVITY MEET" would be an illegible smudge at 64px
  *   full  everything including the tagline, for the footer where there is room
+ *
+ * Imported statically rather than referenced by path so Next reads the real
+ * width and height from the files at build time. They were hardcoded, and when
+ * the mark was regenerated 14px taller the numbers silently disagreed with the
+ * image — which is exactly the kind of thing that distorts a logo and nobody
+ * notices for a month.
  *
  * ⚠️  Light backgrounds only. The sun carries a soft white-to-yellow halo that
  * cannot be keyed out without destroying it, so the transparent PNG still has
@@ -27,18 +35,10 @@ export function Logo({
   className?: string;
   priority?: boolean;
 }) {
-  const src = variant === "full" ? "/brand/logo" : "/brand/logo-mark";
-  const dims =
-    variant === "full"
-      ? { width: 640, height: 388 }
-      : { width: 520, height: 277 };
-
   return (
     <Image
-      src={`${src}.png`}
+      src={variant === "full" ? logoFull : logoMark}
       alt={`${centre.legalName} — ${centre.logoTagline}`}
-      width={dims.width}
-      height={dims.height}
       priority={priority}
       className={cn("w-auto", className)}
     />
