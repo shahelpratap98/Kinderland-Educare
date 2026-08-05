@@ -54,6 +54,12 @@ const ROOM_WIDTH = 1400;
  *
  * Narrow bands upscale on the way to WIDTH — the script warns past 1.8x, where
  * softness starts to show on a high-density display.
+ *
+ * `maxWidth` caps the output below WIDTH for sources that cannot fill it. Sharp
+ * upscaling past ~1.5x invents detail that is not in the file: the result is a
+ * larger download that looks no sharper than letting the browser scale a smaller
+ * image, and often slightly worse for the ringing along edges. Where a source is
+ * too small, emit it small and honest.
  */
 const slides = [
   { file: "Kinderland-2.jpg", name: "centre-exterior" },
@@ -89,20 +95,24 @@ const slides = [
 
 if (!existsSync(OUT)) mkdirSync(OUT, { recursive: true });
 
-for (const slide of slides) {
-  const src = SOURCE + slide.file;
+async function renderSlide(slide, sourceDir, outDir = OUT) {
+  const src = sourceDir + slide.file;
   if (!existsSync(src)) {
     console.warn(`skip ${slide.name} — source missing`);
-    continue;
+    return;
   }
 
   const meta = await sharp(src).rotate().metadata();
   let pipe = sharp(src).rotate();
 
-  let upscale = 1;
+  /* `aspect` overrides the 3:2 default for sources whose own shape should be
+     kept — see the age group leads, where cropping to 3:2 zoomed the frame. */
+  const aspect = slide.aspect ?? ASPECT;
+  const target = Math.min(WIDTH, slide.maxWidth ?? WIDTH);
+  let upscale = target / meta.width;
   if (slide.band) {
     const keepW = Math.round(meta.width * (slide.band.width ?? 1));
-    const bandH = Math.round(keepW / ASPECT);
+    const bandH = Math.round(keepW / aspect);
     const left = Math.max(
       0,
       Math.min(
@@ -115,30 +125,166 @@ for (const slide of slides) {
       Math.min(Math.round(slide.band.top * meta.height), meta.height - bandH),
     );
     pipe = pipe.extract({ left, top, width: keepW, height: bandH });
-    upscale = WIDTH / keepW;
+    upscale = target / keepW;
   }
 
   const sized = pipe.resize({
-    width: WIDTH,
-    height: Math.round(WIDTH / ASPECT),
+    width: target,
+    height: Math.round(target / aspect),
     fit: "cover",
     position: "centre",
   });
 
-  await sized.clone().webp({ quality: 78 }).toFile(`${OUT}/${slide.name}.webp`);
+  await sized.clone().webp({ quality: 78 }).toFile(`${outDir}/${slide.name}.webp`);
   await sized
     .clone()
     .jpeg({ quality: 80, mozjpeg: true })
-    .toFile(`${OUT}/${slide.name}.jpg`);
+    .toFile(`${outDir}/${slide.name}.jpg`);
 
   const kb = (f) => (statSync(f).size / 1024).toFixed(0);
   const warn = upscale > 1.8 ? `  ⚠ upscaled ${upscale.toFixed(2)}x` : "";
   console.log(
-    `${slide.name.padEnd(22)} ${WIDTH}x${Math.round(WIDTH / ASPECT)}  ` +
-      `${kb(`${OUT}/${slide.name}.webp`)}KB webp  ${kb(`${OUT}/${slide.name}.jpg`)}KB jpg` +
+    `${slide.name.padEnd(22)} ${target}x${Math.round(target / aspect)}  ` +
+      `${kb(`${outDir}/${slide.name}.webp`)}KB webp  ${kb(`${outDir}/${slide.name}.jpg`)}KB jpg` +
       warn,
   );
 }
+
+for (const slide of slides) await renderSlide(slide, SOURCE);
+
+/* ------------------------------------------------------------------ */
+/*  Photographs recovered from the previous website                    */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Pulled from the old WordPress site's /gallery/ page, which was still serving
+ * the untouched camera originals alongside the resized copies — 12-14MP off a
+ * Fujifilm compact and a Canon, all carrying intact EXIF. They are the only
+ * photographs of children *at this centre* that survive from that site.
+ *
+ * Kept separate from the old home page slider, which is a different kind of
+ * picture entirely and is built further down under "Age group photographs".
+ *
+ * These are roughly 2013 vintage, so they sit against the 2025 professional set
+ * with visibly older cameras and an older-looking room. Ordered in `slides` to
+ * alternate rather than clump, so the deck does not read as two eras bolted
+ * together.
+ */
+const ARCHIVE_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/oldsite/";
+const archiveSlides = [
+  {
+    file: "g-DSCF8832.jpg",
+    name: "chalkboard-rainbow",
+    // 4:3. Her head starts at ~6% down, and a centre crop to 3:2 begins at 5.5%
+    // — close enough to shave the top of her hair. Anchored at 0 instead, which
+    // trims the bottom of the frame where there is only wall and jeans.
+    band: { top: 0 },
+  },
+  {
+    file: "g-IMG_0295.jpg",
+    name: "climbing-frame",
+    // 3:4 portrait, so the 3:2 band keeps only half the height. His face sits at
+    // 40-52%; this centres the band on 46% and drops the empty matting below.
+    band: { top: 0.21 },
+  },
+  {
+    file: "g-IMG_0260.jpg",
+    name: "puppet-play",
+    // She stands right of centre with the puppet held up beside her, and the
+    // right third of the frame is doorway and floor. Starting at 35% clipped the
+    // puppet down to a stripe at the edge, which is the one thing in the frame
+    // she is actually doing — so this starts further left and narrows instead,
+    // trading the doorway for the puppet.
+    band: { top: 0.1, left: 0.28, width: 0.55 },
+  },
+  {
+    file: "g-IMG_0490.jpg",
+    name: "sunhats-outside",
+    // 3:4 portrait. Half the frame is sky and power lines. Face at ~40%, so the
+    // band starts at 15% and keeps the children and the hoops.
+    band: { top: 0.15 },
+  },
+  {
+    file: "g-chr.jpg",
+    name: "dress-ups",
+    // 1230x1100, the smallest of the set that still holds up. 1.46x to full
+    // width, under the warn threshold, so no cap needed. Anchored at the top
+    // rather than 8% down: the extra 8% was enough to cut the head off the
+    // child standing behind her, which reads worse than the empty deck below.
+    band: { top: 0 },
+  },
+  {
+    file: "g-DSCF8839.jpg",
+    name: "mosaic-board",
+    // Only 980px wide. Capped rather than upscaled 1.84x to 1800.
+    band: { top: 0.03 },
+    maxWidth: 1400,
+  },
+  {
+    file: "g-IMG_0297.jpg",
+    name: "music-corner",
+    // 922px wide, 1.95x to full width. Capped for the same reason.
+    band: { top: 0.02 },
+    maxWidth: 1300,
+  },
+];
+
+for (const slide of archiveSlides) await renderSlide(slide, ARCHIVE_SOURCE);
+
+/* ------------------------------------------------------------------ */
+/*  Age group photographs                                              */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The six images from the old site's home page slider, two per room.
+ *
+ * ⚠️  These are stock, not Kinderland. 924x420, EXIF stripped to a 22-byte stub,
+ * studio-lit against seamless backdrops, and cropped to exactly the "happykids"
+ * WordPress theme's slider dimensions — i.e. theme demo content. The children in
+ * them have never attended this centre, and whatever licence covered them in
+ * 2013 was for that theme on that site. Used here at the owner's direction as
+ * placeholders until real room photographs are supplied; replace them, and drop
+ * this block when you do.
+ *
+ * They are the poorest source on the old site: 0.39MP, so how much of each frame
+ * survives matters. The two roles are cut differently.
+ *
+ * CARDS are small — 341px in the three-up grid — so 3:2 costs nothing visible
+ * there, and matching the grid keeps the row tidy. Each `left` is measured off
+ * the frame rather than centred: a centre crop cut a hand off slide2 and the
+ * outer block off slide4.
+ *
+ * LEADS run nearly full width, and there a 3:2 crop was a real mistake. It threw
+ * away a third of the width and pushed what was left up to ~1100px, so
+ * wall-painting became a close-up of the back of a child's head with the
+ * painting they were making cropped out. These keep the source's own 11:5 and
+ * are not cropped horizontally at all — the whole scene, less magnified, and
+ * 924px of real pixels instead of 630.
+ *
+ * Named by content, deliberately not `<slug>-<n>`: that pattern belongs to the
+ * folder-convention builder below, and colliding with it would mean real room
+ * photographs dropped into rooms/<slug>/ get silently overwritten by these.
+ */
+const AGE_GROUP_CARD_WIDTH = 1000;
+const AGE_GROUP_LEAD_WIDTH = 1400;
+/* 924x420 -> exactly 11:5. */
+const LETTERBOX = 924 / 420;
+
+const ageGroupCards = [
+  { file: "orig-slide5.jpg", name: "first-instruments", band: { top: 0, left: 0.16, width: 0.682 } },
+  { file: "orig-slide1.jpg", name: "painting-flowers", band: { top: 0, left: 0.11, width: 0.682 } },
+  { file: "orig-slide2.jpg", name: "hands-on", band: { top: 0, left: 0.26, width: 0.682 } },
+].map((p) => ({ ...p, maxWidth: AGE_GROUP_CARD_WIDTH }));
+
+const ageGroupLeads = [
+  { file: "orig-slide3.jpg", name: "building-blocks-wide" },
+  { file: "orig-slide6.jpg", name: "wall-painting-wide" },
+  { file: "orig-slide4.jpg", name: "ready-for-school-wide" },
+].map((p) => ({ ...p, aspect: LETTERBOX, maxWidth: AGE_GROUP_LEAD_WIDTH }));
+
+if (!existsSync(ROOM_OUT)) mkdirSync(ROOM_OUT, { recursive: true });
+for (const photo of [...ageGroupCards, ...ageGroupLeads])
+  await renderSlide(photo, ARCHIVE_SOURCE, ROOM_OUT);
 
 /* ------------------------------------------------------------------ */
 /*  Room photographs                                                   */

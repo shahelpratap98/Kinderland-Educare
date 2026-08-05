@@ -104,7 +104,17 @@ export const values = [
  * `src` is the base name in /public/rooms — .webp is served with .jpg as the
  * fallback, both produced by scripts/build-slides.mjs.
  */
-export type RoomPhoto = { src: string; alt: string; caption?: string };
+export type RoomPhoto = {
+  src: string;
+  alt: string;
+  caption?: string;
+  /**
+   * CSS aspect-ratio for the frame, when the derivative is not the usual 3:2.
+   * The container has to match the file, because object-cover can only crop
+   * from the centre — a mismatch here is how a subject loses its head.
+   */
+  aspect?: string;
+};
 
 /**
  * One entry per room, each with its own page at /age-groups/[slug].
@@ -119,13 +129,26 @@ export type RoomPhoto = { src: string; alt: string; caption?: string };
  * needing the centre's sign-off is listed in COPY_TO_CONFIRM below rather than
  * asserted here.
  *
- * `photos` starts empty. The page renders the first as a wide lead image and any
- * others as a grid, and omits both sections while the array is empty — so the
- * pages stand up now and gain photographs without a layout change.
+ * `photos` renders the first entry as a wide lead image and any others as a grid
+ * under "Inside the room", omitting both sections while the array is empty.
+ * `cardPhoto` is the thumbnail on the /age-groups index.
  *
- * Same consent rule as the slideshow: any photograph showing an identifiable
- * child needs signed parental media consent before it is committed, since
- * committing publishes it to the repository.
+ * ⚠️  BOTH ARE PLACEHOLDERS, AND BOTH ARE STOCK. All six come from the old
+ * WordPress site's home page slider: 924x420, EXIF stripped, studio-lit on
+ * seamless backdrops, cut to that theme's exact slider size. The children are
+ * models, not children who attend here, and the 2013 theme licence does not
+ * carry over to this site. They are in place at the owner's direction to fill
+ * the rooms until real photographs are taken.
+ *
+ * Two consequences, deliberate:
+ *   - only one photo per room, used as the lead. Nothing goes into the "Inside
+ *     the room" grid, because that heading asserts these are these rooms.
+ *   - no captions, for the same reason. A caption is a claim; these are set
+ *     dressing until they are replaced.
+ *
+ * Same consent rule as the slideshow once real photographs land: any photograph
+ * showing an identifiable child needs signed parental media consent before it is
+ * committed, since committing publishes it to the repository.
  */
 export const ageGroups = [
   {
@@ -139,7 +162,17 @@ export const ageGroups = [
       "Our youngest room. Days here follow your baby rather than a timetable — feeding, sleeping and playing as they need to, in a purpose-built space designed to feel calm and safe.",
     body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
     subsidy: null,
-    photos: [] as readonly RoomPhoto[],
+    cardPhoto: {
+      src: "first-instruments",
+      alt: "Two small children sitting together with shakers and a xylophone.",
+    } as RoomPhoto,
+    photos: [
+      {
+        src: "wall-painting-wide",
+        alt: "A child painting broad brushstrokes onto a wall-mounted sheet of paper.",
+        aspect: "11 / 5",
+      },
+    ] as readonly RoomPhoto[],
     highlights: [
       "Fresh, nutritious halal meals once solids begin",
       "Wipes provided — parents supply nappies, pull-ups and formula",
@@ -157,7 +190,17 @@ export const ageGroups = [
       "A busy, language-rich room for toddlers finding their independence, with the space to move and plenty of time outdoors.",
     body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
-    photos: [] as readonly RoomPhoto[],
+    cardPhoto: {
+      src: "painting-flowers",
+      alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
+    } as RoomPhoto,
+    photos: [
+      {
+        src: "building-blocks-wide",
+        alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
+        aspect: "11 / 5",
+      },
+    ] as readonly RoomPhoto[],
     highlights: [
       "Purpose-built outdoor play areas for active toddlers",
       "Morning tea, hot lunch, afternoon tea and a late snack",
@@ -175,7 +218,17 @@ export const ageGroups = [
       "Children who see themselves as capable, competent learners — able to direct and control their own learning as they grow.",
     body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
     subsidy: "20 Hours ECE",
-    photos: [] as readonly RoomPhoto[],
+    cardPhoto: {
+      src: "hands-on",
+      alt: "A smiling child holding both palms up to the camera, covered in bright finger paint.",
+    } as RoomPhoto,
+    photos: [
+      {
+        src: "ready-for-school-wide",
+        alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
+        aspect: "11 / 5",
+      },
+    ] as readonly RoomPhoto[],
     highlights: [
       "20 Hours ECE government funding fully supported",
       "A transition programme through to primary school",
@@ -330,6 +383,24 @@ export type Slide =
     }
   | { kind: "text"; heading: string; body?: string };
 
+/*
+ * ⚠️  ON THE OLD SITE'S PHOTOGRAPHS — read before adding more from that source.
+ *
+ * Seven slides here (chalkboard-rainbow, climbing-frame, puppet-play,
+ * sunhats-outside, dress-ups, mosaic-board, music-corner) were recovered from
+ * the previous WordPress site's /gallery/ page. They are genuine: 12-14MP camera
+ * originals with intact Fujifilm and Canon EXIF, taken in these rooms.
+ *
+ * The six images in that site's home page slider are NOT here, and should not be
+ * added. They are 924x420 with EXIF stripped, studio-lit against seamless
+ * backdrops, and cropped to exactly the "happykids" theme's slider dimensions —
+ * i.e. stock or theme demo content, showing children who have never attended
+ * this centre. Whatever licence covered them in 2013 was for that theme on that
+ * site; it does not follow the pictures here.
+ *
+ * These are roughly 2013 vintage against a 2025 professional set, so the order
+ * below alternates between the two rather than running them in blocks.
+ */
 export const slides: readonly Slide[] = [
   {
     kind: "photo",
@@ -352,9 +423,29 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "chalkboard-rainbow",
+    alt: "A girl holding up a small chalkboard she has drawn a rainbow on, against the green wall of her room.",
+    caption: "Where dreams and creativity meet",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "outdoor-play",
     alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
     caption: "Room to move, every day",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "climbing-frame",
+    alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "mosaic-board",
+    alt: "A boy holding up a peg board he has filled with coloured counters, in front of the classroom shelves.",
+    caption: "Look what I made",
     hasChildren: true,
   },
   {
@@ -370,9 +461,35 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "puppet-play",
+    alt: "A girl in a red headscarf smiling beside the zebra hand puppet she is holding up.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "sunhats-outside",
+    alt: "Children in sun hats playing with hoops in the outdoor yard on a clear summer day.",
+    caption: "Hats on, outside, most of the year",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "end-of-year-concert",
     alt: "Children on stage in front of a hand-painted backdrop for the End of Year Concert 2025.",
     caption: "End of year concert",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "dress-ups",
+    alt: "A toddler in oversized white sunglasses on the deck, with another child playing behind her.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "music-corner",
+    alt: "A boy in a cap and sunglasses with his arms flung wide beside the classroom stereo.",
+    caption: "Music and movement",
     hasChildren: true,
   },
   {

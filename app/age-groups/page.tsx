@@ -39,7 +39,32 @@ export default function AgeGroupsIndex() {
         <div className="grid gap-5 lg:grid-cols-3">
           {ageGroups.map((g) => (
             <Link key={g.slug} href={`/age-groups/${g.slug}`} className="group">
-              <Card interactive className="flex h-full flex-col p-6 sm:p-7">
+              <Card interactive className="flex h-full flex-col overflow-hidden">
+                {/*
+                  Decorative: the alt is empty because the heading and blurb
+                  immediately below already name the room, so describing the
+                  picture again only makes a screen reader read the card twice.
+                  3:2 to match the derivative, so nothing is cropped in CSS.
+                */}
+                {g.cardPhoto && (
+                  <div className="aspect-[3/2] w-full overflow-hidden bg-wash">
+                    <picture>
+                      <source
+                        srcSet={`/rooms/${g.cardPhoto.src}.webp`}
+                        type="image/webp"
+                      />
+                      <img
+                        src={`/rooms/${g.cardPhoto.src}.jpg`}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out-strong [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.04]"
+                      />
+                    </picture>
+                  </div>
+                )}
+
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-[13px] font-medium text-muted">
                     {g.ageRange}
@@ -61,6 +86,7 @@ export default function AgeGroupsIndex() {
                   Read more
                   <ArrowRight className="size-3.5" aria-hidden />
                 </span>
+                </div>
               </Card>
             </Link>
           ))}

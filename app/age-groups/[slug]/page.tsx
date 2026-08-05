@@ -89,7 +89,10 @@ export default async function AgeGroupPage({
       {lead && (
         <section className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
           <figure>
-            <div className="aspect-[3/2] w-full overflow-hidden rounded-3xl bg-wash hairline">
+            <div
+              style={{ aspectRatio: lead.aspect ?? "3 / 2" }}
+              className="w-full overflow-hidden rounded-3xl bg-wash hairline"
+            >
               <picture>
                 <source srcSet={`/rooms/${lead.src}.webp`} type="image/webp" />
                 <img
@@ -214,7 +217,10 @@ export default async function AgeGroupPage({
             {gallery.map((photo) => (
               <li key={photo.src}>
                 <figure>
-                  <div className="aspect-[3/2] w-full overflow-hidden rounded-2xl bg-wash hairline">
+                  <div
+                    style={{ aspectRatio: photo.aspect ?? "3 / 2" }}
+                    className="w-full overflow-hidden rounded-2xl bg-wash hairline"
+                  >
                     <picture>
                       <source srcSet={`/rooms/${photo.src}.webp`} type="image/webp" />
                       <img
