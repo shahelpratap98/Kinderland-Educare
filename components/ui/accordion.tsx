@@ -4,7 +4,8 @@ import { useId, useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Item = { q: string; a: string };
+/** `a` takes an array when the answer runs to more than one paragraph. */
+type Item = { q: string; a: string | readonly string[] };
 
 /**
  * Single-open accordion.
@@ -76,15 +77,17 @@ export function Accordion({ items }: { items: readonly Item[] }) {
               )}
             >
               <div className="overflow-hidden">
-                <p
+                <div
                   className={cn(
-                    "max-w-prose pb-6 pr-12 text-muted",
+                    "max-w-prose space-y-3 pb-6 pr-12 text-muted",
                     "transition-opacity duration-200 ease-out-strong",
                     isOpen ? "opacity-100" : "opacity-0",
                   )}
                 >
-                  {item.a}
-                </p>
+                  {(typeof item.a === "string" ? [item.a] : item.a).map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

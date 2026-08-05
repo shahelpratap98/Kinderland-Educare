@@ -132,7 +132,7 @@ export function TourForm() {
         value={values.childAge}
         onChange={set("childAge")}
         onBlur={blur("childAge")}
-        hint="For example: 8 months, or turning 3 in June."
+        hint="MM/YY"
       />
 
       <DatePicker

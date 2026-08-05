@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/icon";
 import { Reveal, RevealItem } from "@/components/reveal";
-import { values, visionMission } from "@/lib/content";
+import { values } from "@/lib/content";
 
 export function Philosophy() {
   return (
@@ -18,33 +18,9 @@ export function Philosophy() {
           </RevealItem>
         </Reveal>
 
-        {/*
-          Vision and Mission are presented as two labelled statements rather than
-          one paragraph and one pull-quote. The centre's wording opens with "Our
-          vision is to…" / "Our mission is to…", so it needs its own heading to sit
-          under — a generic quote attribution read as a duplicate of the sentence.
-          Both are verbatim; see the note in lib/content.ts.
-        */}
-        <Reveal className="mb-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
-          {(
-            [
-              ["Vision", visionMission.vision],
-              ["Mission", visionMission.mission],
-            ] as const
-          ).map(([label, body]) => (
-            <RevealItem key={label}>
-              <div className="border-l-2 border-brand-400 pl-5 sm:pl-6">
-                <h3 className="font-display text-2xl font-normal text-ink">
-                  {label}
-                </h3>
-                <p className="mt-3 text-[17px] leading-relaxed text-muted">
-                  {body}
-                </p>
-              </div>
-            </RevealItem>
-          ))}
-        </Reveal>
-
+        {/* Vision and Mission were removed here at the centre's request (website
+            changes, Aug 2026). The four cards below now carry the section on
+            their own; the wording is kept in lib/content.ts. */}
         <Reveal className="grid gap-4 sm:grid-cols-2">
           {values.map((value) => (
             <RevealItem key={value.title}>

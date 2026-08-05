@@ -25,7 +25,12 @@ const faqJsonLd = {
   mainEntity: faqs.map((f) => ({
     "@type": "Question",
     name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
+    /* Multi-paragraph answers are joined, so the markup still carries the whole
+       answer the page shows rather than only its first paragraph. */
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: typeof f.a === "string" ? f.a : f.a.join(" "),
+    },
   })),
 };
 
@@ -74,7 +79,7 @@ export default function FaqsPage() {
               </h2>
               <p className="mt-2 text-[15px] text-muted">
                 The best way to choose a centre is to stand in it. Visits run{" "}
-                {centre.hours.days.toLowerCase()}.
+                {centre.hours.days}.
               </p>
               <TourCta className="mt-4 w-full" size="md">
                 Schedule a tour

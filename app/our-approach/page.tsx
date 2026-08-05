@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 import { HeroVideo } from "@/components/hero-video";
 import { Slideshow } from "@/components/sections/slideshow";
 import { TourCta } from "@/components/tour-cta";
-import { beliefs, centre, centreSlides, visionMission } from "@/lib/content";
+import { approach, centre, centreSlides } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Our approach",
   description:
-    "What Kinderland Educare believes about children, parents, teachers, our community and our environment — the vision and mission behind a day at the centre in Māngere.",
+    "What Kinderland Educare believes about children, families, teachers and our community — early childhood education and care in Māngere, Auckland.",
   alternates: { canonical: "/our-approach" },
 };
 
@@ -20,8 +19,11 @@ export default function OurApproachPage() {
       <section className="relative isolate overflow-hidden border-b border-hairline bg-plum-900">
         <HeroVideo variant="compact" />
         <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+          {/* Was "What we believe", which named a section that no longer exists
+              on this page. The centre's new copy opens with "About Us", so that
+              is the page's heading and the body starts at its first paragraph. */}
           <h1 className="max-w-3xl text-4xl font-normal text-background sm:text-5xl md:text-6xl">
-            What we believe
+            {approach.title}
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-background/85">
             The thinking behind an ordinary day at {centre.name} — about
@@ -44,60 +46,36 @@ export default function OurApproachPage() {
         basePath="/centre"
       />
 
-      {/* Vision and Mission verbatim; see the note in lib/content.ts. */}
+      {/*
+        Prose rather than the previous card-per-theme grid. This copy is
+        continuous paragraphs, not bullet points, and boxing each theme would
+        break the reading line for no gain — the measure is capped instead so a
+        line stays comfortable on a wide screen.
+      */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          {(
-            [
-              ["Vision", visionMission.vision],
-              ["Mission", visionMission.mission],
-            ] as const
-          ).map(([label, body]) => (
-            <div key={label} className="border-l-2 border-brand-400 pl-5 sm:pl-6">
-              <h2 className="font-display text-2xl font-normal text-ink">
-                {label}
-              </h2>
-              <p className="mt-3 text-[17px] leading-relaxed text-muted">{body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+        <div className="max-w-3xl">
+          <div className="space-y-4">
+            {approach.intro.map((p) => (
+              <p key={p} className="text-[17px] leading-relaxed text-muted">
+                {p}
+              </p>
+            ))}
+          </div>
 
-      <section className="border-t border-hairline bg-wash">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <h2 className="text-3xl font-normal text-ink sm:text-4xl">
-            We believe
-          </h2>
-
-          <div className="mt-10 space-y-5">
-            {beliefs.map((group) => (
-              <Card key={group.title} className="p-6 sm:p-8">
-                <div className="grid gap-6 lg:grid-cols-[0.8fr_2.2fr] lg:gap-10">
-                  {/*
-                    The heading completes the sentence for every point beneath it
-                    ("We believe: children belong first to a family…"), so the two
-                    are kept visually paired rather than run together as one list.
-                  */}
-                  <h3 className="font-display text-2xl font-normal text-ink lg:sticky lg:top-28 lg:self-start">
-                    {group.title}
-                  </h3>
-
-                  <ul className="space-y-4">
-                    {group.items.map((item) => (
-                      <li key={item} className="flex gap-3">
-                        <Check
-                          className="mt-1.5 size-4 shrink-0 text-leaf-600"
-                          strokeWidth={3}
-                          aria-hidden
-                        />
-                        <span className="text-[16px] leading-relaxed text-muted">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+          <div className="mt-12 space-y-11">
+            {approach.sections.map((section) => (
+              <div key={section.title}>
+                <h2 className="font-display text-2xl font-normal text-ink">
+                  {section.title}
+                </h2>
+                <div className="mt-4 space-y-4 border-l-2 border-brand-400 pl-5 sm:pl-6">
+                  {section.body.map((p) => (
+                    <p key={p} className="text-[17px] leading-relaxed text-muted">
+                      {p}
+                    </p>
+                  ))}
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </div>

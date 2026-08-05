@@ -52,8 +52,12 @@ export const mapLinkUrl = `https://www.google.com/maps/search/?api=1&query=${enc
 
 /*
  * Verbatim from the centre's own wording, including the "Our vision/mission is to"
- * openings. Rendered as-is under Vision and Mission labels in the philosophy
- * section — do not paraphrase or trim these.
+ * openings.
+ *
+ * No longer rendered anywhere. Both statements were removed from the home page
+ * and from /our-approach at the centre's request (website changes, Aug 2026).
+ * Kept here rather than deleted so the exact wording is not lost — it is the
+ * only copy of it in the repo. Do not paraphrase or trim if it is reinstated.
  */
 export const visionMission = {
   vision:
@@ -80,12 +84,12 @@ export const values = [
   {
     icon: "Moon",
     title: "An Islamic environment",
-    body: "A nurturing setting that weaves an Islamic perspective through everyday learning, alongside the principles of Te Whāriki, Aotearoa's early childhood curriculum.",
+    body: "A nurturing setting that weaves an Islamic perspective through everyday learning, alongside the principles of Te Whāriki.",
   },
   {
     icon: "UtensilsCrossed",
     title: "Nutrition & halal catering",
-    body: "Fresh, nutritious halal meals prepared daily, plus wipes provided. Parents supply nappies or pull-ups; we handle the rest of the day.",
+    body: "Fresh, nutritious halal meals prepared daily.",
   },
   {
     icon: "Blocks",
@@ -159,7 +163,7 @@ export const ageGroups = [
     ageRange: "3 months – 2 years",
     lead: "Unhurried days built around your baby's own rhythm.",
     blurb:
-      "Our youngest room. Days here follow your baby rather than a timetable — feeding, sleeping and playing as they need to, in a purpose-built space designed to feel calm and safe.",
+      "Our youngest room is a calm, nurturing space where your baby's day follows their individual rhythms for feeding, sleeping, playing, and care in a safe, purpose-built space.",
     body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
     subsidy: null,
     cardPhoto: {
@@ -182,12 +186,12 @@ export const ageGroups = [
   {
     id: "2-to-3",
     slug: "2-3-years",
-    label: "2 – 3 Years",
+    label: "Little Explorers",
     shortLabel: "Toddlers",
     ageRange: "2 – 3 years",
     lead: "Room to move, and the freedom to follow a question.",
     blurb:
-      "A busy, language-rich room for toddlers finding their independence, with the space to move and plenty of time outdoors.",
+      "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
     body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
     cardPhoto: {
@@ -210,12 +214,12 @@ export const ageGroups = [
   {
     id: "3-plus",
     slug: "3-plus-years",
-    label: "3+ Years",
+    label: "Discoverers",
     shortLabel: "Preschool",
     ageRange: "3 – 6 years",
     lead: "Capable, competent learners, ready for what comes next.",
     blurb:
-      "Children who see themselves as capable, competent learners — able to direct and control their own learning as they grow.",
+      "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",
     body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
     subsidy: "20 Hours ECE",
     cardPhoto: {
@@ -260,11 +264,13 @@ export const COPY_TO_CONFIRM = [
  * directly. `policies` are enrolment terms expressed as percentages rather than
  * amounts, and were supplied by the centre.
  */
+/*
+ * `sessions` was a published Short day / Long day timetable. Removed at the
+ * centre's request (website changes, Aug 2026), along with the fixed session
+ * times on the room pages: session options are now discussed on a visit, the
+ * same way fees already were. The opening hours themselves still show.
+ */
 export const enrolmentFacts = {
-  sessions: [
-    { name: "Short day", window: "9:00 AM – 3:00 PM" },
-    { name: "Long day", window: "7:30 AM – 6:00 PM" },
-  ],
   policies: [
     {
       icon: "CalendarClock",
@@ -273,87 +279,104 @@ export const enrolmentFacts = {
     },
     {
       icon: "Users",
-      title: "5% sibling discount",
-      body: "For families with two or more children enrolled full-time.",
+      /* The percentage is deliberately gone — the centre asked for "special
+         discount" rather than a figure, the same reasoning that removed pricing. */
+      title: "Sibling discount",
+      body: "Families with two or more children enrolled full-time receive a special discount.",
     },
     {
       icon: "Palmtree",
       title: "Holiday reduction",
-      body: "50% fee reduction for up to two weeks of annual holiday, available after six months of enrolment.",
+      body: "After six months of enrolment, families can enjoy up to two weeks of holiday each calendar year at 50% fees. Simply email us, and let us know your holiday plans.",
     },
   ],
 } as const;
 
 /**
- * Rebuilt from the centre's own FAQ page at kinderlandeducare.co.nz/faq, keeping
- * its questions and the substance of its answers. Four deliberate departures:
+ * Supplied by the centre (website changes, Aug 2026) and used verbatim; this set
+ * replaces the one rebuilt from the old kinderlandeducare.co.nz/faq page.
  *
- * 1. Hours and ages follow what the centre supplied directly (7:30am, and three
- *    months to six years) rather than the live page, which still says 7:00am and
- *    "6 weeks old to five years old". The live page is assumed stale — if it is
- *    the accurate one, this site is wrong in a dozen other places too.
- * 2. The $40 registration figure is gone, with pricing removed sitewide. The
- *    question stays, because parents ask it; the answer points to the centre.
- * 3. Two answers on the live page say only "please read parent handbook" —
- *    holidays and the sibling discount. Both are answered properly here from
- *    terms the centre supplied. A parent deciding whether to enrol cannot read a
- *    handbook they do not have yet.
- * 4. The named contact is omitted. That page is demonstrably out of date on hours
- *    and ages, so a staff name on it is just as likely to have moved on; a wrong
- *    name is worse than none. Add it back if it is current.
+ * One departure from the order given: "Do we need to provide nappies and wipes?"
+ * arrived after the "who do I talk to" question, which reads as an append rather
+ * than an intended position. It sits next to the food question here, since both
+ * answer "what do we bring", and the contact question stays last where a
+ * catch-all belongs.
+ *
+ * Answers that run to more than one paragraph are arrays; see Accordion.
  */
 export const faqs = [
   {
-    q: "What ages do you take?",
-    a: "We care for children from three months old right through to six years, across three rooms: under 2s, 2–3 years, and 3+ years. Because we take babies from three months, we're a practical option for parents returning to work early.",
+    q: "Is Kinderland a purpose-built centre?",
+    a: "Yes. Kinderland Educare is purpose-built as a childcare centre, designed and maintained to meet the educational standards of the Ministry of Education.",
+  },
+  {
+    q: "What ages do you care for?",
+    a: "We care for children from 3 months to 6 years, with dedicated learning spaces for under 2s, 2–3 year olds, and 3+ year olds. Starting care from 3 months means families can feel confident knowing their baby is supported in a nurturing environment when they return to work.",
   },
   {
     q: "What hours are you open?",
-    a: `We're open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. You can choose a short day (9:00 AM – 3:00 PM) or a long day (${centre.hours.open} – ${centre.hours.close}), depending on what suits your family and work.`,
-  },
-  {
-    q: "Is Kinderland a purpose-built centre?",
-    a: "Yes. Kinderland Educare was purpose-built as a childcare centre, designed for 30 children and built to meet the educational standards of the Ministry of Education.",
+    a: `We are open ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}, with session options available to support your child's age, learning journey, and your family's needs. Talk to us to find the option that works best for your child.`,
   },
   {
     q: "Do you provide 20 Hours ECE?",
     a: "Yes. The 20 Hours ECE government funding is fully supported here from age three, with sessions available. Talk to us about how it applies to the days you're after.",
   },
   {
-    q: "What food is provided, and what do we need to pack?",
-    a: "We provide snacks and drinks for every child — morning tea, afternoon tea and a complimentary late snack — plus a hot lunch for short day and long day children. All meals are fresh, nutritious and halal, so there's no need to pack lunches. We also supply wipes. Parents supply nappies or pull-ups, and baby formula.",
-  },
-  {
-    q: "Do you offer a transition to school programme?",
-    a: "Yes. We run a transition programme to help children move smoothly on to primary school, and we can talk you through how it works for your child when the time comes.",
-  },
-  {
-    q: "Do you offer an Islamic programme?",
-    a: "Yes. We offer a basic Islamic programme, pitched to the age of the children, woven through daily life alongside Te Whāriki — New Zealand's early childhood curriculum. Children of all backgrounds are welcome, and the emphasis is on kindness, respect and an appreciation of difference.",
-  },
-  {
-    q: "How does enrolment work, and is there a registration fee?",
-    a: "Enrolment starts with a visit — come and see the rooms, meet the teachers and ask everything you need to. There is a one-off registration fee; call us for the current amount and we'll send you a registration pack.",
-  },
-  {
-    q: "Do fees need to be paid in advance?",
-    a: "Yes, all fees are paid one week in advance. That's what lets us keep staffing and meals at a consistent standard for your child.",
+    q: "How does enrolment work?",
+    a: "Enrolment starts with a visit — come and explore our rooms, meet our teachers, and ask any questions you may have. Our team will guide you through the enrolment process and provide you with the information and forms you need to get started. Where applicable, one week's fees are paid in advance to secure your child's place.",
   },
   {
     q: "Is there a sibling discount?",
-    a: "Yes. Families with two or more children enrolled full-time receive a 5% discount.",
+    a: "Yes. Families with two or more children enrolled full-time receive a special discount.",
+  },
+  {
+    q: "What food is provided, and what do we need to pack?",
+    a: [
+      "Fresh, nutritious halal meals prepared in-house are provided for children enrolled in our full-day programme, with Wednesday being our lunch box day. All children bring food from home on this day to build confidence with lunch boxes and prepare for their primary school journey.",
+      "As part of our cultural values, we do not include beef or pork in the food provided at the centre, and we kindly ask families to avoid packing these meats in lunch boxes.",
+    ],
+  },
+  {
+    q: "Do we need to provide nappies and wipes?",
+    a: "Yes. As every child has unique skin needs, we ask families to provide their child's nappies and wipes from home. Young children can have sensitive skin or allergies that may not always be known, so using familiar products helps us reduce the risk of irritation and support your child's comfort and wellbeing.",
+  },
+  {
+    q: "Why is my child unsettled during the transition period, and how can I help?",
+    a: [
+      "Every child's transition journey is unique. Settling into a new environment is a process that takes time and is not always a linear journey — some days may feel easier than others as children build trust, relationships, and a sense of belonging.",
+      "Regular attendance helps children become familiar with routines, develop connections with teachers and friends, and feel more secure in their new environment. Families can support this process by talking positively about Kinderland, keeping goodbyes calm and consistent, and sharing information about their child's interests, routines, and needs.",
+      "Our teachers support children through warm, responsive relationships, predictable routines, and meaningful experiences that help each child feel safe and confident. We encourage open communication between families and teachers so we can work together and provide the best support if you have any concerns.",
+    ],
+  },
+  {
+    q: "Do you offer a school readiness programme?",
+    a: "Yes. Our school readiness programme supports children to develop the confidence, independence, and skills they need as they prepare for primary school. We work alongside children and whānau to make this an exciting and positive next step in their learning journey.",
+  },
+  {
+    q: "Do you offer an Islamic programme?",
+    a: [
+      "Yes. As an Islamic Special Character centre, children take part in gently guided learning experiences that support values-based learning and foundational language development, including exposure to the Arabic language. These experiences are woven naturally throughout our day through storytelling, oral traditions, songs, and peaceful group times.",
+      "Our programme welcomes children from all backgrounds, and families are encouraged to learn more about our approach and the experiences their child will be part of as a valued member of our centre community.",
+    ],
+  },
+  {
+    q: "What should I do if my child is sick?",
+    a: [
+      "Regular attendance helps children feel settled, build strong relationships, and make the most of their learning experiences. We encourage families to support consistent attendance whenever possible.",
+      "If your child is away for an extended period due to illness, we will request an EC13 form completed by a medical professional to maintain their place at Kinderland Educare.",
+    ],
   },
   {
     q: "What happens if we take a family holiday?",
-    a: "After six months of enrolment you're entitled to a 50% fee reduction for up to two weeks of annual holiday, so a break doesn't come at full cost. Please let us know in advance so we can plan around it.",
+    a: "After six months of enrolment, families can enjoy up to two weeks of holiday each calendar year at 50% fees. Simply email us, and let us know your holiday plans.",
   },
   {
     q: "What happens in a medical emergency?",
-    a: "All of our registered teachers are first aid trained in New Zealand. We'll contact you straight away, and we keep emergency contacts and any medical details you give us on file for every child.",
+    a: "The wellbeing and safety of every child is our priority. Our registered teachers hold current New Zealand first aid certification and are prepared to respond to medical situations. In an emergency, we will contact you as soon as possible and follow the information provided in your child's enrolment records, including emergency contacts and medical details.",
   },
   {
     q: "I have a question that isn't answered here — who do I talk to?",
-    a: `Call us on ${centre.phone} or ${centre.phoneAlt}, or email ${centre.email}. If it's easier, book a visit and ask in person — we'd rather talk it through.`,
+    a: `Call us on ${centre.phone} or email ${centre.email}. If it's easier, book a visit and ask in person — we'd rather talk it through.`,
   },
 ] as const;
 
@@ -502,8 +525,7 @@ export const slides: readonly Slide[] = [
 ] as const;
 
 /**
- * Centre photographs for /our-approach, sitting under the "Our environment"
- * beliefs.
+ * Centre photographs for /our-approach, running directly under the page header.
  *
  * Professionally shot and, unlike the home page deck, containing no children —
  * so no parental media consent applies. Ordered to alternate outside and inside
@@ -601,80 +623,74 @@ export const centreSlides: readonly Slide[] = [
 export const SLIDESHOW_AUDIO_SRC: string | null = null;
 
 /* ------------------------------------------------------------------ */
-/*  Our approach — statement of beliefs                                */
+/*  Our approach — page body                                           */
 /* ------------------------------------------------------------------ */
 
 /**
- * The centre's "We believe" statement, condensed from 24 points to 19 and
- * lightly edited. Every idea in the original survives; what went was repetition.
+ * The body of /our-approach.
  *
- * Merges made:
- * - Children: the two programme points (play-based/evaluated, and
- *   flexible/interest-led) were the same claim twice, now one. "Here and now"
- *   and "each child is unique" both argue for the child as they are today, now
- *   one. "Learning is a journey" folded in with relationships, which it echoed.
- * - Parents: family-to-centre relationships and staff-to-parent relationships
- *   were two statements of one idea.
- * - Employees: involvement in learning and planning purposeful experiences
- *   described the same practice.
+ * Supplied by the centre (website changes, Aug 2026) and used verbatim. It
+ * replaces the previous "We believe" list, which was condensed from their older
+ * Children / Parents / Employees / Community / Physical Environment statement.
  *
- * Wording changes, all flagged to the centre:
- * - "program" -> "programme", matching NZ usage and the rest of the site.
- * - "Maori" -> "Māori"; the site uses macrons elsewhere (Māngere, Te Whāriki).
- * - The Treaty point had no verb ("Treaty of Waitangi and respect Maori as
- *   Tangata Whenua"); it now reads "In the Treaty of Waitangi, and respect
- *   Māori as tangata whenua."
- * - "respected at all time" -> "at all times".
- * - "birth to five" -> "the early years". The original conflicts with the
- *   centre's own stated range of 3 months to 6 years, so the specific numbers
- *   were dropped rather than contradict the rest of the site.
+ * `intro` runs before the first heading. One note on the source: the halal-meals
+ * paragraph arrived styled as a heading, but it is a sentence, not a title, so it
+ * sits as the closing paragraph of "Islamic Values & Care" where it reads.
  */
-export const beliefs = [
-  {
-    title: "Children",
-    items: [
-      "Every child is entitled to quality education and care, and we strive to provide the best of both at all times.",
-      "Children belong first to a family, a cultural group, a neighbourhood and a wider community. Belonging acknowledges their interdependence with others, and builds positive relationships and self-worth.",
-      "We recognise the significance of the here and now. Each child is encouraged to be who they are today, rather than only who they might become — every child is unique, and their rights and choices are respected at all times.",
-      "Children are active, capable learners whose identities, knowledge, skills and relationships change rapidly, so our environment gives them opportunities to participate fully and actively in it.",
-      "Our play-based programme is flexible, built around each child's interests and continually evaluated by knowledgeable teachers. Children organise and make sense of their world by engaging actively with people, objects and representations.",
-      "Confidence and self-esteem grow through meaningful relationships with other children and with their teachers. Each child's learning is a journey, and we build the foundations for it.",
-    ],
-  },
-  {
-    title: "Parents",
-    items: [
-      "Parents are their child's first teachers, so we encourage parent participation in the centre day to day, and in developing our programme.",
-      "Relationships — between families and the centre, between families and teachers, and among families themselves — are crucial to children's education and wellbeing. We build them through varied communication and occasions that bring people together socially.",
-      "The centre is a focal point for continuing education and support as parents take on this important, lifelong role, and we encourage parents to use the information available to them.",
-    ],
-  },
-  {
-    title: "Teachers",
-    items: [
-      "Our teachers are the centre's greatest asset, and we value and respect what each person brings with them.",
-      "We provide guidance and ongoing support so they reach professional satisfaction and growth.",
-      "They are closely involved in children's learning — responding to each child's sense of being, belonging and becoming, planning deliberate and purposeful experiences, and including children and families in decisions.",
-    ],
-  },
-  {
-    title: "Community",
-    items: [
-      "In the Treaty of Waitangi, and respect Māori as tangata whenua.",
-      "Our community is diverse and multicultural, and we reflect that diversity within the centre as an integral part of the programme and of daily experience.",
-      "Early childhood services are an essential and valuable part of the local community, and we serve that community by providing a quality service to families and businesses.",
-      "Organisations responsible for educating early childhood professionals play a fundamental role, and we support them as they prepare students for their professional future.",
-    ],
-  },
-  {
-    title: "Our environment",
-    items: [
-      "The environment supports and validates a child's learning, so we create and maintain surroundings suited to each child's learning and comfort.",
-      "The early years are when crucial life skills develop, so our spaces promote self-help skills, independence and an appreciation for materials.",
-      "Children and teachers spend a large part of their day here, so comfort, safety and aesthetics are considered throughout.",
-    ],
-  },
-] as const;
+export const approach = {
+  title: "About Us",
+  intro: [
+    "At Kinderland Educare, we provide high-quality early childhood education and care in Mangere, Auckland, offering a nurturing environment where children thrive as confident, curious, and capable learners. Our ECE center welcomes families from diverse backgrounds and provides a place where children feel a strong sense of belonging, identity, and connection.",
+    "Our values of compassion, kindness, respect, and responsibility guide everything we do. These universal values are woven throughout our daily practices and align with both Te Whāriki and our Islamic Special Character. We believe every child is a taonga (treasure), bringing their own culture, strengths, interests, and experiences. Through meaningful relationships and intentional teaching, children are empowered to be active participants in their learning.",
+  ],
+  sections: [
+    {
+      title: "Children",
+      body: [
+        "At Kinderland Educare, children are at the heart of everything we do. We believe children are capable and confident learners who bring their own knowledge, ideas, and curiosity to their learning journey.",
+        "Our daycare and preschool in Mangere provides a play-based learning environment where children are encouraged to explore, ask questions, make choices, solve problems, and develop independence. Through caring relationships and meaningful experiences, children build confidence, creativity, resilience, and a lifelong love of learning.",
+        "We celebrate each child's unique identity, language, culture, and family background, supporting them to develop a strong sense of belonging.",
+      ],
+    },
+    {
+      title: "Families & Whānau",
+      body: [
+        "We believe parents and whānau are children's first and most important teachers. Strong partnerships with families are central to our approach, and we value the knowledge, aspirations, cultures, and experiences each family brings.",
+        "As a Muslim childcare centre in Auckland, we understand the importance of supporting families who are seeking an environment where their values, traditions, and faith are respected. We also welcome families from all backgrounds and celebrate the diversity within our community.",
+        "Through open communication, shared experiences, and genuine relationships, we work together with whānau to support each child's wellbeing, learning, and growth.",
+      ],
+    },
+    {
+      title: "Islamic Values & Care",
+      body: [
+        "Our Islamic preschool and childcare centre in Auckland reflects values of compassion, respect, gratitude, kindness, and responsibility throughout the day. Children are encouraged to develop positive relationships, care for others, and contribute to their community.",
+        "We provide fresh halal meals prepared in-house daily (terms and conditions apply), supporting families who value nutritious meals that align with their cultural and dietary needs.",
+      ],
+    },
+    {
+      title: "Teachers / Kaiako",
+      body: [
+        "Our teachers are at the heart of our learning community. We value the knowledge, experience, and strengths each kaiako brings and support their ongoing professional growth through reflection, collaboration, and learning.",
+        "Our teachers build respectful relationships with children and whānau, creating intentional learning experiences that respond to children's interests, identities, and individual ways of learning.",
+      ],
+    },
+    {
+      title: "Community",
+      body: [
+        "Kinderland Educare is part of a diverse and connected South Auckland community. Located near Al-Madinah School, Zayed College for Girls, and Mangere Central Primary School, Kinderland Educare is part of a connected South Auckland community.",
+        "We honour Te Tiriti o Waitangi and respect Māori as tangata whenua. We celebrate the languages, cultures, and identities of all families and create an inclusive environment where every child feels valued.",
+        "Our connections with local schools, community organisations, and families help support children as they grow, learn, and prepare for their next learning journey.",
+      ],
+    },
+    {
+      title: "Our Learning Environment",
+      body: [
+        "Our early childhood centre in Mangere provides a safe, welcoming, and engaging environment where children can explore, create, discover, and develop independence.",
+        "Through purposeful spaces, meaningful resources, and respectful relationships, we support children's wellbeing, belonging, exploration, and confidence as they grow into lifelong learners.",
+      ],
+    },
+  ],
+} as const;
 
 /* ------------------------------------------------------------------ */
 /*  Reviews                                                            */
@@ -779,7 +795,9 @@ export const enrolmentSteps = [
   },
   {
     title: "Settle in",
-    body: "We'll agree a start date and, if it helps, some shorter settling-in visits first so the room is familiar before the first full day.",
+    /* Verbatim from the centre's copy, including "organize" — flagged to them,
+       since every other spelling on the site is NZ English. */
+    body: "We'll agree to a start date and organize some shorter settling in visits so you and your child are comfortable with the room before the first full day.",
   },
 ] as const;
 

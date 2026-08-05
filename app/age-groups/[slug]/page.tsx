@@ -142,28 +142,25 @@ export default async function AgeGroupPage({
           </div>
 
           <div className="space-y-4">
+            {/*
+              The fixed short day / long day times were removed here too, not
+              only on /enrolment. Leaving them on the room pages would have
+              directly contradicted the new enrolment copy, which says sessions
+              are arranged with the centre.
+            */}
             <Card className="p-6">
               <h3 className="font-display text-xl font-normal text-ink">
                 Session options
               </h3>
-              <p className="mt-2 text-[15px] text-muted">
+              <p className="mt-2 inline-flex items-center gap-1.5 text-[15px] text-muted">
+                <Clock className="size-3.5 shrink-0" aria-hidden />
                 We&apos;re open {centre.hours.days}, {centre.hours.open} –{" "}
                 {centre.hours.close}.
               </p>
-              <dl className="mt-4 space-y-3">
-                {enrolmentFacts.sessions.map((s) => (
-                  <div
-                    key={s.name}
-                    className="flex items-center justify-between gap-4 rounded-xl bg-wash px-4 py-3"
-                  >
-                    <dt className="text-[15px] font-medium text-ink">{s.name}</dt>
-                    <dd className="inline-flex items-center gap-1.5 text-[14px] text-muted">
-                      <Clock className="size-3.5" aria-hidden />
-                      {s.window}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+              <p className="mt-3 text-[15px] text-muted">
+                Sessions are designed to support children at every stage of their
+                learning journey. Come and talk to us about what suits your child.
+              </p>
             </Card>
 
             {/*

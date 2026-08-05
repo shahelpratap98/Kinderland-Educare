@@ -28,9 +28,14 @@ export default function AgeGroupsIndex() {
             Growing up at Kinderland
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-background/85">
-            Each room is shaped around where your child is right now — from
-            unhurried days with our youngest, through to children who direct their
-            own learning and are ready for school.
+            Your child&apos;s journey unfolds at their own pace. From the earliest
+            days of care and exploration, through discovery and readiness for
+            school, each stage builds naturally on the one before.
+          </p>
+          <p className="mt-4 max-w-2xl text-lg text-background/85">
+            Every child follows their own path. Moving to the next room is based
+            on their development, confidence and readiness, with whānau, kaiako
+            and the child making that decision together.
           </p>
         </div>
       </section>

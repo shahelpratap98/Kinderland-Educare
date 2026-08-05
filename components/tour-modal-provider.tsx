@@ -23,7 +23,7 @@ export function TourModalProvider({ children }: { children: React.ReactNode }) {
         open={isOpen}
         onClose={close}
         title="Come and see us"
-        description={`Visits run ${centre.hours.days.toLowerCase()}, ${centre.hours.open} to ${centre.hours.close}. Tell us when suits and we'll show you around.`}
+        description={`Visits run ${centre.hours.days}, ${centre.hours.open} to ${centre.hours.close}. Tell us when suits and we'll show you around.`}
       >
         <TourForm />
       </Modal>

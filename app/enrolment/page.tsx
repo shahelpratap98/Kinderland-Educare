@@ -132,24 +132,16 @@ export default function EnrolmentPage() {
             <h2 className="text-3xl font-normal text-ink sm:text-4xl">
               Good to know
             </h2>
+            {/* The short day / long day table, the meals line and the nappies and
+                wipes line were all removed here at the centre's request (website
+                changes, Aug 2026). Sessions are discussed on a visit now. */}
             <p className="mt-4 text-[17px] leading-relaxed text-muted">
               We&apos;re open {centre.hours.days}, {centre.hours.open} –{" "}
-              {centre.hours.close}, and you can choose a short day or a long day.
-              Fresh, nutritious halal meals are provided daily and we supply
-              wipes — you supply nappies or pull-ups.
+              {centre.hours.close}, with sessions designed to support children at
+              every stage of their learning journey. Children aged 3 years and
+              over may be eligible for free ECE hours, with fees free sessions
+              also available for 2-year-olds. Come and talk to us to learn more.
             </p>
-
-            <dl className="mt-7 space-y-3">
-              {enrolmentFacts.sessions.map((s) => (
-                <div
-                  key={s.name}
-                  className="flex items-center justify-between gap-4 rounded-xl bg-wash px-4 py-3"
-                >
-                  <dt className="text-[15px] font-medium text-ink">{s.name}</dt>
-                  <dd className="text-[14px] text-muted">{s.window}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
           <ul className="space-y-4">
