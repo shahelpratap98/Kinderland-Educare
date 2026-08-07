@@ -8,7 +8,7 @@ import { ageGroups, centre } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Age groups",
-  description: `Three rooms at Kinderland Educare, for children from ${centre.ages} — under 2s, 2 to 3 years, and 3 years and over with 20 Hours ECE.`,
+  description: `Three rooms at Kinderland Educare, for children from ${centre.ages} — Little Wonderers for infants, Little Explorers for toddlers, and Discoverers for preschoolers with 20 Hours ECE.`,
   alternates: { canonical: "/age-groups" },
 };
 
@@ -70,7 +70,19 @@ export default function AgeGroupsIndex() {
                 )}
 
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                <div className="flex flex-wrap items-center gap-2">
+                {/*
+                  Three pieces now: the category as a small eyebrow, the age
+                  range beside it, and the room's own name as the heading. The
+                  eyebrow is uppercased in CSS rather than stored shouting, so
+                  the string stays readable everywhere else it is used.
+                */}
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-700">
+                    {g.category}
+                  </span>
+                  <span aria-hidden className="text-muted/50">
+                    &middot;
+                  </span>
                   <span className="text-[13px] font-medium text-muted">
                     {g.ageRange}
                   </span>

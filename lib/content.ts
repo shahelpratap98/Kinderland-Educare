@@ -98,6 +98,23 @@ export const values = [
   },
 ] as const;
 
+/**
+ * The fee-structure panel on the home page, directly above the slideshow.
+ *
+ * Note it names no figures — the same rule that removed pricing everywhere else
+ * on the site. It says the structures vary and points at a conversation, which
+ * is exactly what the centre asked for.
+ */
+export const feeStructure = {
+  eyebrow: "Now open and taking new enrolments",
+  title: "A flexible fee structure",
+  body: [
+    "At Kinderland Educare, to meet the needs of our parents, we run many programmes that include, besides full days, other options of short days and sessions.",
+    "Our fees structures also vary to reflect the flexibility of our various programmes and provide our parents options based on the time a child is enrolled for.",
+    "For more details and further information please do contact us.",
+  ],
+} as const;
+
 /* ------------------------------------------------------------------ */
 /*  Age groups                                                         */
 /* ------------------------------------------------------------------ */
@@ -122,6 +139,17 @@ export type RoomPhoto = {
 
 /**
  * One entry per room, each with its own page at /age-groups/[slug].
+ *
+ * Each room carries three labels: `category` (Infants / Toddlers / Preschool,
+ * uppercased in CSS at the point of use), `ageRange`, and `label` — the room's
+ * own name, which is what the cards lead with.
+ *
+ * ⚠️  The slugs no longer describe the ages. The boundary between the toddler
+ * and preschool rooms moved from 3 years to 3 years 5 months (Aug 2026), so
+ * `2-3-years` in fact runs to 3y5m and `3-plus-years` starts there. The slugs
+ * are deliberately left alone: they are live URLs, and renaming them would
+ * break every link and bookmark already pointing at these pages for a cosmetic
+ * gain. Read the ages from `ageRange`, never from the slug.
  *
  * No rates here by design. Fees were removed from the site entirely, which also
  * retired the `$XXX` placeholders and their warning banner — there is no longer
@@ -158,9 +186,9 @@ export const ageGroups = [
   {
     id: "under-2",
     slug: "under-2s",
-    label: "Under 2s",
-    shortLabel: "Babies",
-    ageRange: "3 months – 2 years",
+    label: "Little Wonderers",
+    category: "Infants",
+    ageRange: "3m – 2y",
     lead: "Unhurried days built around your baby's own rhythm.",
     blurb:
       "Our youngest room is a calm, nurturing space where your baby's day follows their individual rhythms for feeding, sleeping, playing, and care in a safe, purpose-built space.",
@@ -187,8 +215,8 @@ export const ageGroups = [
     id: "2-to-3",
     slug: "2-3-years",
     label: "Little Explorers",
-    shortLabel: "Toddlers",
-    ageRange: "2 – 3 years",
+    category: "Toddlers",
+    ageRange: "2 – 3y5m",
     lead: "Room to move, and the freedom to follow a question.",
     blurb:
       "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
@@ -215,8 +243,8 @@ export const ageGroups = [
     id: "3-plus",
     slug: "3-plus-years",
     label: "Discoverers",
-    shortLabel: "Preschool",
-    ageRange: "3 – 6 years",
+    category: "Preschool",
+    ageRange: "3y5m – 6y",
     lead: "Capable, competent learners, ready for what comes next.",
     blurb:
       "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",

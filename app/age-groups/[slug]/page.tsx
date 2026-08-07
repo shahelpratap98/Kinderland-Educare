@@ -25,7 +25,7 @@ export async function generateMetadata({
   if (!group) return {};
 
   return {
-    title: `${group.label} (${group.ageRange})`,
+    title: `${group.label} — ${group.category} (${group.ageRange})`,
     description: `${group.lead} ${group.blurb}`,
     alternates: { canonical: `/age-groups/${group.slug}` },
   };
@@ -63,7 +63,7 @@ export default async function AgeGroupPage({
               sections — solid white here would punch a hole in the video.
             */}
             <span className="rounded-full bg-background/15 px-3 py-1 text-[13px] font-medium text-background ring-1 ring-inset ring-background/30 backdrop-blur-sm">
-              {group.ageRange}
+              {group.category} &middot; {group.ageRange}
             </span>
             {/* Sun yellow already carries dark text, so it works over the video unchanged. */}
             {group.subsidy && (
@@ -253,8 +253,18 @@ export default async function AgeGroupPage({
                   interactive
                   className="h-full p-6 transition-colors duration-200 ease-out-strong"
                 >
-                  <p className="text-[13px] font-medium text-muted">{g.ageRange}</p>
-                  <h3 className="mt-1 font-display text-xl font-normal text-ink">
+                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-700">
+                      {g.category}
+                    </span>
+                    <span aria-hidden className="text-muted/50">
+                      &middot;
+                    </span>
+                    <span className="text-[13px] font-medium text-muted">
+                      {g.ageRange}
+                    </span>
+                  </p>
+                  <h3 className="mt-1.5 font-display text-xl font-normal text-ink">
                     {g.label}
                   </h3>
                   <p className="mt-2 text-[15px] text-muted">{g.lead}</p>
