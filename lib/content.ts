@@ -144,12 +144,9 @@ export type RoomPhoto = {
  * uppercased in CSS at the point of use), `ageRange`, and `label` — the room's
  * own name, which is what the cards lead with.
  *
- * ⚠️  The slugs no longer describe the ages. The boundary between the toddler
- * and preschool rooms moved from 3 years to 3 years 5 months (Aug 2026), so
- * `2-3-years` in fact runs to 3y5m and `3-plus-years` starts there. The slugs
- * are deliberately left alone: they are live URLs, and renaming them would
- * break every link and bookmark already pointing at these pages for a cosmetic
- * gain. Read the ages from `ageRange`, never from the slug.
+ * Read the ages from `ageRange`, never from the slug. The two agree today, but
+ * the boundary between the toddler and preschool rooms has already moved once
+ * and back within a single week; the slugs are live URLs and will not follow it.
  *
  * No rates here by design. Fees were removed from the site entirely, which also
  * retired the `$XXX` placeholders and their warning banner — there is no longer
@@ -216,7 +213,7 @@ export const ageGroups = [
     slug: "2-3-years",
     label: "Little Explorers",
     category: "Toddlers",
-    ageRange: "2 – 3y5m",
+    ageRange: "2 – 3y",
     lead: "Room to move, and the freedom to follow a question.",
     blurb:
       "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
@@ -244,7 +241,7 @@ export const ageGroups = [
     slug: "3-plus-years",
     label: "Discoverers",
     category: "Preschool",
-    ageRange: "3y5m – 6y",
+    ageRange: "3 – 6y",
     lead: "Capable, competent learners, ready for what comes next.",
     blurb:
       "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",
