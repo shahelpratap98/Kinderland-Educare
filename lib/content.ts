@@ -789,13 +789,35 @@ export const reviewSummary = {
  * owner's Downloads folder. It is dated 2013, so it should not be published until
  * someone confirms the fees, policies and staff details in it are still current.
  */
+/**
+ * Documents served from /public/documents.
+ *
+ * The handbook is the centre's own Parent Information Handbook 2026, supplied
+ * Aug 2026. It supersedes the 2013 info pack still linked on the old WordPress
+ * site. Checked against this file before publishing: hours, the three months to
+ * six years range, halal food and the beef/pork rule, nappies and wipes brought
+ * from home, Wednesday lunch boxes, the EC13 form, 20 Hours ECE from age three,
+ * and the two-weeks-at-50% holiday policy all agree.
+ *
+ * ⚠️  The room ages do not:
+ *
+ *     room               handbook                    ageGroups above
+ *     Little Wonderers   3 months - 2 years          3m - 2y      agrees
+ *     Little Explorers   2 years - 3 years 6 months  2 - 3y       differs
+ *     Discoverers        3 years 6 months - School   3 - 6y       differs
+ *
+ * The values above are the owner's explicit instruction and are left alone; the
+ * discrepancy has been raised with them. It matters because this handbook is
+ * downloaded from the same site that publishes those ages.
+ */
 export const enrolmentDocs = [
   {
     id: "info-pack",
-    name: "Parent information pack",
+    name: "Parent information handbook",
     description:
       "What a day looks like, what we provide, what to pack, and the policies you'll want to read before your child starts.",
-    href: null as string | null,
+    /* Dated in the filename for the same reason as the form below. */
+    href: "/documents/kinderland-parent-handbook-2026.pdf" as string | null,
   },
   {
     id: "enrolment-form",
@@ -826,16 +848,8 @@ export const enrolmentSteps = [
   },
 ] as const;
 
-/**
- * TODO(kinderland): no parent-information PDF exists in the repo yet. Until one
- * is added to /public, the hero's secondary action scrolls to the enrolment
- * section rather than serving a dead download link.
- *
- * Note: `Kinderland-Info-Pack_7th-April-2013.pdf` exists in the owner's Downloads
- * folder. It is from 2013, so its fees and policies must be confirmed as current
- * before any of it is published here.
- */
-export const PARENT_PACK_HREF: string | null = null;
+/* PARENT_PACK_HREF used to live here as a second, unused copy of the handbook
+   path. Removed — enrolmentDocs above is the only place that link belongs. */
 
 /**
  * TODO(kinderland): drop the logo artwork into /public and set this to its path
