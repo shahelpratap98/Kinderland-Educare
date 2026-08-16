@@ -800,9 +800,10 @@ export const reviewSummary = {
  * (prefix 01_, 02_ … to set the order), run `node scripts/build-slides.mjs`,
  * then add one entry per generated file here with alt text written per image.
  *
- * ⚠️  Every photograph of an identifiable child needs signed parental media
- * consent before it is committed — committing publishes it to a public GitHub
- * repository, not just to the site.
+ * Consent: the owner confirmed on 16 Aug 2026 that parental media consent is
+ * held for the set supplied that day. That confirmation covers those images
+ * only. Anything added later needs its own — committing publishes to a public
+ * GitHub repository, not just to the site.
  */
 export const enrolmentSlides: readonly Slide[] = [];
 
