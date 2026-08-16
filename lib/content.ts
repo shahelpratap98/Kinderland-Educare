@@ -792,9 +792,15 @@ export const reviewSummary = {
 /**
  * Slideshow on the enrolment page, served from /public/enrolment.
  *
- * Empty until photographs are supplied — the page omits the whole section while
- * this is empty rather than rendering a deck with nothing in it, the same way
- * the room pages handle their photo grids.
+ * The page omits the whole section while this is empty rather than rendering a
+ * deck with nothing in it, the same way the room pages handle their photo grids.
+ *
+ * ⚠️  These are small. The sources are 900px at best against a frame that runs
+ * to about 1100px, so they are emitted at native size rather than upscaled —
+ * softer, but honest. enrolment-4 is the outlier at 306px wide (a 408x306 file
+ * stored a quarter turn out) and is visibly soft beside the others; ask for the
+ * original if it still exists. Its near-identical twin was left out, and so was
+ * the bare-chested portrait, pending the owner's decision.
  *
  * To fill it: drop the images into `Documents/kinder educare/enrolment/`
  * (prefix 01_, 02_ … to set the order), run `node scripts/build-slides.mjs`,
@@ -805,7 +811,33 @@ export const reviewSummary = {
  * only. Anything added later needs its own — committing publishes to a public
  * GitHub repository, not just to the site.
  */
-export const enrolmentSlides: readonly Slide[] = [];
+export const enrolmentSlides: readonly Slide[] = [
+  {
+    kind: "photo",
+    src: "enrolment-1",
+    alt: "A child in a cap studying a small flower held between their fingers, with an adult's open hand waiting beside them.",
+    caption: "Curiosity, one small thing at a time",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-2",
+    alt: "A toddler in a striped top grinning over their shoulder while holding on to a rail.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-3",
+    alt: "A child in a blue rash top leaning on a rock, hair still wet from the water.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-4",
+    alt: "A girl in a yellow and blue outfit smiling at the camera.",
+    hasChildren: true,
+  },
+];
 
 /**
  * Documents served from /public/documents.

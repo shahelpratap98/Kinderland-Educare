@@ -77,8 +77,8 @@ export default function EnrolmentPage() {
       {enrolmentSlides.length > 0 && (
         <Slideshow
           slides={enrolmentSlides}
-          heading="The children who learn here"
-          description="A few moments from around the centre, and from the families who are part of it."
+          heading="Our tamariki"
+          description="A few of the children and families who make up the Kinderland community."
           label="Photographs of children at Kinderland Educare"
           basePath="/enrolment"
         />

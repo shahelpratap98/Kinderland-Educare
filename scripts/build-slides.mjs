@@ -102,7 +102,19 @@ async function renderSlide(slide, sourceDir, outDir = OUT) {
     return;
   }
 
-  const meta = await sharp(src).rotate().metadata();
+  const raw = await sharp(src).metadata();
+  /*
+    metadata() describes the file, not the pipeline, so it reports the stored
+    dimensions even though .rotate() will auto-apply the EXIF orientation. For
+    orientations 5-8 the image turns a quarter turn, and width/height swap —
+    without this the band maths below is computed against the wrong axis and
+    crops the wrong part of the frame.
+  */
+  const quarterTurned = raw.orientation >= 5 && raw.orientation <= 8;
+  const meta = {
+    width: quarterTurned ? raw.height : raw.width,
+    height: quarterTurned ? raw.width : raw.height,
+  };
   let pipe = sharp(src).rotate();
 
   /* `aspect` overrides the 3:2 default for sources whose own shape should be
@@ -311,39 +323,50 @@ for (const photo of [...ageGroupCards, ...ageGroupLeads])
 const ENROLMENT_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/";
 const ENROLMENT_OUT = "public/enrolment";
 
-if (existsSync(ENROLMENT_SOURCE)) {
-  if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
-  const files = readdirSync(ENROLMENT_SOURCE)
-    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
-    .sort();
+/*
+ * Listed rather than picked up by convention, because none of these can be
+ * centre-cropped safely: two are portrait and one is stored a quarter turn out
+ * with EXIF orientation 6.
+ *
+ * `maxWidth` is set to each source's own width so nothing is upscaled. They are
+ * small — 900px at best — and the frame runs to about 1100px, so they will be
+ * a little soft. Emitting them at native size is still better than inventing
+ * pixels; see the note in lib/content.ts about the two 408px files.
+ */
+const enrolmentSlideFiles = [
+  {
+    file: "01_park-flower.jpg",
+    name: "enrolment-1",
+    // Already exactly 3:2, so no band — nothing to crop.
+    maxWidth: 900,
+  },
+  {
+    file: "02_airport.jpg",
+    name: "enrolment-2",
+    // 3:4 portrait, so the 3:2 band keeps only half the height. His face sits
+    // 20-40% down; a centre crop would start at 25% and take the top off his
+    // head. This starts at 8% and keeps him from hair to knees.
+    band: { top: 0.08 },
+    maxWidth: 720,
+  },
+  {
+    file: "03_water-rocks.jpg",
+    name: "enrolment-3",
+    maxWidth: 900,
+  },
+  {
+    file: "04_yellow-dress.jpg",
+    name: "enrolment-4",
+    // Stored 408x306 with orientation 6, so it is really 306x408 portrait once
+    // rotated. Her face is high in the frame, hence the shallow top.
+    band: { top: 0.04 },
+    maxWidth: 306,
+  },
+];
 
-  for (const [i, file] of files.entries()) {
-    const name = `enrolment-${i + 1}`;
-    const meta = await sharp(ENROLMENT_SOURCE + file).rotate().metadata();
-    const target = Math.min(WIDTH, meta.width);
-    const pipe = sharp(ENROLMENT_SOURCE + file).rotate().resize({
-      width: target,
-      height: Math.round(target / ASPECT),
-      fit: "cover",
-      position: "centre",
-    });
-
-    await pipe.clone().webp({ quality: 78 }).toFile(`${ENROLMENT_OUT}/${name}.webp`);
-    await pipe
-      .clone()
-      .jpeg({ quality: 80, mozjpeg: true })
-      .toFile(`${ENROLMENT_OUT}/${name}.jpg`);
-
-    const kb = (statSync(`${ENROLMENT_OUT}/${name}.webp`).size / 1024).toFixed(0);
-    const portrait = meta.height > meta.width ? "  ⚠ portrait source, centre-cropped — check framing" : "";
-    console.log(
-      `${name.padEnd(22)} ${target}x${Math.round(target / ASPECT)}  ${kb}KB webp   <- ${file}${portrait}`,
-    );
-  }
-  if (files.length === 0) console.log(`No enrolment photographs in ${ENROLMENT_SOURCE}`);
-} else {
-  console.log(`\nNo enrolment photographs yet. Drop files into ${ENROLMENT_SOURCE} and re-run.`);
-}
+if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
+for (const slide of enrolmentSlideFiles)
+  await renderSlide(slide, ENROLMENT_SOURCE, ENROLMENT_OUT);
 
 /* ------------------------------------------------------------------ */
 /*  Room photographs                                                   */
