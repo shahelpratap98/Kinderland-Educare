@@ -287,6 +287,65 @@ for (const photo of [...ageGroupCards, ...ageGroupLeads])
   await renderSlide(photo, ARCHIVE_SOURCE, ROOM_OUT);
 
 /* ------------------------------------------------------------------ */
+/*  Enrolment page slideshow                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Picked up by convention, like the room photographs: drop files into
+ *
+ *   Documents/kinder educare/enrolment/
+ *
+ * and they are processed in filename order on the next run, emitting
+ * enrolment-1, enrolment-2 … into /public/enrolment. Prefix the filenames 01_,
+ * 02_ … to control the order of the deck.
+ *
+ * Centre-cropped to 3:2. That is safe for landscape sources but will cut a tall
+ * portrait — this set is mixed, so check the contact sheet after a run and give
+ * anything that crops badly an explicit band in `slides` above, the same as the
+ * carousel photographs.
+ *
+ * ⚠️  Every one of these shows an identifiable child, so the consent rule in
+ * lib/content.ts applies before any of them is committed: committing publishes
+ * to a public GitHub repository as well as to the site.
+ */
+const ENROLMENT_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/";
+const ENROLMENT_OUT = "public/enrolment";
+
+if (existsSync(ENROLMENT_SOURCE)) {
+  if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
+  const files = readdirSync(ENROLMENT_SOURCE)
+    .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
+    .sort();
+
+  for (const [i, file] of files.entries()) {
+    const name = `enrolment-${i + 1}`;
+    const meta = await sharp(ENROLMENT_SOURCE + file).rotate().metadata();
+    const target = Math.min(WIDTH, meta.width);
+    const pipe = sharp(ENROLMENT_SOURCE + file).rotate().resize({
+      width: target,
+      height: Math.round(target / ASPECT),
+      fit: "cover",
+      position: "centre",
+    });
+
+    await pipe.clone().webp({ quality: 78 }).toFile(`${ENROLMENT_OUT}/${name}.webp`);
+    await pipe
+      .clone()
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toFile(`${ENROLMENT_OUT}/${name}.jpg`);
+
+    const kb = (statSync(`${ENROLMENT_OUT}/${name}.webp`).size / 1024).toFixed(0);
+    const portrait = meta.height > meta.width ? "  ⚠ portrait source, centre-cropped — check framing" : "";
+    console.log(
+      `${name.padEnd(22)} ${target}x${Math.round(target / ASPECT)}  ${kb}KB webp   <- ${file}${portrait}`,
+    );
+  }
+  if (files.length === 0) console.log(`No enrolment photographs in ${ENROLMENT_SOURCE}`);
+} else {
+  console.log(`\nNo enrolment photographs yet. Drop files into ${ENROLMENT_SOURCE} and re-run.`);
+}
+
+/* ------------------------------------------------------------------ */
 /*  Room photographs                                                   */
 /* ------------------------------------------------------------------ */
 

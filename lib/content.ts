@@ -790,6 +790,23 @@ export const reviewSummary = {
  * someone confirms the fees, policies and staff details in it are still current.
  */
 /**
+ * Slideshow on the enrolment page, served from /public/enrolment.
+ *
+ * Empty until photographs are supplied — the page omits the whole section while
+ * this is empty rather than rendering a deck with nothing in it, the same way
+ * the room pages handle their photo grids.
+ *
+ * To fill it: drop the images into `Documents/kinder educare/enrolment/`
+ * (prefix 01_, 02_ … to set the order), run `node scripts/build-slides.mjs`,
+ * then add one entry per generated file here with alt text written per image.
+ *
+ * ⚠️  Every photograph of an identifiable child needs signed parental media
+ * consent before it is committed — committing publishes it to a public GitHub
+ * repository, not just to the site.
+ */
+export const enrolmentSlides: readonly Slide[] = [];
+
+/**
  * Documents served from /public/documents.
  *
  * The handbook is the centre's own Parent Information Handbook 2026, supplied

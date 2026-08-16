@@ -4,12 +4,14 @@ import { ArrowRight, Download, FileText, Phone } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { HeroVideo } from "@/components/hero-video";
 import { Icon } from "@/components/icon";
+import { Slideshow } from "@/components/sections/slideshow";
 import { TourCta } from "@/components/tour-cta";
 import { cn } from "@/lib/utils";
 import {
   centre,
   enrolmentDocs,
   enrolmentFacts,
+  enrolmentSlides,
   enrolmentSteps,
 } from "@/lib/content";
 
@@ -65,6 +67,22 @@ export default function EnrolmentPage() {
           ))}
         </ol>
       </section>
+
+      {/*
+        Same component as the home and /our-approach decks — swipe, pause,
+        keyboard and the loading window all come with it, so there is no second
+        implementation to keep in step. Omitted entirely while there are no
+        photographs, rather than rendering an empty frame.
+      */}
+      {enrolmentSlides.length > 0 && (
+        <Slideshow
+          slides={enrolmentSlides}
+          heading="The children who learn here"
+          description="A few moments from around the centre, and from the families who are part of it."
+          label="Photographs of children at Kinderland Educare"
+          basePath="/enrolment"
+        />
+      )}
 
       <section className="border-y border-hairline bg-wash">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
