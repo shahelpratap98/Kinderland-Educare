@@ -101,12 +101,20 @@ export function Slideshow({
   const shouldLoad = (i: number) =>
     i === index || i === (index + 1) % count || i === (index - 1 + count) % count;
 
-  /* Autoplay. Reduced motion opts out entirely rather than merely going slower. */
+  /*
+    Autoplay. Reduced motion opts out entirely rather than merely going slower.
+
+    `index` is a dependency so the timer restarts whenever the slide changes.
+    Without it the interval ran free of the deck: picking a slide by dot or
+    swipe could be followed a fraction of a second later by an automatic
+    advance, snatching away the slide just chosen. Every slide now gets the
+    full interval, however it was arrived at.
+  */
   useEffect(() => {
     if (paused || reduce) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % count), INTERVAL);
-    return () => clearInterval(id);
-  }, [paused, reduce, count]);
+    const id = setTimeout(() => setIndex((i) => (i + 1) % count), INTERVAL);
+    return () => clearTimeout(id);
+  }, [paused, reduce, count, index]);
 
   /*
     A hidden tab should not keep cycling.

@@ -324,43 +324,38 @@ const ENROLMENT_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/enrolm
 const ENROLMENT_OUT = "public/enrolment";
 
 /*
- * Listed rather than picked up by convention, because none of these can be
- * centre-cropped safely: two are portrait and one is stored a quarter turn out
- * with EXIF orientation 6.
+ * Listed rather than picked up by convention so the order is explicit and each
+ * file can carry its own framing.
  *
- * `maxWidth` is set to each source's own width so nothing is upscaled. They are
- * small — 900px at best — and the frame runs to about 1100px, so they will be
- * a little soft. Emitting them at native size is still better than inventing
- * pixels; see the note in lib/content.ts about the two 408px files.
+ * Every entry here is already exactly 3:2, so none is cropped — the two studio
+ * photographs are 7120px and 6336px wide and are only downscaled. The airport
+ * and yellow-dress files were dropped: at 720px and 306px they sat well under
+ * the ~1100px frame and were visibly soft beside these. They are kept in
+ * enrolment/_unused rather than deleted.
  */
 const enrolmentSlideFiles = [
   {
-    file: "01_park-flower.jpg",
+    file: "00_cover-bunny.jpg",
     name: "enrolment-1",
-    // Already exactly 3:2, so no band — nothing to crop.
+    // 7120x4746, already exactly 3:2. Nothing to crop; only downscaled.
+    maxWidth: 1800,
+  },
+  {
+    file: "01_park-flower.jpg",
+    name: "enrolment-2",
+    // 900x600, also exactly 3:2.
     maxWidth: 900,
   },
   {
-    file: "02_airport.jpg",
-    name: "enrolment-2",
-    // 3:4 portrait, so the 3:2 band keeps only half the height. His face sits
-    // 20-40% down; a centre crop would start at 25% and take the top off his
-    // head. This starts at 8% and keeps him from hair to knees.
-    band: { top: 0.08 },
-    maxWidth: 720,
+    file: "06_overalls.jpg",
+    name: "enrolment-3",
+    // 6336x4224, exactly 3:2.
+    maxWidth: 1800,
   },
   {
     file: "03_water-rocks.jpg",
-    name: "enrolment-3",
-    maxWidth: 900,
-  },
-  {
-    file: "04_yellow-dress.jpg",
     name: "enrolment-4",
-    // Stored 408x306 with orientation 6, so it is really 306x408 portrait once
-    // rotated. Her face is high in the frame, hence the shallow top.
-    band: { top: 0.04 },
-    maxWidth: 306,
+    maxWidth: 900,
   },
 ];
 
