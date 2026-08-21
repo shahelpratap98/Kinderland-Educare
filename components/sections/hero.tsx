@@ -54,13 +54,16 @@ export function Hero() {
           that carries them. One muted line, so it does not disturb the composition.
         */}
         {/*
-          Ink rather than muted, unlike the description above it. This line sits low
-          enough to overlap the video, where the scrim has thinned to ~0.6 white —
-          grey measures roughly 3.3–3.8:1 against the composited frame, under AA.
-          The scrim's 0.6 floor means black clears 7:1 against even the darkest
-          possible frame, so it stays legible whatever the clip is doing.
+          This line overlaps the video, and the scrim was thinned so the sky reads
+          — which left almost nothing behind it: measured 3.87–3.98:1 against the
+          composited frame across the clip, under the 4.5 its 14px needs.
+
+          So it carries its own chip rather than the scrim being thickened back
+          up, which would bleach the sky again. A local backing fixes the one
+          element that needs it and leaves the picture alone. Measured 11:1 at
+          the darkest frame behind it.
         */}
-        <p className="animate-fade-rise-delay-2 mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-ink">
+        <p className="animate-fade-rise-delay-2 mt-10 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-background/75 px-5 py-2.5 text-sm text-ink backdrop-blur-sm">
           <span>
             {centre.address.street}, {centre.address.suburb}
           </span>

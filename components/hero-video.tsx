@@ -3,8 +3,19 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
-const VIDEO_SRC =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4";
+/*
+ * Served from /public rather than hotlinked.
+ *
+ * The previous clip was loaded straight off a Higgsfield CDN path belonging to
+ * a different account — nothing we control, and the hero would have gone blank
+ * the day that file was removed. This one is generated, downloaded and
+ * committed, so the page owns its own background.
+ *
+ * It is also 7.9MB against the old 30.4MB, at a higher resolution (2560x1440
+ * vs 1928x1072), so the swap is cheaper as well as safer. The fade loop below
+ * reads `duration` off the element, so the shorter 10s clip needs no change.
+ */
+const VIDEO_SRC = "/video/hero-valley.mp4";
 
 const FADE = 0.5; // seconds of fade at each end
 const RESTART_DELAY = 100; // ms held at opacity 0 before looping
@@ -43,11 +54,24 @@ const RESTART_DELAY = 100; // ms held at opacity 0 before looping
  * the left where the copy sits so white type stays legible over a moving frame.
  */
 const VARIANTS = {
+  /*
+    The clip is 16:9 but this container is far wider than it is tall, so
+    object-cover was scaling to width and throwing away the top and bottom of
+    the frame — the sky and the flowered foreground, i.e. most of what makes the
+    shot. Starting it higher makes the container taller, its aspect closer to
+    the clip's own, and correspondingly less is cropped away.
+
+    The scrim thins with it. It used to hold 0.94 white across the whole sky
+    band, which bleached it; it now clears through that zone and holds white
+    only where the copy actually sits. See the contrast note in hero.tsx — the
+    line over the video is ink, not muted, precisely so it survives a thinner
+    scrim.
+  */
   tall: {
-    top: "300px",
-    mask: "linear-gradient(to bottom, transparent 0, #000 140px)",
+    top: "180px",
+    mask: "linear-gradient(to bottom, transparent 0, #000 90px)",
     scrim:
-      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.94) 32%, rgba(255,255,255,0.6) 46%, rgba(255,255,255,0) 64%, rgba(255,255,255,0) 88%, #fff 100%)",
+      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.34) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 62%, rgba(255,255,255,0) 88%, #fff 100%)",
   },
   compact: {
     top: "0",
