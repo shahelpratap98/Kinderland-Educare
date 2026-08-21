@@ -851,7 +851,20 @@ export const enrolmentSlides: readonly Slide[] = [
  * from home, Wednesday lunch boxes, the EC13 form, 20 Hours ECE from age three,
  * and the two-weeks-at-50% holiday policy all agree.
  *
- * ⚠️  The room ages do not:
+ * Replaced 21 Aug 2026 with the centre's "final final version". Same 11-ish
+ * length and same filename, so the existing download URL still works.
+ *
+ * ⚠️  It is 37MB — 165x the previous 236KB — because the export embeds 438
+ * images across 11 pages, many of them repeated decorative banners at print
+ * resolution. It downloads correctly but is a poor thing to hand a parent on
+ * mobile data. Re-exporting from Word with "Minimum size (publishing online)",
+ * or any PDF optimiser, should bring it under a megabyte with no visible loss.
+ *
+ * ⚠️  The room ages could not be re-checked in this version. Its headings use a
+ * subset font with no usable ToUnicode map, so the parenthetical ranges beside
+ * each room name are not machine-readable. The body text still says Little
+ * Wonderers runs "three months to two years", which agrees with ageGroups. The
+ * Explorers/Discoverers boundary below is therefore still unverified:
  *
  *     room               handbook                    ageGroups above
  *     Little Wonderers   3 months - 2 years          3m - 2y      agrees
