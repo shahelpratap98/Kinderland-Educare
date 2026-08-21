@@ -79,7 +79,13 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 sm:px-8 sm:py-4">
+      <div
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 sm:px-8",
+          "transition-[padding] duration-300 ease-out-strong",
+          scrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-4",
+        )}
+      >
         {/*
           The logo is the home link. Kept on the left: that is where a masthead is
           looked for, and it is where the wordmark already sat, so the rest of the
@@ -93,10 +99,26 @@ export function SiteHeader() {
           {/*
             The mark is an emblem — tree and sun above a two-line wordmark — not a
             horizontal lockup, so it needs height to stay legible. At 48px the
-            wordmark was about 20px for both lines and read as a smudge. The
-            header's own padding is pulled in to pay for the extra height.
+            wordmark was about 20px for both lines and read as a smudge.
+
+            It is no longer sized to fit the nav row; it sets the row's height
+            instead, which is what "bigger and independent of the menu" asks for.
+            It is not allowed to overhang the bar, though: the header sits above
+            the page rather than over it, and on every subpage the section
+            directly beneath is plum-900. The mark keeps a white halo around the
+            sun that cannot be keyed out, so hanging it over that would show as a
+            pale blob — see the warning in components/ui/logo.tsx.
+
+            It shrinks once the page scrolls, so the full-size mark greets you at
+            the top without a 120px bar following you down the page.
           */}
-          <Logo className="h-14 sm:h-16" priority />
+          <Logo
+            className={cn(
+              "transition-[height] duration-300 ease-out-strong",
+              scrolled ? "h-12 sm:h-14" : "h-20 sm:h-24",
+            )}
+            priority
+          />
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
