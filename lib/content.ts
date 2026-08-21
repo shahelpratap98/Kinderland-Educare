@@ -192,14 +192,13 @@ export const ageGroups = [
     body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
     subsidy: null,
     cardPhoto: {
-      src: "first-instruments",
-      alt: "Two small children sitting together with shakers and a xylophone.",
-    } as RoomPhoto,
+      src: "infant-card",
+      alt: "A baby in a pale blue romper lying on a cream fleece, smiling up at the camera beside a soft toy rabbit.",
+    } as RoomPhoto | null,
     photos: [
       {
-        src: "wall-painting-wide",
-        alt: "A child painting broad brushstrokes onto a wall-mounted sheet of paper.",
-        aspect: "11 / 5",
+        src: "infant-lead",
+        alt: "A baby in a pale blue romper lying on a cream fleece, smiling up at the camera beside a soft toy rabbit.",
       },
     ] as readonly RoomPhoto[],
     highlights: [
@@ -219,17 +218,8 @@ export const ageGroups = [
       "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
     body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
-    cardPhoto: {
-      src: "painting-flowers",
-      alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
-    } as RoomPhoto,
-    photos: [
-      {
-        src: "building-blocks-wide",
-        alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
-        aspect: "11 / 5",
-      },
-    ] as readonly RoomPhoto[],
+    cardPhoto: null as RoomPhoto | null,
+    photos: [] as readonly RoomPhoto[],
     highlights: [
       "Purpose-built outdoor play areas for active toddlers",
       "Morning tea, hot lunch, afternoon tea and a late snack",
@@ -247,17 +237,8 @@ export const ageGroups = [
       "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",
     body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
     subsidy: "20 Hours ECE",
-    cardPhoto: {
-      src: "hands-on",
-      alt: "A smiling child holding both palms up to the camera, covered in bright finger paint.",
-    } as RoomPhoto,
-    photos: [
-      {
-        src: "ready-for-school-wide",
-        alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
-        aspect: "11 / 5",
-      },
-    ] as readonly RoomPhoto[],
+    cardPhoto: null as RoomPhoto | null,
+    photos: [] as readonly RoomPhoto[],
     highlights: [
       "20 Hours ECE government funding fully supported",
       "A transition programme through to primary school",
@@ -464,6 +445,13 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "outdoor-play",
+    alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
+    caption: "Room to move, every day",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "farm-visit",
     alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
     caption: "Enquiring minds, following their own questions",
@@ -478,9 +466,8 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "outdoor-play",
-    alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
-    caption: "Room to move, every day",
+    src: "old-ece-blocks",
+    alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
     hasChildren: true,
   },
   {
@@ -491,9 +478,15 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "old-first-instruments",
+    alt: "Two small children sitting together with shakers and a xylophone.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "mosaic-board",
     alt: "A boy holding up a peg board he has filled with coloured counters, in front of the classroom shelves.",
-    caption: "Look what I made",
+    caption: "Finishing what you started",
     hasChildren: true,
   },
   {
@@ -509,8 +502,20 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "old-painting-flowers",
+    alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "puppet-play",
     alt: "A girl in a red headscarf smiling beside the zebra hand puppet she is holding up.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "old-wall-painting",
+    alt: "A child painting broad brushstrokes onto a wall-mounted sheet of paper.",
     hasChildren: true,
   },
   {
@@ -518,6 +523,12 @@ export const slides: readonly Slide[] = [
     src: "sunhats-outside",
     alt: "Children in sun hats playing with hoops in the outdoor yard on a clear summer day.",
     caption: "Hats on, outside, most of the year",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "old-building-blocks",
+    alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
     hasChildren: true,
   },
   {
@@ -531,6 +542,12 @@ export const slides: readonly Slide[] = [
     kind: "photo",
     src: "dress-ups",
     alt: "A toddler in oversized white sunglasses on the deck, with another child playing behind her.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "old-hands-on",
+    alt: "A smiling child holding both palms up to the camera, covered in bright finger paint.",
     hasChildren: true,
   },
   {
@@ -795,14 +812,16 @@ export const reviewSummary = {
  * The page omits the whole section while this is empty rather than rendering a
  * deck with nothing in it, the same way the room pages handle their photo grids.
  *
- * enrolment-1 leads the deck at the owner's request. It and enrolment-3 are
- * studio photographs, 7120px and 6336px wide and already exactly 3:2, so they
- * are only downscaled. The other two are 900px candids — under the ~1100px
- * frame, so very slightly soft, but not enough to drop.
+ * Nine photographs taken at the centre, supplied Aug 2026. They replace the
+ * earlier family set entirely — these are the rooms, the garden and the
+ * playground, with the centre's own tamariki and kaiako in them.
  *
- * Two supplied images are not used. The airport shot (720px) and the yellow
- * dress (306px, and one of a near-identical pair) were too soft to sit beside
- * the studio pair. The bare-chested portrait is still held pending a decision.
+ * Sources are 1200px, mostly 3:4, so each carries a hand-placed band: a centre
+ * crop to 3:2 on a portrait starts a quarter of the way down and takes the top
+ * off a head. None is upscaled. They are encoded harder than the rest of the
+ * site (quality 68) because the busy frames — the playground group, the
+ * overhead of the craft mat — cost two to three times a simple portrait and
+ * hide the loss best. The set is 748KB of WebP for nine slides.
  *
  * To fill it: drop the images into `Documents/kinder educare/enrolment/`
  * (prefix 01_, 02_ … to set the order), run `node scripts/build-slides.mjs`,
@@ -817,26 +836,58 @@ export const enrolmentSlides: readonly Slide[] = [
   {
     kind: "photo",
     src: "enrolment-1",
-    alt: "A baby in a pale blue romper lying on a cream fleece, smiling up at the camera beside a soft toy rabbit.",
+    alt: "A teacher and a toddler reaching up together to a string of fairy lights indoors.",
+    caption: "Settling in, one familiar face at a time",
     hasChildren: true,
   },
   {
     kind: "photo",
     src: "enrolment-2",
-    alt: "A child in a cap studying a small flower held between their fingers, with an adult's open hand waiting beside them.",
-    caption: "Curiosity, one small thing at a time",
+    alt: "A child in a red top on the playground climbing frame with one arm raised.",
     hasChildren: true,
   },
   {
     kind: "photo",
     src: "enrolment-3",
-    alt: "A baby in denim dungarees laughing at the camera against a plain dark grey background.",
+    alt: "A child wearing a korowai pulling a face for the camera in the garden.",
     hasChildren: true,
   },
   {
     kind: "photo",
     src: "enrolment-4",
-    alt: "A child in a blue rash top leaning on a rock, hair still wet from the water.",
+    alt: "Children kneeling around a large water tray on the grass, playing with floating shapes.",
+    caption: "Room to move, every day",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-5",
+    alt: "A child threading beads onto a wooden frame at an indoor table.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-6",
+    alt: "Six children standing on the grass holding cardboard tubes up to their eyes like binoculars.",
+    caption: "Looking closely at everything",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-7",
+    alt: "A child in the garden holding up a small hanging craft they have made.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-8",
+    alt: "Looking down on a group of children working together on a craft mat.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-9",
+    alt: "A child laying out plates and cups on a table covered with a patterned cloth.",
     hasChildren: true,
   },
 ];

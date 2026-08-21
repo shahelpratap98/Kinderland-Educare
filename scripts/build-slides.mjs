@@ -147,10 +147,15 @@ async function renderSlide(slide, sourceDir, outDir = OUT) {
     position: "centre",
   });
 
-  await sized.clone().webp({ quality: 78 }).toFile(`${outDir}/${slide.name}.webp`);
+  /* `quality` is per-slide so a busy frame can be pushed harder than a calm
+     one. Busy photographs — a playground of children, an overhead of a craft
+     mat — cost two to three times a simple portrait at the same setting, and
+     they are also the ones where the loss is hardest to see. */
+  const q = slide.quality ?? 78;
+  await sized.clone().webp({ quality: q }).toFile(`${outDir}/${slide.name}.webp`);
   await sized
     .clone()
-    .jpeg({ quality: 80, mozjpeg: true })
+    .jpeg({ quality: Math.min(100, q + 2), mozjpeg: true })
     .toFile(`${outDir}/${slide.name}.jpg`);
 
   const kb = (f) => (statSync(f).size / 1024).toFixed(0);
@@ -282,6 +287,14 @@ const AGE_GROUP_LEAD_WIDTH = 1400;
 /* 924x420 -> exactly 11:5. */
 const LETTERBOX = 924 / 420;
 
+/* The infant rooms's photograph is the studio baby that used to open the
+   enrolment deck — a real photograph replacing a stock one. Its source lives in
+   enrolment/_unused now that the enrolment page has its own set. */
+const infantPhotos = [
+  { file: "00_cover-bunny.jpg", name: "infant-card", maxWidth: 1000 },
+  { file: "00_cover-bunny.jpg", name: "infant-lead", maxWidth: 1800 },
+];
+
 const ageGroupCards = [
   { file: "orig-slide5.jpg", name: "first-instruments", band: { top: 0, left: 0.16, width: 0.682 } },
   { file: "orig-slide1.jpg", name: "painting-flowers", band: { top: 0, left: 0.11, width: 0.682 } },
@@ -297,6 +310,33 @@ const ageGroupLeads = [
 if (!existsSync(ROOM_OUT)) mkdirSync(ROOM_OUT, { recursive: true });
 for (const photo of [...ageGroupCards, ...ageGroupLeads])
   await renderSlide(photo, ARCHIVE_SOURCE, ROOM_OUT);
+
+for (const photo of infantPhotos)
+  await renderSlide(photo, "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/_unused/", ROOM_OUT);
+
+/* ------------------------------------------------------------------ */
+/*  Old home page slider, on the home deck                             */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The same six images the old site ran in its home slider, now wanted on this
+ * one. They are 924x420, so a 3:2 crop leaves 630x420 — capped at 900 rather
+ * than pushed to 1800, which would have been a 2.9x upscale. They are the
+ * softest things in the deck and there is no version of them that is not.
+ *
+ * Each `left` is measured, not centred: a centre crop cut a hand off slide2
+ * and the outer block off slide4.
+ */
+const homeArchiveSlides = [
+  { file: "orig-slide1.jpg", name: "old-painting-flowers", band: { top: 0, left: 0.11, width: 0.682 } },
+  { file: "orig-slide2.jpg", name: "old-hands-on", band: { top: 0, left: 0.26, width: 0.682 } },
+  { file: "orig-slide3.jpg", name: "old-building-blocks", band: { top: 0, left: 0.18, width: 0.682 } },
+  { file: "orig-slide4.jpg", name: "old-ece-blocks", band: { top: 0, left: 0.25, width: 0.682 } },
+  { file: "orig-slide5.jpg", name: "old-first-instruments", band: { top: 0, left: 0.16, width: 0.682 } },
+  { file: "orig-slide6.jpg", name: "old-wall-painting", band: { top: 0, left: 0.318, width: 0.682 } },
+].map((e) => ({ ...e, maxWidth: 900 }));
+
+for (const slide of homeArchiveSlides) await renderSlide(slide, ARCHIVE_SOURCE);
 
 /* ------------------------------------------------------------------ */
 /*  Enrolment page slideshow                                           */
@@ -334,30 +374,25 @@ const ENROLMENT_OUT = "public/enrolment";
  * enrolment/_unused rather than deleted.
  */
 const enrolmentSlideFiles = [
-  {
-    file: "00_cover-bunny.jpg",
-    name: "enrolment-1",
-    // 7120x4746, already exactly 3:2. Nothing to crop; only downscaled.
-    maxWidth: 1800,
-  },
-  {
-    file: "01_park-flower.jpg",
-    name: "enrolment-2",
-    // 900x600, also exactly 3:2.
-    maxWidth: 900,
-  },
-  {
-    file: "06_overalls.jpg",
-    name: "enrolment-3",
-    // 6336x4224, exactly 3:2.
-    maxWidth: 1800,
-  },
-  {
-    file: "03_water-rocks.jpg",
-    name: "enrolment-4",
-    maxWidth: 900,
-  },
-];
+  // Teacher and toddler under the fairy lights. Faces 20-40% down.
+  { file: "01_centre.jpg", name: "enrolment-1", band: { top: 0.12 } },
+  // Boy on the climbing frame, arm up against blue sky. Face 25-45%.
+  { file: "02_centre.jpg", name: "enrolment-2", band: { top: 0.18 } },
+  // Girl in the korowai. Face 15-35%.
+  { file: "03_centre.jpg", name: "enrolment-3", band: { top: 0.08 } },
+  // Overhead of the water tray on the grass. Already 1.36, barely cropped.
+  { file: "04_centre.jpg", name: "enrolment-4" },
+  // Threading at the table. Face 15-35%.
+  { file: "05_centre.jpg", name: "enrolment-5", band: { top: 0.08 } },
+  // The group in the playground. Children sit 30-70%, so this starts lower.
+  { file: "06_centre.jpg", name: "enrolment-6", band: { top: 0.28 } },
+  // Girl in the garden. Face high in the frame at 8-25%.
+  { file: "07_centre.jpg", name: "enrolment-7", band: { top: 0.03 } },
+  // Overhead of the craft mat — no single subject, so a middle band.
+  { file: "08_centre.jpg", name: "enrolment-8", band: { top: 0.15 } },
+  // Laying the table. Face 10-30%.
+  { file: "09_centre.jpg", name: "enrolment-9", band: { top: 0.05 } },
+].map((e) => ({ ...e, maxWidth: 1200, quality: 68 }));
 
 if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
 for (const slide of enrolmentSlideFiles)
