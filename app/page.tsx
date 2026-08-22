@@ -1,5 +1,5 @@
 import { Hero } from "@/components/sections/hero";
-import { FeeStructure } from "@/components/sections/fee-structure";
+import { Welcome } from "@/components/sections/welcome";
 import { Slideshow } from "@/components/sections/slideshow";
 import { Philosophy } from "@/components/sections/philosophy";
 import { Reviews } from "@/components/sections/reviews";
@@ -19,7 +19,7 @@ export default function Home() {
       <Hero />
       {/* Above the slideshow: "now open and taking enrolments" is the first
           thing a parent needs, before any of the atmosphere. */}
-      <FeeStructure />
+      <Welcome />
       <Slideshow />
       <Philosophy />
       {/* Directly before the visit form: the last thing read before deciding. */}

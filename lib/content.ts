@@ -99,19 +99,26 @@ export const values = [
 ] as const;
 
 /**
- * The fee-structure panel on the home page, directly above the slideshow.
+ * The welcome panel on the home page, directly above the slideshow.
  *
- * Note it names no figures — the same rule that removed pricing everywhere else
- * on the site. It says the structures vary and points at a conversation, which
- * is exactly what the centre asked for.
+ * Was a fee-structure panel until Aug 2026, when the centre replaced its copy
+ * with this. The heading changed with it: the section no longer says anything
+ * about fees, and leaving it titled "A flexible fee structure" would have been
+ * a heading its own text never answered.
+ *
+ * Nothing factual was lost in the swap. Session options, the sibling discount,
+ * the holiday reduction and "call us for current fees" all still live on
+ * /enrolment and the room pages, which is where a parent looking for them goes.
  */
-export const feeStructure = {
+export const welcome = {
   eyebrow: "Now open and taking new enrolments",
-  title: "A flexible fee structure",
+  title: "Safe, loved, and inspired — because every child deserves the very best start.",
   body: [
-    "At Kinderland Educare, to meet the needs of our parents, we run many programmes that include, besides full days, other options of short days and sessions.",
-    "Our fees structures also vary to reflect the flexibility of our various programmes and provide our parents options based on the time a child is enrolled for.",
-    "For more details and further information please do contact us.",
+    "At Kinderland Educare, we believe early childhood is about so much more than care. It's about creating a place where children feel safe to explore, confident to learn, and deeply connected to the people around them.",
+    "From the moment you walk through our doors, you'll find a warm and welcoming environment where children are known, valued, and encouraged to be themselves.",
+    "We believe strong relationships with families are at the heart of great early learning. That's why we work closely with parents and whānau, creating a genuine partnership that supports each child's wellbeing, learning, and development.",
+    "When you choose Kinderland Educare, you're choosing more than childcare.",
+    "You're choosing a community where your child can belong, grow, discover, and thrive.",
   ],
 } as const;
 

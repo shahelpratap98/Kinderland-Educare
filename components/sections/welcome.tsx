@@ -1,26 +1,25 @@
 import { ArrowRight } from "lucide-react";
 import { Reveal, RevealItem } from "@/components/reveal";
 import { TourCta } from "@/components/tour-cta";
-import { feeStructure } from "@/lib/content";
+import { welcome } from "@/lib/content";
 
 /**
- * Fee structure, between the hero and the slideshow.
+ * Welcome panel, between the hero and the slideshow.
  *
  * "Now open and taking new enrolments" leads as an eyebrow rather than a
  * heading: it is the piece of news a parent scanning the page needs first, but
  * it is a status, not the subject of the section.
  *
- * Deliberately no figures, and no fee table. Pricing was removed from the site
- * entirely, and this copy exists precisely because the structures vary by
- * programme — so it ends at the tour dialog, the same action every other
- * section on the page ends at.
+ * The heading is a full sentence rather than a label, so it is set at the same
+ * size as the other section headings and allowed to wrap across the narrow
+ * column — it reads as a statement, which is what it is.
  */
-export function FeeStructure() {
+export function Welcome() {
   return (
     <section
-      id="fees"
+      id="welcome"
       className="border-b border-hairline"
-      aria-labelledby="fees-heading"
+      aria-labelledby="welcome-heading"
     >
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
         <Reveal className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
@@ -39,20 +38,20 @@ export function FeeStructure() {
                 aria-hidden
                 className="size-1.5 rounded-full bg-leaf-600"
               />
-              {feeStructure.eyebrow}
+              {welcome.eyebrow}
             </p>
 
             <h2
-              id="fees-heading"
+              id="welcome-heading"
               className="mt-4 text-4xl font-normal text-ink sm:text-5xl"
             >
-              {feeStructure.title}
+              {welcome.title}
             </h2>
           </RevealItem>
 
           <RevealItem>
             <div className="space-y-4">
-              {feeStructure.body.map((p) => (
+              {welcome.body.map((p) => (
                 <p key={p} className="text-[17px] leading-relaxed text-muted">
                   {p}
                 </p>
