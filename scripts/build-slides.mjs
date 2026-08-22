@@ -290,6 +290,36 @@ const LETTERBOX = 924 / 420;
 /* The infant rooms's photograph is the studio baby that used to open the
    enrolment deck — a real photograph replacing a stock one. Its source lives in
    enrolment/_unused now that the enrolment page has its own set. */
+/* The preschool room takes the farm visit — a real photograph of a child at
+   this centre, replacing stock. Same band as the home deck used: she sits right
+   of centre with her face 44-59% down, so this keeps the right 70% from 34%
+   down and leaves the goat as context rather than the subject. */
+const discovererPhotos = [
+  {
+    file: "487298229_1191140626139528_3576501818591827360_n.jpg",
+    name: "discoverers-card",
+    band: { top: 0.34, left: 0.3, width: 0.7 },
+    maxWidth: 1000,
+  },
+  {
+    file: "487298229_1191140626139528_3576501818591827360_n.jpg",
+    name: "discoverers-lead",
+    band: { top: 0.34, left: 0.3, width: 0.7 },
+    maxWidth: 1800,
+  },
+];
+
+/* The toddler room takes the fairy-lights photograph. Of everything available
+   it is the closest age match for 2-3 — the child reads about two, where the
+   rest of the new set are three and up — and it is the one that survives being
+   shrunk to a 341px card, because two lit faces against a dark ground keep
+   their shape at that size. It also shows a kaiako, which is what a parent
+   handing over a two-year-old is actually looking for. */
+const explorerPhotos = [
+  { file: "01_centre.jpg", name: "explorers-card", band: { top: 0.12 }, maxWidth: 1000, quality: 72 },
+  { file: "01_centre.jpg", name: "explorers-lead", band: { top: 0.12 }, maxWidth: 1200, quality: 72 },
+];
+
 const infantPhotos = [
   { file: "00_cover-bunny.jpg", name: "infant-card", maxWidth: 1000 },
   { file: "00_cover-bunny.jpg", name: "infant-lead", maxWidth: 1800 },
@@ -314,6 +344,11 @@ for (const photo of [...ageGroupCards, ...ageGroupLeads])
 for (const photo of infantPhotos)
   await renderSlide(photo, "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/_unused/", ROOM_OUT);
 
+for (const photo of discovererPhotos) await renderSlide(photo, SOURCE, ROOM_OUT);
+
+for (const photo of explorerPhotos)
+  await renderSlide(photo, "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/", ROOM_OUT);
+
 /* ------------------------------------------------------------------ */
 /*  Old home page slider, on the home deck                             */
 /* ------------------------------------------------------------------ */
@@ -333,7 +368,15 @@ const homeArchiveSlides = [
   { file: "orig-slide3.jpg", name: "old-building-blocks", band: { top: 0, left: 0.18, width: 0.682 } },
   { file: "orig-slide4.jpg", name: "old-ece-blocks", band: { top: 0, left: 0.25, width: 0.682 } },
   { file: "orig-slide5.jpg", name: "old-first-instruments", band: { top: 0, left: 0.16, width: 0.682 } },
-  { file: "orig-slide6.jpg", name: "old-wall-painting", band: { top: 0, left: 0.318, width: 0.682 } },
+  /*
+     Re-cropped. At left 0.318 this sat as hard right as the band allows, which
+     framed the back of the child's head and cropped out the painting they were
+     making — the only thing happening in the shot. The head spans 72-92% of the
+     width, so the band cannot start later than 0.238 without clipping it; 0.25
+     keeps the head whole with a little margin and brings the brush and most of
+     the paint back into frame.
+  */
+  { file: "orig-slide6.jpg", name: "old-wall-painting", band: { top: 0, left: 0.25, width: 0.682 } },
 ].map((e) => ({ ...e, maxWidth: 900 }));
 
 for (const slide of homeArchiveSlides) await renderSlide(slide, ARCHIVE_SOURCE);

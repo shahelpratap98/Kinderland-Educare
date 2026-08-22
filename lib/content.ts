@@ -218,8 +218,16 @@ export const ageGroups = [
       "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
     body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
     subsidy: null,
-    cardPhoto: null as RoomPhoto | null,
-    photos: [] as readonly RoomPhoto[],
+    cardPhoto: {
+      src: "explorers-card",
+      alt: "A teacher and a toddler reaching up together to a string of fairy lights.",
+    } as RoomPhoto | null,
+    photos: [
+      {
+        src: "explorers-lead",
+        alt: "A teacher and a toddler reaching up together to a string of fairy lights indoors.",
+      },
+    ] as readonly RoomPhoto[],
     highlights: [
       "Purpose-built outdoor play areas for active toddlers",
       "Morning tea, hot lunch, afternoon tea and a late snack",
@@ -237,8 +245,16 @@ export const ageGroups = [
       "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",
     body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
     subsidy: "20 Hours ECE",
-    cardPhoto: null as RoomPhoto | null,
-    photos: [] as readonly RoomPhoto[],
+    cardPhoto: {
+      src: "discoverers-card",
+      alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children behind.",
+    } as RoomPhoto | null,
+    photos: [
+      {
+        src: "discoverers-lead",
+        alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
+      },
+    ] as readonly RoomPhoto[],
     highlights: [
       "20 Hours ECE government funding fully supported",
       "A transition programme through to primary school",
@@ -427,27 +443,14 @@ export type Slide =
  * softest slides in the deck — a 3:2 crop leaves 630x420, emitted at 900 rather
  * than upscaled — so they are spaced out rather than grouped.
  *
- * Removed Aug 2026: the seven photographs recovered from the old site's
- * /gallery/ page (chalkboard-rainbow, climbing-frame, mosaic-board, puppet-play,
- * sunhats-outside, dress-ups, music-corner). They were genuine — real children
- * in these rooms, off a Fujifilm and a Canon with intact EXIF — but 2013
- * vintage, and the owner asked for them off the home page. Their derivatives
- * are still in /public/slides and the build script still emits them, so putting
- * any of them back is a one-line change here.
+ * Removed Aug 2026, all at the owner's request: the seven photographs
+ * recovered from the old site's /gallery/ page, then centre-exterior and
+ * end-of-year-concert. farm-visit also came off this deck — it is now the
+ * Discoverers photograph, so it still appears on the site, just once rather
+ * than twice. Every derivative is still in /public/slides and the build script
+ * still emits them, so restoring any of them is a one-line change here.
  */
 export const slides: readonly Slide[] = [
-  {
-    kind: "photo",
-    src: "centre-exterior",
-    alt: "The Kinderland Educare centre seen from Kohinoor Ave, with a painted mural along the fence.",
-    caption: "Our purpose-built centre in Māngere",
-    hasChildren: false,
-  },
-  {
-    kind: "text",
-    heading: centre.logoTagline,
-    body: `Early childhood education for children from ${centre.ages}.`,
-  },
   {
     kind: "photo",
     src: "outdoor-play",
@@ -456,16 +459,14 @@ export const slides: readonly Slide[] = [
     hasChildren: true,
   },
   {
-    kind: "photo",
-    src: "old-ece-blocks",
-    alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
-    hasChildren: true,
+    kind: "text",
+    heading: centre.logoTagline,
+    body: `Early childhood education for children from ${centre.ages}.`,
   },
   {
     kind: "photo",
-    src: "farm-visit",
-    alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
-    caption: "Enquiring minds, following their own questions",
+    src: "old-ece-blocks",
+    alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
     hasChildren: true,
   },
   {
@@ -501,13 +502,6 @@ export const slides: readonly Slide[] = [
     kind: "photo",
     src: "old-building-blocks",
     alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "end-of-year-concert",
-    alt: "Children on stage in front of a hand-painted backdrop for the End of Year Concert 2025.",
-    caption: "End of year concert",
     hasChildren: true,
   },
   {
