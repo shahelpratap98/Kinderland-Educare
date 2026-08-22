@@ -69,12 +69,21 @@ const VARIANTS = {
   */
   tall: {
     top: "180px",
+    /*
+      object-cover crops to the middle of the clip by default. This container is
+      wider than the 16:9 frame, so the band it keeps is horizontal — and centred
+      it lands on the valley floor, cutting most of the sky. Biasing the position
+      upward keeps the same amount of picture, just taken higher up the frame:
+      more sky and cloud, less of the near foreground.
+    */
+    objectPosition: "50% 18%",
     mask: "linear-gradient(to bottom, transparent 0, #000 90px)",
     scrim:
       "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.34) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 62%, rgba(255,255,255,0) 88%, #fff 100%)",
   },
   compact: {
     top: "0",
+    objectPosition: "50% 50%",
     mask: undefined,
     /*
       Stays dense to ~70%, because the headline runs to about 65% of the width at
@@ -173,6 +182,7 @@ export function HeroVideo({
             */
             maskImage: config.mask,
             WebkitMaskImage: config.mask,
+            objectPosition: config.objectPosition,
           }}
         />
       )}

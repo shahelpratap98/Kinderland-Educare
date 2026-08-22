@@ -472,6 +472,13 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
+    src: "park-flower",
+    alt: "A child in a cap studying a small flower held between their fingers, with an adult's open hand waiting beside them.",
+    caption: "Curiosity, one small thing at a time",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
     src: "old-ece-blocks",
     alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
     hasChildren: true,

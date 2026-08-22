@@ -385,6 +385,16 @@ const homeArchiveSlides = [
 
 for (const slide of homeArchiveSlides) await renderSlide(slide, ARCHIVE_SOURCE);
 
+/*
+ * One photograph from the family set that used to fill the enrolment page,
+ * asked back onto the home deck after the rest of that set was replaced. It is
+ * 900x600 — already exactly 3:2, so nothing is cropped and nothing upscaled.
+ */
+await renderSlide(
+  { file: "01_park-flower.jpg", name: "park-flower", maxWidth: 900 },
+  "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/_unused/",
+);
+
 /* ------------------------------------------------------------------ */
 /*  Enrolment page slideshow                                           */
 /* ------------------------------------------------------------------ */
