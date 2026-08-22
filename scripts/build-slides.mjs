@@ -369,14 +369,18 @@ const homeArchiveSlides = [
   { file: "orig-slide4.jpg", name: "old-ece-blocks", band: { top: 0, left: 0.25, width: 0.682 } },
   { file: "orig-slide5.jpg", name: "old-first-instruments", band: { top: 0, left: 0.16, width: 0.682 } },
   /*
-     Re-cropped. At left 0.318 this sat as hard right as the band allows, which
-     framed the back of the child's head and cropped out the painting they were
-     making — the only thing happening in the shot. The head spans 72-92% of the
-     width, so the band cannot start later than 0.238 without clipping it; 0.25
-     keeps the head whole with a little margin and brings the brush and most of
-     the paint back into frame.
+     Anchored at 0, showing the painting rather than the painter.
+
+     Measured, after two wrong guesses: the child's head spans 55-95% of the
+     width — 40% of the frame — which is why every crop that kept the whole head
+     was a close-up of the back of it. The 3:2 window is only 68.2% wide, so
+     there is no offset that holds both the head and the painting. Starting at 0
+     gives the brushwork, the loaded brush and the hand, with the child present
+     at the right edge as context. The head is cut there, but it is the back of
+     the head, and a subject running off the edge of a frame is ordinary; a
+     portrait of someone's hair is not.
   */
-  { file: "orig-slide6.jpg", name: "old-wall-painting", band: { top: 0, left: 0.25, width: 0.682 } },
+  { file: "orig-slide6.jpg", name: "old-wall-painting", band: { top: 0, left: 0, width: 0.682 } },
 ].map((e) => ({ ...e, maxWidth: 900 }));
 
 for (const slide of homeArchiveSlides) await renderSlide(slide, ARCHIVE_SOURCE);

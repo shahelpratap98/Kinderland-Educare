@@ -85,9 +85,9 @@ export default function FaqsPage() {
             */}
             <div className="aspect-[3/2] overflow-hidden rounded-2xl bg-wash hairline">
               <picture>
-                <source srcSet="/slides/puppet-play.webp" type="image/webp" />
+                <source srcSet="/slides/chalkboard-rainbow.webp" type="image/webp" />
                 <img
-                  src="/slides/puppet-play.jpg"
+                  src="/slides/chalkboard-rainbow.jpg"
                   alt=""
                   loading="lazy"
                   decoding="async"
