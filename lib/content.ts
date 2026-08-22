@@ -220,12 +220,12 @@ export const ageGroups = [
     subsidy: null,
     cardPhoto: {
       src: "explorers-card",
-      alt: "A teacher and a toddler reaching up together to a string of fairy lights.",
+      alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
     } as RoomPhoto | null,
     photos: [
       {
         src: "explorers-lead",
-        alt: "A teacher and a toddler reaching up together to a string of fairy lights indoors.",
+        alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
       },
     ] as readonly RoomPhoto[],
     highlights: [

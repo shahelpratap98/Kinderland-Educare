@@ -73,6 +73,29 @@ export default function FaqsPage() {
           </Card>
 
           <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
+            {/*
+              A face at the top of the column. This page is a wall of text by
+              nature, and the sidebar is the only place a photograph can go
+              without pushing the questions themselves down the page.
+
+              3:2 to match the derivative, so the browser does no cropping of its
+              own. Decorative rather than informative — the alt is empty because
+              nothing here depends on seeing it, and the accordion beside it
+              carries all the meaning.
+            */}
+            <div className="aspect-[3/2] overflow-hidden rounded-2xl bg-wash hairline">
+              <picture>
+                <source srcSet="/slides/puppet-play.webp" type="image/webp" />
+                <img
+                  src="/slides/puppet-play.jpg"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </picture>
+            </div>
+
             <Card className="p-6">
               <h2 className="font-display text-xl font-normal text-ink">
                 Still deciding?
