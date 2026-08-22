@@ -413,22 +413,27 @@ export type Slide =
   | { kind: "text"; heading: string; body?: string };
 
 /*
- * ⚠️  ON THE OLD SITE'S PHOTOGRAPHS — read before adding more from that source.
+ * The home deck.
  *
- * Seven slides here (chalkboard-rainbow, climbing-frame, puppet-play,
- * sunhats-outside, dress-ups, mosaic-board, music-corner) were recovered from
- * the previous WordPress site's /gallery/ page. They are genuine: 12-14MP camera
- * originals with intact Fujifilm and Canon EXIF, taken in these rooms.
+ * Two sources. The 2025 set — centre-exterior, centre-entrance, farm-visit,
+ * outdoor-play, leaders-of-tomorrow, end-of-year-concert — are recent
+ * photographs of the centre. The six `old-*` are the old WordPress site's home
+ * page slider, added at the owner's request.
  *
- * The six images in that site's home page slider are NOT here, and should not be
- * added. They are 924x420 with EXIF stripped, studio-lit against seamless
- * backdrops, and cropped to exactly the "happykids" theme's slider dimensions —
- * i.e. stock or theme demo content, showing children who have never attended
- * this centre. Whatever licence covered them in 2013 was for that theme on that
- * site; it does not follow the pictures here.
+ * ⚠️  Those six are stock, not Kinderland: 924x420, EXIF stripped, studio-lit
+ * against seamless backdrops, cut to exactly the "happykids" theme's slider
+ * dimensions. The children in them have never attended this centre, and the
+ * 2013 theme licence does not follow the pictures here. They are also the
+ * softest slides in the deck — a 3:2 crop leaves 630x420, emitted at 900 rather
+ * than upscaled — so they are spaced out rather than grouped.
  *
- * These are roughly 2013 vintage against a 2025 professional set, so the order
- * below alternates between the two rather than running them in blocks.
+ * Removed Aug 2026: the seven photographs recovered from the old site's
+ * /gallery/ page (chalkboard-rainbow, climbing-frame, mosaic-board, puppet-play,
+ * sunhats-outside, dress-ups, music-corner). They were genuine — real children
+ * in these rooms, off a Fujifilm and a Canon with intact EXIF — but 2013
+ * vintage, and the owner asked for them off the home page. Their derivatives
+ * are still in /public/slides and the build script still emits them, so putting
+ * any of them back is a one-line change here.
  */
 export const slides: readonly Slide[] = [
   {
@@ -452,28 +457,15 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "farm-visit",
-    alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
-    caption: "Enquiring minds, following their own questions",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "chalkboard-rainbow",
-    alt: "A girl holding up a small chalkboard she has drawn a rainbow on, against the green wall of her room.",
-    caption: "Where dreams and creativity meet",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
     src: "old-ece-blocks",
     alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
     hasChildren: true,
   },
   {
     kind: "photo",
-    src: "climbing-frame",
-    alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
+    src: "farm-visit",
+    alt: "A child leaning over a wooden rail to watch a goat resting in the straw, with other children and teachers behind.",
+    caption: "Enquiring minds, following their own questions",
     hasChildren: true,
   },
   {
@@ -484,9 +476,8 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "mosaic-board",
-    alt: "A boy holding up a peg board he has filled with coloured counters, in front of the classroom shelves.",
-    caption: "Finishing what you started",
+    src: "old-painting-flowers",
+    alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
     hasChildren: true,
   },
   {
@@ -502,27 +493,8 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "old-painting-flowers",
-    alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "puppet-play",
-    alt: "A girl in a red headscarf smiling beside the zebra hand puppet she is holding up.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
     src: "old-wall-painting",
     alt: "A child painting broad brushstrokes onto a wall-mounted sheet of paper.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "sunhats-outside",
-    alt: "Children in sun hats playing with hoops in the outdoor yard on a clear summer day.",
-    caption: "Hats on, outside, most of the year",
     hasChildren: true,
   },
   {
@@ -540,21 +512,8 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "dress-ups",
-    alt: "A toddler in oversized white sunglasses on the deck, with another child playing behind her.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
     src: "old-hands-on",
     alt: "A smiling child holding both palms up to the camera, covered in bright finger paint.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "music-corner",
-    alt: "A boy in a cap and sunglasses with his arms flung wide beside the classroom stereo.",
-    caption: "Music and movement",
     hasChildren: true,
   },
   {
