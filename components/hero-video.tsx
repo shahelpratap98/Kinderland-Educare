@@ -6,16 +6,26 @@ import { useReducedMotion } from "framer-motion";
 /*
  * Served from /public rather than hotlinked.
  *
- * The previous clip was loaded straight off a Higgsfield CDN path belonging to
+ * The original clip was loaded straight off a Higgsfield CDN path belonging to
  * a different account — nothing we control, and the hero would have gone blank
- * the day that file was removed. This one is generated, downloaded and
- * committed, so the page owns its own background.
+ * the day that file was removed.
  *
- * It is also 7.9MB against the old 30.4MB, at a higher resolution (2560x1440
- * vs 1928x1072), so the swap is cheaper as well as safer. The fade loop below
- * reads `duration` off the element, so the shorter 10s clip needs no change.
+ * Re-encoded for the web after the hero was reported laggy. It arrived as
+ * 2560x1440 at 6.3Mbps with an AAC track, and was being decoded into a box
+ * about 956px wide — three times the pixels needed, plus an audio stream on a
+ * permanently muted video. Now 1280x720, no audio, faststart, 1.35MB against
+ * 7.9MB.
+ *
+ * Quality was measured rather than eyeballed: against a lossless 720p
+ * reference, crf 24/26/28 scored SSIM 0.984/0.980/0.975 at 1818/1345/1000KB.
+ * 26 sits where the curve flattens, and a frame-by-frame comparison against the
+ * original is indistinguishable — which is unsurprising for a soft illustrated
+ * clip that sits behind a white scrim.
+ *
+ * The filename carries the resolution so a cached copy of the old 7.9MB file
+ * cannot be served in its place.
  */
-const VIDEO_SRC = "/video/hero-valley.mp4";
+const VIDEO_SRC = "/video/hero-valley-720.mp4";
 
 const FADE = 0.5; // seconds of fade at each end
 const RESTART_DELAY = 100; // ms held at opacity 0 before looping
