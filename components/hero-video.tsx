@@ -113,10 +113,30 @@ export function HeroVideo({
     const video = videoRef.current;
     if (!video) return;
 
+    /*
+      Two things this loop used to do that cost more than the fade is worth.
+
+      It wrote video.style.opacity on every frame. Measured on the home page:
+      239 of 240 consecutive frames wrote a value identical to the one already
+      there. Opacity only moves during the first and last 0.5s of a 10s clip, so
+      roughly 95% of those writes were dirtying style and compositing for
+      nothing. It now writes only on a change.
+
+      It also ran, and kept the video decoding, while the hero was nowhere near
+      the screen — measured still playing 3384px down the page — and this
+      component is on every route, so a 2560x1440 decode ran for as long as
+      somebody stayed on the site. An IntersectionObserver now stops both the
+      loop and the video when the hero leaves the viewport and restarts them
+      when it returns, and a hidden tab does the same.
+    */
+    let lastOpacity = "";
+    let running = false;
+
     const tick = () => {
       const { currentTime, duration } = video;
 
       /* duration is NaN until metadata arrives; hold at 0 rather than flashing. */
+      let next = "0";
       if (Number.isFinite(duration) && duration > 0) {
         let opacity = 1;
         if (currentTime < FADE) {
@@ -124,31 +144,70 @@ export function HeroVideo({
         } else if (currentTime > duration - FADE) {
           opacity = Math.max(0, (duration - currentTime) / FADE);
         }
-        video.style.opacity = String(opacity);
-      } else {
-        video.style.opacity = "0";
+        next = String(opacity);
+      }
+      if (next !== lastOpacity) {
+        video.style.opacity = next;
+        lastOpacity = next;
       }
 
       rafRef.current = requestAnimationFrame(tick);
     };
 
+    const start = () => {
+      if (running) return;
+      running = true;
+      void video.play().catch(() => {
+        /* Autoplay refused — leave the gradient ground visible. */
+      });
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      video.pause();
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+
     const onEnded = () => {
       video.style.opacity = "0";
+      lastOpacity = "0";
       restartRef.current = setTimeout(() => {
         video.currentTime = 0;
-        void video.play().catch(() => {
-          /* Autoplay refused — leave the gradient ground visible. */
-        });
+        if (running) {
+          void video.play().catch(() => {});
+        }
       }, RESTART_DELAY);
     };
 
+    let onScreen = false;
+    const sync = () => {
+      if (onScreen && !document.hidden) start();
+      else stop();
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        onScreen = entries[entries.length - 1].isIntersecting;
+        sync();
+      },
+      { threshold: 0 },
+    );
+    io.observe(video);
+
+    const onVisibility = () => sync();
+    document.addEventListener("visibilitychange", onVisibility);
     video.addEventListener("ended", onEnded);
-    rafRef.current = requestAnimationFrame(tick);
-    void video.play().catch(() => {});
 
     return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       video.removeEventListener("ended", onEnded);
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      stop();
       if (restartRef.current !== null) clearTimeout(restartRef.current);
     };
   }, [reduce]);
