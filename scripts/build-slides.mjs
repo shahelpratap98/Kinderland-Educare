@@ -449,11 +449,31 @@ const enrolmentSlideFiles = [
   { file: "08_centre.jpg", name: "enrolment-8", band: { top: 0.15 } },
   // Laying the table. Face 10-30%.
   { file: "09_centre.jpg", name: "enrolment-9", band: { top: 0.05 } },
+  /*
+     The "leaders of tomorrow" photograph, moved here after it came off the home
+     deck. Its source lives with the 2025 set rather than the WhatsApp folder,
+     so it is rendered separately below.
+  */
 ].map((e) => ({ ...e, maxWidth: 1200, quality: 68 }));
 
 if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
 for (const slide of enrolmentSlideFiles)
   await renderSlide(slide, ENROLMENT_SOURCE, ENROLMENT_OUT);
+
+/* Same source and band as the home deck's copy: both faces sit 52-80% down, so
+   this starts at 42%. That drops the neon sign above them, which is why the alt
+   text describes the children rather than the sign. */
+await renderSlide(
+  {
+    file: "486957102_1194404245813166_1112327438968029408_n.jpg",
+    name: "enrolment-10",
+    band: { top: 0.42 },
+    maxWidth: 1200,
+    quality: 68,
+  },
+  SOURCE,
+  ENROLMENT_OUT,
+);
 
 /* ------------------------------------------------------------------ */
 /*  Room photographs                                                   */

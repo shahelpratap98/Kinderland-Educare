@@ -820,6 +820,14 @@ export const enrolmentSlides: readonly Slide[] = [
     alt: "A child laying out plates and cups on a table covered with a patterned cloth.",
     hasChildren: true,
   },
+  {
+    kind: "photo",
+    src: "enrolment-10",
+    /* Describes the children, not the neon "Leaders of Tomorrow" sign — the
+       crop starts below it, so the sign is not in this frame. */
+    alt: "Two children with their arms around each other, pulling faces for the camera.",
+    hasChildren: true,
+  },
 ];
 
 /**
