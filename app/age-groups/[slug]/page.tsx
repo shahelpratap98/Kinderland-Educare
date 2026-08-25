@@ -120,12 +120,17 @@ export default async function AgeGroupPage({
             <h2 className="text-3xl font-normal text-ink sm:text-4xl">
               What the day looks like
             </h2>
-            <p className="mt-5 text-[17px] leading-relaxed text-muted">
-              {group.blurb}
-            </p>
-            <p className="mt-4 text-[17px] leading-relaxed text-muted">
-              {group.body}
-            </p>
+            {/* The centre's own copy opens each room now, so the blurb is not
+                repeated here — it would restate the first paragraph almost word
+                for word. It still carries the index card and the meta
+                description, where a short line is what is wanted. */}
+            <div className="mt-5 space-y-4">
+              {group.body.map((p) => (
+                <p key={p} className="text-[17px] leading-relaxed text-muted">
+                  {p}
+                </p>
+              ))}
+            </div>
 
             <ul className="mt-8 space-y-3">
               {group.highlights.map((h) => (

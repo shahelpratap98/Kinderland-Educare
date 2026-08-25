@@ -118,8 +118,18 @@ async function renderSlide(slide, sourceDir, outDir = OUT) {
   let pipe = sharp(src).rotate();
 
   /* `aspect` overrides the 3:2 default for sources whose own shape should be
-     kept — see the age group leads, where cropping to 3:2 zoomed the frame. */
-  const aspect = slide.aspect ?? ASPECT;
+     kept — see the age group leads, where cropping to 3:2 zoomed the frame.
+
+     "native" keeps the source's own ratio exactly, so nothing is cropped at all.
+     Used for the enrolment deck: eight of its nine sources are 3:4 phone
+     portraits, and forcing those into 3:2 discarded precisely half of every
+     frame (keep the full 1200 width, keep 800 of 1600 rows). That is the
+     "too zoomed in" the centre reported, and no choice of band fixes it —
+     the frame itself was wrong. */
+  const aspect =
+    slide.aspect === "native"
+      ? meta.width / meta.height
+      : (slide.aspect ?? ASPECT);
   const target = Math.min(WIDTH, slide.maxWidth ?? WIDTH);
   let upscale = target / meta.width;
   if (slide.band) {
@@ -418,40 +428,29 @@ const ENROLMENT_SOURCE = "C:/Users/Shahel Pratap/Documents/kinder educare/enrolm
 const ENROLMENT_OUT = "public/enrolment";
 
 /*
- * Listed rather than picked up by convention so the order is explicit and each
- * file can carry its own framing.
+ * Listed rather than picked up by convention so the order is explicit.
  *
- * Every entry here is already exactly 3:2, so none is cropped — the two studio
- * photographs are 7120px and 6336px wide and are only downscaled. The airport
- * and yellow-dress files were dropped: at 720px and 306px they sat well under
- * the ~1100px frame and were visibly soft beside these. They are kept in
- * enrolment/_unused rather than deleted.
+ * No bands, and no forced ratio. Eight of these nine are 1200x1600 phone
+ * portraits; the ninth (the water tray) is 1284x945. Cropping them all to 3:2
+ * threw away half of every portrait, which is what the centre saw as photos
+ * being "too zoomed in and cropped" — and specifically why it asked for the
+ * korowai and the marshmallow pictures to run full length.
+ *
+ * They are now emitted at their own shape and shown uncropped inside the deck,
+ * which sets a contain fit for exactly this reason. See the fill note in
+ * components/sections/slideshow.tsx.
  */
 const enrolmentSlideFiles = [
-  // Teacher and toddler under the fairy lights. Faces 20-40% down.
-  { file: "01_centre.jpg", name: "enrolment-1", band: { top: 0.12 } },
-  // Boy on the climbing frame, arm up against blue sky. Face 25-45%.
-  { file: "02_centre.jpg", name: "enrolment-2", band: { top: 0.18 } },
-  // Girl in the korowai. Face 15-35%.
-  { file: "03_centre.jpg", name: "enrolment-3", band: { top: 0.08 } },
-  // Overhead of the water tray on the grass. Already 1.36, barely cropped.
-  { file: "04_centre.jpg", name: "enrolment-4" },
-  // Threading at the table. Face 15-35%.
-  { file: "05_centre.jpg", name: "enrolment-5", band: { top: 0.08 } },
-  // The group in the playground. Children sit 30-70%, so this starts lower.
-  { file: "06_centre.jpg", name: "enrolment-6", band: { top: 0.28 } },
-  // Girl in the garden. Face high in the frame at 8-25%.
-  { file: "07_centre.jpg", name: "enrolment-7", band: { top: 0.03 } },
-  // Overhead of the craft mat — no single subject, so a middle band.
-  { file: "08_centre.jpg", name: "enrolment-8", band: { top: 0.15 } },
-  // Laying the table. Face 10-30%.
-  { file: "09_centre.jpg", name: "enrolment-9", band: { top: 0.05 } },
-  /*
-     The "leaders of tomorrow" photograph, moved here after it came off the home
-     deck. Its source lives with the 2025 set rather than the WhatsApp folder,
-     so it is rendered separately below.
-  */
-].map((e) => ({ ...e, maxWidth: 1200, quality: 68 }));
+  { file: "01_centre.jpg", name: "enrolment-1" }, // Teacher and toddler, fairy lights
+  { file: "02_centre.jpg", name: "enrolment-2" }, // Boy on the climbing frame
+  { file: "03_centre.jpg", name: "enrolment-3" }, // Girl in the korowai — full length
+  { file: "04_centre.jpg", name: "enrolment-4" }, // Overhead of the water tray
+  { file: "05_centre.jpg", name: "enrolment-5" }, // Threading at the table
+  { file: "06_centre.jpg", name: "enrolment-6" }, // The group in the playground
+  { file: "07_centre.jpg", name: "enrolment-7" }, // Girl in the garden — full length
+  { file: "08_centre.jpg", name: "enrolment-8" }, // Overhead of the craft mat
+  { file: "09_centre.jpg", name: "enrolment-9" }, // Laying the table
+].map((e) => ({ ...e, aspect: "native", maxWidth: 1200, quality: 70 }));
 
 if (!existsSync(ENROLMENT_OUT)) mkdirSync(ENROLMENT_OUT, { recursive: true });
 for (const slide of enrolmentSlideFiles)
@@ -467,9 +466,10 @@ await renderSlide(
   {
     file: "g-IMG_0295.jpg",
     name: "enrolment-11",
-    band: { top: 0.21 },
+    /* Native like the rest of this deck — see the note on enrolmentSlideFiles. */
+    aspect: "native",
     maxWidth: 1200,
-    quality: 68,
+    quality: 70,
   },
   ARCHIVE_SOURCE,
   ENROLMENT_OUT,
@@ -479,9 +479,9 @@ await renderSlide(
   {
     file: "486957102_1194404245813166_1112327438968029408_n.jpg",
     name: "enrolment-10",
-    band: { top: 0.42 },
+    aspect: "native",
     maxWidth: 1200,
-    quality: 68,
+    quality: 70,
   },
   SOURCE,
   ENROLMENT_OUT,

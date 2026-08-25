@@ -21,7 +21,12 @@ export function Welcome() {
       className="border-b border-hairline"
       aria-labelledby="welcome-heading"
     >
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+      {/* Asymmetric padding: the hero video now runs to the very bottom of its
+          section, so a full py-20 above this left an obvious dead band between
+          the picture and the first line of copy. The gap the centre marked was
+          mostly the clipped video, fixed separately; this trims what remained.
+          The bottom padding is unchanged — it separates this from the deck. */}
+      <div className="mx-auto max-w-6xl px-4 pb-14 pt-9 sm:px-6 sm:pb-20 sm:pt-12">
         <Reveal className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <RevealItem>
             {/*

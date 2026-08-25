@@ -212,7 +212,14 @@ export const ageGroups = [
     lead: "Unhurried days built around your baby's own rhythm.",
     blurb:
       "Our youngest room is a calm, nurturing space where your baby's day follows their individual rhythms for feeding, sleeping, playing, and care in a safe, purpose-built space.",
-    body: "Settling a baby into care is a big step, and the first weeks matter more than anything that follows. We keep routines close to the ones you keep at home, so the day feels familiar. Fresh, nutritious halal meals are prepared for the centre daily and start as soon as your baby is on solids. We provide wipes; you supply nappies or pull-ups, and we handle the rest of the day.",
+    body: [
+      "Our infant environment is calm, responsive and designed around each child's individual rhythms. Feeding, sleep, care routines, play and exploration are supported in ways that help babies feel secure, known and comfortable throughout the day.",
+      "Settling is approached gradually and in partnership with families. We learn about your baby's routines, cues, preferences and familiar ways of being comforted so there is continuity between home and Kinderland. A primary care teacher helps provide consistency while your baby builds relationships with the wider teaching team.",
+      /* Corrected by the centre, Aug 2026: wipes are NOT provided. Families
+         supply nappies, wipes, formula and any other care product. The previous
+         copy said the opposite and contradicted this site's own FAQ. */
+      "As babies become ready for solids, fresh nutritious halal meals are provided as part of the centre's meal programme. Families provide nappies, wipes and other personal care products from home. Using familiar products helps us respond to individual skin sensitivities and support each child's comfort and wellbeing.",
+    ],
     subsidy: null,
     cardPhoto: {
       src: "infant-card",
@@ -225,9 +232,9 @@ export const ageGroups = [
       },
     ] as readonly RoomPhoto[],
     highlights: [
-      "Fresh, nutritious halal meals once solids begin",
-      "Wipes provided — parents supply nappies, pull-ups and formula",
-      "Purpose-built indoor room with outdoor play alongside",
+      "Calm, responsive care shaped around each baby's individual rhythms, cues and routines.",
+      "Secure relationships, sensory exploration and early communication supported through everyday interactions.",
+      "Fresh, nutritious halal meals introduced when children are ready for solids, with families providing nappies, wipes and personal care products from home.",
     ],
   },
   {
@@ -239,7 +246,10 @@ export const ageGroups = [
     lead: "Room to move, and the freedom to follow a question.",
     blurb:
       "Our toddler room is a busy, language-rich environment where confident, capable toddlers build independence, explore through play, and enjoy plenty of space to move and learn outdoors.",
-    body: "Toddlers learn by doing, loudly and on their feet. This room is set up for that: space to move indoors, direct access to the outdoor play areas, and teachers who treat curiosity as the point rather than an interruption. It is also where individualism, initiative and choice — the things our vision names — start showing up in practice.",
+    body: [
+      "Our toddler environment is active, language-rich and designed for children who are developing greater independence, confidence and curiosity. Toddlers have space to move, explore, communicate, make choices and learn through play both indoors and outdoors.",
+      "Teachers support children's growing interests and ideas through conversation, responsive interactions and opportunities to try things for themselves. As toddlers become increasingly independent, they are encouraged to participate in everyday routines, build relationships, solve problems and develop confidence in what they can do.",
+    ],
     subsidy: null,
     cardPhoto: {
       src: "explorers-card",
@@ -252,9 +262,9 @@ export const ageGroups = [
       },
     ] as readonly RoomPhoto[],
     highlights: [
-      "Purpose-built outdoor play areas for active toddlers",
-      "Morning tea, hot lunch, afternoon tea and a late snack",
-      "An Islamic perspective woven through everyday learning",
+      "Purpose-built indoor and outdoor spaces for active play and exploration",
+      "Morning tea, lunch and afternoon tea included with full-day enrolments",
+      "An Islamic perspective woven naturally through everyday learning",
     ],
   },
   {
@@ -266,7 +276,11 @@ export const ageGroups = [
     lead: "Capable, competent learners, ready for what comes next.",
     blurb:
       "Our preschool room nurtures capable and confident learners who take ownership of their learning, explore their interests, and develop the skills, independence, and confidence to proudly graduate to primary school.",
-    body: "Our oldest room takes school readiness in the fullest sense: not worksheets, but children with a strong sense of identity who can direct their own learning. We follow Te Whāriki, New Zealand's early childhood curriculum, with an Islamic perspective woven through the day. From age three, the 20 Hours ECE government funding is fully supported here, and we run a transition programme to help children move smoothly on to primary school.",
+    body: [
+      "Our preschool programme supports children to become confident, capable and increasingly independent learners. Through play, conversation, exploration and shared experiences, children develop their ideas, follow their interests, build relationships and take increasing responsibility within their everyday environment.",
+      "Learning is guided by Te Whāriki, with our Islamic Special Character woven naturally through the programme. As children move closer to school, we support the foundations that help them approach this next stage with confidence, including communication, independence, problem-solving, early literacy and mathematics, managing belongings, participating in groups and asking for help when they need it.",
+      "Children aged three and over may be eligible for 20 Hours ECE. We also work with children and their families to support a positive and well-prepared transition to primary school.",
+    ],
     subsidy: "20 Hours ECE",
     cardPhoto: {
       src: "discoverers-card",
@@ -279,9 +293,9 @@ export const ageGroups = [
       },
     ] as readonly RoomPhoto[],
     highlights: [
-      "20 Hours ECE government funding fully supported",
-      "A transition programme through to primary school",
-      "Te Whāriki curriculum with an Islamic perspective",
+      "Play-based learning that supports children to develop ideas, follow interests and take increasing responsibility for their learning.",
+      "Strong foundations in communication, early literacy, mathematics, problem-solving, relationships and independence.",
+      "Te Whāriki and our Islamic Special Character woven through the programme, with thoughtful support for the transition to primary school.",
     ],
   },
 ] as const;
@@ -298,7 +312,6 @@ export const ageGroups = [
  * stated on the relevant pages.
  */
 export const COPY_TO_CONFIRM = [
-  "A named primary caregiver for each infant in the Under 2s room",
   "Specific teacher-to-child ratios, if you want them published",
   "Toilet learning supported at the child's own pace",
 ] as const;

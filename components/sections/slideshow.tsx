@@ -50,12 +50,28 @@ export function Slideshow({
   label = "Life at Kinderland Educare",
   /* Which folder under /public the `src` names resolve against. */
   basePath = "/slides",
+  /*
+    The frame's shape, and how a picture sits inside it.
+
+    "cover" is right for a deck whose derivatives already match the frame — the
+    home and approach decks are all 3:2, so nothing is cropped at display time.
+
+    "contain" is for a deck of mixed shapes. The enrolment set is ten 3:4 phone
+    portraits and one landscape, and cover would crop half of every portrait
+    away. Contain shows the whole picture and fills the leftover with a blurred,
+    scaled copy of the same frame, so the deck keeps one steady height instead of
+    jumping between portrait and landscape.
+  */
+  aspect = "3/2",
+  fit = "cover",
 }: {
   slides?: readonly Slide[];
   heading?: string;
   description?: string;
   label?: string;
   basePath?: string;
+  aspect?: "3/2" | "portrait-first";
+  fit?: "cover" | "contain";
 } = {}) {
   const [index, setIndex] = useState(0);
   /*
@@ -324,12 +340,17 @@ export function Slideshow({
       </div>
 
       {/*
-        3:2, matching every derivative that scripts/build-slides.mjs emits, so the
-        browser never crops. CSS object-cover can only crop from the centre, and
-        at the old 2:1 that discarded 63% of each portrait frame and cut children's
-        heads off. Cropping happens in that script against hand-picked regions —
-        sharp's automatic `attention` strategy was tried and chose the bright play
-        equipment over a child's face.
+        The frame is fixed so the page does not reflow between slides; what
+        changes is how each picture sits in it.
+
+        Where the derivatives already match the frame the fit is cover and the
+        browser never crops, because scripts/build-slides.mjs has already cropped
+        to a hand-picked band — sharp's automatic `attention` strategy was tried
+        and chose bright play equipment over a child's face.
+
+        Where they do not match, the fit is contain. Cover can only crop from the
+        centre, so a 3:4 portrait in a 3:2 frame loses exactly half its height,
+        which is what happened to the whole enrolment set.
       */}
       <div
         onPointerDown={onPointerDown}
@@ -339,7 +360,14 @@ export function Slideshow({
         /* pan-y is what preserves vertical page scrolling — see the swipe note. */
         style={{ touchAction: "pan-y" }}
         className={cn(
-          "relative aspect-[3/2] w-full select-none overflow-hidden rounded-3xl bg-wash hairline",
+          "relative w-full select-none overflow-hidden rounded-3xl bg-wash hairline",
+          /* "portrait-first" is a phone-shaped frame that turns landscape from
+             sm up. A deck of 3:4 phone photos needs it: in a 4:3 frame on a
+             375px screen each portrait rendered only 191px wide, marooned
+             between two wide bands of blur. At 3:4 it fills the width. */
+          aspect === "portrait-first"
+            ? "aspect-[3/4] sm:aspect-[4/3]"
+            : "aspect-[3/2]",
           "[@media(hover:hover)_and_(pointer:fine)]:cursor-grab",
           "[@media(hover:hover)_and_(pointer:fine)]:active:cursor-grabbing",
         )}
@@ -363,19 +391,46 @@ export function Slideshow({
               {slide.kind === "photo" ? (
                 <figure className="relative h-full w-full">
                   {shouldLoad(i) && (
-                    <picture>
-                      <source srcSet={`${basePath}/${slide.src}.webp`} type="image/webp" />
-                      <img
-                        src={`${basePath}/${slide.src}.jpg`}
-                        alt={slide.alt}
-                        loading={i === 0 ? "eager" : "lazy"}
-                        decoding="async"
-                        /* Otherwise a mouse drag starts a native image drag
-                           instead of a swipe. */
-                        draggable={false}
-                        className="h-full w-full object-cover"
-                      />
-                    </picture>
+                    <>
+                      {/*
+                        The fill behind a contained picture: the same frame,
+                        scaled up and blurred out, so a portrait does not sit on
+                        a bare slab of wash. Same URL as the picture in front, so
+                        it costs a second decode rather than a second download.
+                        Decorative and inert — empty alt, aria-hidden, and the
+                        real alt lives on the image in front.
+                      */}
+                      {fit === "contain" && (
+                        <picture>
+                          <source srcSet={`${basePath}/${slide.src}.webp`} type="image/webp" />
+                          <img
+                            src={`${basePath}/${slide.src}.jpg`}
+                            alt=""
+                            aria-hidden
+                            loading={i === 0 ? "eager" : "lazy"}
+                            decoding="async"
+                            draggable={false}
+                            className="absolute inset-0 h-full w-full scale-125 object-cover blur-2xl saturate-150"
+                          />
+                        </picture>
+                      )}
+                      <picture>
+                        <source srcSet={`${basePath}/${slide.src}.webp`} type="image/webp" />
+                        <img
+                          src={`${basePath}/${slide.src}.jpg`}
+                          alt={slide.alt}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                          /* Otherwise a mouse drag starts a native image drag
+                             instead of a swipe. */
+                          draggable={false}
+                          className={cn(
+                            "relative h-full w-full",
+                            fit === "contain" ? "object-contain" : "object-cover",
+                          )}
+                        />
+                      </picture>
+                    </>
                   )}
 
                   {slide.caption && (

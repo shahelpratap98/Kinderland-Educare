@@ -32,9 +32,9 @@ export default function EnrolmentPage() {
             Enrolling with us
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-background/85">
-            Three steps, and none of them are paperwork you have to do alone.
-            Start with a visit — everything else is easier once you&apos;ve stood
-            in the room.
+            The best place to begin is with a visit. Come and see the centre,
+            meet our team and discuss your child&apos;s needs. We&apos;ll then
+            guide you through the enrolment process.
           </p>
         </div>
       </section>
@@ -81,6 +81,12 @@ export default function EnrolmentPage() {
           description="A few of the children and families who make up the Kinderland community."
           label="Photographs of children at Kinderland Educare"
           basePath="/enrolment"
+          /* Ten of these eleven are 3:4 phone portraits. A 3:2 cover frame threw
+             away half of every one of them, which is why the centre asked for
+             the korowai and marshmallow pictures to run full length. Contain in
+             a slightly taller frame shows all eleven whole. */
+          aspect="portrait-first"
+          fit="contain"
         />
       )}
 
