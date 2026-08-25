@@ -40,12 +40,14 @@ export function Hero() {
           <em className="italic text-brand-600">creativity</em> meet.
         </h1>
 
-        <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-          {/* The strapline used to open this sentence; it is the headline now,
-              so repeating it here would say the same thing twice in a row. */}
-          Kinderland Educare offers consistent, high-standard early childhood
-          education for children from {centre.ages}, in a purpose-built centre
-          in {centre.address.city}.
+        <p className="animate-fade-rise-delay mt-8 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+          {/* The age range and the city stay interpolated rather than typed out,
+              so they cannot drift from the values the rest of the site uses. */}
+          A place for children to belong, explore, learn and grow. Through play,
+          relationships and meaningful everyday experiences, children build
+          confidence, independence, communication and a love of learning in our
+          purpose-built early learning centre in {centre.address.city},
+          welcoming children from {centre.ages}.
         </p>
 
         <button
