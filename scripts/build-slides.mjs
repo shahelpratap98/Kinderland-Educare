@@ -309,16 +309,12 @@ const discovererPhotos = [
   },
 ];
 
-/* The toddler room takes the climbing frame. The fairy-lights photograph was
-   here first and is a better age match, but it also opens the enrolment deck,
-   and one image doing two jobs on one site reads as running short of pictures.
-   This is 14MP against that file's 1.2MP, it is outdoors — which is what this
-   room's own blurb promises — and a face grinning straight down the lens holds
-   up shrunk to a 341px card. 3:4 portrait, so the band keeps the middle: his
-   face sits 40-52% down and a centre crop would have started at 25%. */
+/* The toddler room takes the photograph by the rocks, at the centre's request.
+   900x600 and already exactly 3:2, so nothing is cropped and nothing upscaled.
+   The climbing frame that was here has moved to the enrolment deck. */
 const explorerPhotos = [
-  { file: "g-IMG_0295.jpg", name: "explorers-card", band: { top: 0.21 }, maxWidth: 1000 },
-  { file: "g-IMG_0295.jpg", name: "explorers-lead", band: { top: 0.21 }, maxWidth: 1800 },
+  { file: "03_water-rocks.jpg", name: "explorers-card", maxWidth: 900 },
+  { file: "03_water-rocks.jpg", name: "explorers-lead", maxWidth: 900 },
 ];
 
 const infantPhotos = [
@@ -347,7 +343,8 @@ for (const photo of infantPhotos)
 
 for (const photo of discovererPhotos) await renderSlide(photo, SOURCE, ROOM_OUT);
 
-for (const photo of explorerPhotos) await renderSlide(photo, ARCHIVE_SOURCE, ROOM_OUT);
+for (const photo of explorerPhotos)
+  await renderSlide(photo, "C:/Users/Shahel Pratap/Documents/kinder educare/enrolment/_unused/", ROOM_OUT);
 
 /* ------------------------------------------------------------------ */
 /*  Old home page slider, on the home deck                             */
@@ -463,6 +460,21 @@ for (const slide of enrolmentSlideFiles)
 /* Same source and band as the home deck's copy: both faces sit 52-80% down, so
    this starts at 42%. That drops the neon sign above them, which is why the alt
    text describes the children rather than the sign. */
+/* The climbing frame, moved off the toddler room card onto this deck. The
+   number is just a filename — position on the page is set by the order of
+   enrolmentSlides in lib/content.ts, where this sits second. */
+await renderSlide(
+  {
+    file: "g-IMG_0295.jpg",
+    name: "enrolment-11",
+    band: { top: 0.21 },
+    maxWidth: 1200,
+    quality: 68,
+  },
+  ARCHIVE_SOURCE,
+  ENROLMENT_OUT,
+);
+
 await renderSlide(
   {
     file: "486957102_1194404245813166_1112327438968029408_n.jpg",

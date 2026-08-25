@@ -243,12 +243,12 @@ export const ageGroups = [
     subsidy: null,
     cardPhoto: {
       src: "explorers-card",
-      alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
+      alt: "A child in a blue rash top leaning on a rock, hair still wet from the water.",
     } as RoomPhoto | null,
     photos: [
       {
         src: "explorers-lead",
-        alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
+        alt: "A child in a blue rash top leaning on a rock, hair still wet from the water.",
       },
     ] as readonly RoomPhoto[],
     highlights: [
@@ -784,6 +784,12 @@ export const enrolmentSlides: readonly Slide[] = [
     src: "enrolment-1",
     alt: "A teacher and a toddler reaching up together to a string of fairy lights indoors.",
     caption: "Settling in, one familiar face at a time",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "enrolment-11",
+    alt: "A child in a sun hat grinning out through the red hoops of the outdoor climbing frame.",
     hasChildren: true,
   },
   {

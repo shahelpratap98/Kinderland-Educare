@@ -26,6 +26,8 @@ import { useReducedMotion } from "framer-motion";
  * cannot be served in its place.
  */
 const VIDEO_SRC = "/video/hero-valley-720.mp4";
+/* A frame from the clip, shown wherever the video will not or should not play. */
+const STILL_SRC = "/video/hero-valley-still";
 
 const FADE = 0.5; // seconds of fade at each end
 const RESTART_DELAY = 100; // ms held at opacity 0 before looping
@@ -46,9 +48,15 @@ const RESTART_DELAY = 100; // ms held at opacity 0 before looping
  * - A `play()` rejection path. Autoplay can still be refused (Low Power Mode,
  *   data saver), so the promise is caught rather than left to throw unhandled.
  *
- * Under `prefers-reduced-motion` the video is not loaded or played at all — a
- * 30MB looping clip is precisely the kind of ambient motion that preference
- * exists to suppress. The gradient ground shows through instead.
+ * Under `prefers-reduced-motion` the clip is not loaded or played — ambient
+ * motion is exactly what that preference exists to suppress — but a still frame
+ * is shown in its place.
+ *
+ * It used to render nothing at all, and that turned out to be a real bug rather
+ * than a nicety: Windows' "Animation effects" toggle sets this preference, so a
+ * PC with it switched off got a blank gradient where the hero should be, while
+ * the same page on a phone looked fine. Suppressing the motion is right;
+ * suppressing the picture was not.
  */
 /**
  * Two placements, because the same clip has to work behind a full-height hero and
@@ -224,7 +232,26 @@ export function HeroVideo({
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-      {!reduce && (
+      {reduce ? (
+        /* Same framing as the video: the mask, the object-position and the
+           300px/0 offset all have to match, or the still sits somewhere the
+           clip never does. */
+        <picture>
+          <source srcSet={`${STILL_SRC}.webp`} type="image/webp" />
+          <img
+            src={`${STILL_SRC}.jpg`}
+            alt=""
+            className="absolute h-full w-full object-cover"
+            style={{
+              inset: "auto 0 0 0",
+              top: config.top,
+              maskImage: config.mask,
+              WebkitMaskImage: config.mask,
+              objectPosition: config.objectPosition,
+            }}
+          />
+        </picture>
+      ) : (
         <video
           ref={videoRef}
           src={VIDEO_SRC}
@@ -237,6 +264,8 @@ export function HeroVideo({
             content for bandwidth on a phone.
           */
           preload="metadata"
+          /* Paints immediately, and stands in if the clip is slow or refused. */
+          poster={`${STILL_SRC}.jpg`}
           className="absolute h-full w-full object-cover opacity-0"
           style={{
             /* inset first, then top — inset writes top:auto, so the order matters. */

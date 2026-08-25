@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroVideo } from "@/components/hero-video";
 import { useTourModal } from "@/components/tour-modal-provider";
-import { centre } from "@/lib/content";
+import { centre, fullAddress } from "@/lib/content";
 
 /**
  * Cinematic hero.
@@ -38,7 +38,7 @@ export function Hero() {
         <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
           {centre.logoTagline}. Kinderland Educare offers consistent, high-standard
           early childhood education for children from {centre.ages}, in a
-          purpose-built centre in {centre.address.suburb}, South Auckland.
+          purpose-built centre in {centre.address.city}.
         </p>
 
         <button
@@ -63,16 +63,19 @@ export function Hero() {
           element that needs it and leaves the picture alone. Measured 11:1 at
           the darkest frame behind it.
         */}
-        <p className="animate-fade-rise-delay-2 mt-10 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-background/75 px-5 py-2.5 text-sm text-ink backdrop-blur-sm">
+        {/*
+          mt-20 on mobile, mt-10 from sm up. On a phone this chip sat across the
+          middle of the clip; dropping it 40px clears the frame without moving
+          anything on desktop, where there is room for both.
+        */}
+        <p className="animate-fade-rise-delay-2 mt-20 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-background/75 px-5 py-2.5 text-sm text-ink backdrop-blur-sm sm:mt-10">
           <span>
-            {centre.address.street}, {centre.address.suburb}
+            {centre.hours.days}, {centre.hours.open} – {centre.hours.close}
           </span>
           <span aria-hidden className="text-muted/40">
             &middot;
           </span>
-          <span>
-            {centre.hours.days}, {centre.hours.open} – {centre.hours.close}
-          </span>
+          <span>{fullAddress}</span>
           <span aria-hidden className="text-muted/40">
             &middot;
           </span>
