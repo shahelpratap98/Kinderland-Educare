@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { FacebookIcon } from "@/components/ui/facebook-icon";
 import { Logo } from "@/components/ui/logo";
-import { centre, fullAddress } from "@/lib/content";
+import { centre, fullAddress, socials } from "@/lib/content";
 
 export function SiteFooter() {
   return (
@@ -54,6 +55,18 @@ export function SiteFooter() {
           <p className="mt-1">
             {centre.hours.days}, {centre.hours.open} – {centre.hours.close}
           </p>
+
+          {/* aria-label rather than a visible caption: the mark is the whole
+              control, so it needs a name of its own to be announced at all. */}
+          <a
+            href={socials.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${centre.name} on Facebook`}
+            className="mt-3 inline-grid size-9 place-items-center rounded-full text-muted hairline transition-[color,transform] duration-150 ease-out-strong active:scale-95 sm:ml-auto [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
+          >
+            <FacebookIcon className="size-4" aria-hidden />
+          </a>
         </div>
       </div>
     </footer>

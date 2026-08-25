@@ -1,7 +1,14 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { FacebookIcon } from "@/components/ui/facebook-icon";
 import { TourForm } from "@/components/tour-form";
-import { centre, fullAddress, mapEmbedUrl, mapLinkUrl } from "@/lib/content";
+import {
+  centre,
+  fullAddress,
+  mapEmbedUrl,
+  mapLinkUrl,
+  socials,
+} from "@/lib/content";
 
 const details = [
   {
@@ -17,6 +24,15 @@ const details = [
     icon: Clock,
     label: "Opening hours",
     value: `${centre.hours.days}, ${centre.hours.open} – ${centre.hours.close}`,
+  },
+  /* Last in the card: a parent reads this list to get in touch, and social is
+     the softest of those intentions. */
+  {
+    icon: FacebookIcon,
+    label: "Follow us",
+    value: "Kinderland Educare on Facebook",
+    href: socials.facebook,
+    external: true,
   },
 ];
 

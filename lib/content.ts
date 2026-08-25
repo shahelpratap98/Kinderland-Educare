@@ -39,6 +39,22 @@ export const centre = {
   ages: "3 months to 6 years",
 } as const;
 
+/**
+ * Social profiles. Only what the centre has actually given us — no invented
+ * handles, and no placeholder icons for networks they may not be on.
+ *
+ * ⚠️  This URL was supplied by the centre, but it does not resolve for a
+ * logged-out visitor: Facebook answers it with "This content isn't available at
+ * the moment", which is what it says when a page is restricted, unpublished or
+ * gone. A control fetch of a known-public page in the same browser rendered
+ * fine, so this is the URL or the page, not Facebook blocking us. An admin is
+ * always shown their own page, so it can look correct while signed in and be
+ * broken for everybody else. Raised with the centre; left in place as given.
+ */
+export const socials = {
+  facebook: "https://www.facebook.com/KinderlandEducarePreSchool",
+} as const;
+
 export const fullAddress = `${centre.address.street}, ${centre.address.suburb}, ${centre.address.city} ${centre.address.postcode}`;
 
 /** Keyless Google Maps embed — no API key or billing account required. */
