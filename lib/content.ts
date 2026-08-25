@@ -436,86 +436,30 @@ export type Slide =
   | { kind: "text"; heading: string; body?: string };
 
 /*
- * The home deck.
+ * The home deck: six photographs, fixed order, nothing else.
  *
- * Two sources. The 2025 set — centre-exterior, centre-entrance, farm-visit,
- * outdoor-play, leaders-of-tomorrow, end-of-year-concert — are recent
- * photographs of the centre. The six `old-*` are the old WordPress site's home
- * page slider, added at the owner's request.
+ * Specified image by image by the owner (Aug 2026) and deliberately exhaustive
+ * — this is the whole deck, not a starting point. Do not add to it without
+ * being asked.
  *
- * ⚠️  Those six are stock, not Kinderland: 924x420, EXIF stripped, studio-lit
- * against seamless backdrops, cut to exactly the "happykids" theme's slider
- * dimensions. The children in them have never attended this centre, and the
- * 2013 theme licence does not follow the pictures here. They are also the
- * softest slides in the deck — a 3:2 crop leaves 630x420, emitted at 900 rather
- * than upscaled — so they are spaced out rather than grouped.
+ * Removed to get here: the two text cards, centre-entrance, leaders-of-tomorrow,
+ * old-ece-blocks and old-wall-painting. Their derivatives all remain in
+ * /public/slides and the build script still emits them, so any of them can come
+ * back as a one-line entry.
  *
- * Removed Aug 2026, all at the owner's request: the seven photographs
- * recovered from the old site's /gallery/ page, then centre-exterior and
- * end-of-year-concert. farm-visit also came off this deck — it is now the
- * Discoverers photograph, so it still appears on the site, just once rather
- * than twice. Every derivative is still in /public/slides and the build script
- * still emits them, so restoring any of them is a one-line change here.
+ * ⚠️  Four of the six — painting-flowers, hands-on, first-instruments and
+ * building-blocks — are the old WordPress site's slider images: 924x420, EXIF
+ * stripped, studio-lit on seamless backdrops, cut to that theme's exact slider
+ * size. They are stock, the children in them have never attended this centre,
+ * and the 2013 theme licence does not follow them here. They are also the
+ * softest images on the site: a 3:2 crop leaves 630x420, emitted at 900 rather
+ * than upscaled.
  */
 export const slides: readonly Slide[] = [
   {
     kind: "photo",
-    src: "outdoor-play",
-    alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
-    caption: "Room to move, every day",
-    hasChildren: true,
-  },
-  {
-    kind: "text",
-    heading: centre.logoTagline,
-    body: `Early childhood education for children from ${centre.ages}.`,
-  },
-  {
-    kind: "photo",
-    src: "park-flower",
-    alt: "A child in a cap studying a small flower held between their fingers, with an adult's open hand waiting beside them.",
-    caption: "Curiosity, one small thing at a time",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "old-ece-blocks",
-    alt: "A child's hands holding up three wooden alphabet blocks spelling E, C and E.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "old-first-instruments",
-    alt: "Two small children sitting together with shakers and a xylophone.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
     src: "old-painting-flowers",
     alt: "A child lying on a large sheet of paper covered in painted flowers and handprints.",
-    hasChildren: true,
-  },
-  {
-    kind: "text",
-    heading: "Leaders of tomorrow",
-    body: "A strong sense of identity, and a lifelong love of discovery.",
-  },
-  {
-    kind: "photo",
-    src: "leaders-of-tomorrow",
-    alt: "Two children pulling happy faces beneath a neon star reading 'Kinderland — Leaders of Tomorrow'.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "old-wall-painting",
-    alt: "A child painting broad brushstrokes onto a wall-mounted sheet of paper.",
-    hasChildren: true,
-  },
-  {
-    kind: "photo",
-    src: "old-building-blocks",
-    alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
     hasChildren: true,
   },
   {
@@ -526,10 +470,29 @@ export const slides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "centre-entrance",
-    alt: "The entrance to Kinderland Educare, with the centre's logo above the door.",
-    caption: "Come and see us",
-    hasChildren: false,
+    src: "outdoor-play",
+    alt: "A child climbing on colourful outdoor play equipment in the centre's garden.",
+    caption: "Room to move, every day",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "old-first-instruments",
+    alt: "Two small children sitting together with shakers and a xylophone.",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "park-flower",
+    alt: "A child in a cap studying a small flower held between their fingers, with an adult's open hand waiting beside them.",
+    caption: "Curiosity, one small thing at a time",
+    hasChildren: true,
+  },
+  {
+    kind: "photo",
+    src: "old-building-blocks",
+    alt: "A toddler kneeling on the floor building a low wall out of large plastic bricks.",
+    hasChildren: true,
   },
 ] as const;
 
