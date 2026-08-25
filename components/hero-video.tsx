@@ -10,24 +10,27 @@ import { useReducedMotion } from "framer-motion";
  * a different account — nothing we control, and the hero would have gone blank
  * the day that file was removed.
  *
- * Re-encoded for the web after the hero was reported laggy. It arrived as
- * 2560x1440 at 6.3Mbps with an AAC track, and was being decoded into a box
- * about 956px wide — three times the pixels needed, plus an audio stream on a
- * permanently muted video. Now 1280x720, no audio, faststart, 1.35MB against
- * 7.9MB.
+ * The valley clip it replaces was an empty landscape. This one is a preschool
+ * playground — children playing, teachers reading, a slow push in — so the hero
+ * now shows what the centre actually is rather than only setting a mood.
  *
- * Quality was measured rather than eyeballed: against a lossless 720p
- * reference, crf 24/26/28 scored SSIM 0.984/0.980/0.975 at 1818/1345/1000KB.
- * 26 sits where the curve flattens, and a frame-by-frame comparison against the
- * original is indistinguishable — which is unsurprising for a soft illustrated
- * clip that sits behind a white scrim.
+ * Re-encoded for the web rather than used as delivered: it arrived 1268x724 at
+ * 14.2Mbps and 8.9MB. Scaled to a true 16:9 (scale to 1280 wide, then centre
+ * crop the 10 spare rows, so nothing is stretched), audio-free, faststart.
  *
- * The filename carries the resolution so a cached copy of the old 7.9MB file
- * cannot be served in its place.
+ * Quality was measured, not eyeballed: against a lossless 720p reference,
+ * crf 22/24/26 scored SSIM 0.9824/0.9781/0.9727 at 1353/1018/773KB. 24 is the
+ * pick. The valley clip managed 0.980 at crf 26 and this one only 0.973 at the
+ * same setting — a frame full of small figures costs more bits than an empty
+ * hillside — so the setting that was right for the old clip is one step too far
+ * for this one. At 1018KB it is still lighter than the 1345KB it replaces.
+ *
+ * The filename carries the resolution so a cached copy of an older file cannot
+ * be served in its place.
  */
-const VIDEO_SRC = "/video/hero-valley-720.mp4";
+const VIDEO_SRC = "/video/hero-playground-720.mp4";
 /* A frame from the clip, shown wherever the video will not or should not play. */
-const STILL_SRC = "/video/hero-valley-still";
+const STILL_SRC = "/video/hero-playground-still";
 
 const FADE = 0.5; // seconds of fade at each end
 const RESTART_DELAY = 100; // ms held at opacity 0 before looping
@@ -86,15 +89,15 @@ const VARIANTS = {
     scrim.
   */
   tall: {
-    top: "180px",
+    top: "120px",
     /*
-      object-cover crops to the middle of the clip by default. This container is
-      wider than the 16:9 frame, so the band it keeps is horizontal — and centred
-      it lands on the valley floor, cutting most of the sky. Biasing the position
-      upward keeps the same amount of picture, just taken higher up the frame:
-      more sky and cloud, less of the near foreground.
+      Biased downward, not up. The old valley clip was sky over an empty
+      hillside, so 18% — pulling the kept band toward the top of the frame — was
+      right. This clip carries the playground and the children along its lower
+      edge, and the same setting cropped them off. 62% keeps the sky the
+      headline sits over while holding the children inside the frame.
     */
-    objectPosition: "50% 18%",
+    objectPosition: "50% 62%",
     mask: "linear-gradient(to bottom, transparent 0, #000 90px)",
     scrim:
       "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.34) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 62%, rgba(255,255,255,0) 88%, #fff 100%)",
@@ -241,10 +244,11 @@ export function HeroVideo({
           <img
             src={`${STILL_SRC}.jpg`}
             alt=""
-            className="absolute h-full w-full object-cover"
+            className="absolute w-full object-cover"
             style={{
               inset: "auto 0 0 0",
               top: config.top,
+              height: `calc(100% - ${config.top})`,
               maskImage: config.mask,
               WebkitMaskImage: config.mask,
               objectPosition: config.objectPosition,
@@ -266,11 +270,18 @@ export function HeroVideo({
           preload="metadata"
           /* Paints immediately, and stands in if the clip is slow or refused. */
           poster={`${STILL_SRC}.jpg`}
-          className="absolute h-full w-full object-cover opacity-0"
+          className="absolute w-full object-cover opacity-0"
           style={{
             /* inset first, then top — inset writes top:auto, so the order matters. */
             inset: "auto 0 0 0",
             top: config.top,
+            /*
+              Derived from the offset rather than set to 100%. A replaced element
+              with h-full and a top offset overflows the container by exactly that
+              offset, and overflow-hidden discards it — which is what was cutting
+              the children off the bottom of this clip.
+            */
+            height: `calc(100% - ${config.top})`,
             /*
               In the tall placement the clip begins abruptly at 300px, which reads
               as a hard horizontal seam across the page, so its own top edge is
