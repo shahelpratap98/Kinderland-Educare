@@ -30,15 +30,19 @@ export function Logo({
   variant = "mark",
   className,
   priority = false,
+  alt,
 }: {
   variant?: "mark" | "full";
   className?: string;
   priority?: boolean;
+  /** Override when the tagline is rendered as text alongside, so a screen
+      reader does not hear it twice. */
+  alt?: string;
 }) {
   return (
     <Image
       src={variant === "full" ? logoFull : logoMark}
-      alt={`${centre.legalName} — ${centre.logoTagline}`}
+      alt={alt ?? `${centre.legalName} — ${centre.logoTagline}`}
       priority={priority}
       className={cn("w-auto", className)}
     />
