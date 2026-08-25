@@ -30,15 +30,22 @@ export function Hero() {
           className="animate-fade-rise max-w-7xl text-5xl font-normal text-ink sm:text-7xl md:text-8xl"
           style={{ lineHeight: 0.95, letterSpacing: "-2.46px" }}
         >
-          Nurturing <em className="italic text-brand-600">enquiring minds</em> and a
-          lifelong love of{" "}
-          <em className="italic text-brand-600">discovery.</em>
+          {/*
+            The centre's own strapline, the same words as centre.logoTagline. It
+            is written out here rather than interpolated because the two-tone
+            treatment emphasises individual words, which a single string cannot
+            express — so if that value ever changes, change this with it.
+          */}
+          Where <em className="italic text-brand-600">dreams</em> and{" "}
+          <em className="italic text-brand-600">creativity</em> meet.
         </h1>
 
         <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-          {centre.logoTagline}. Kinderland Educare offers consistent, high-standard
-          early childhood education for children from {centre.ages}, in a
-          purpose-built centre in {centre.address.city}.
+          {/* The strapline used to open this sentence; it is the headline now,
+              so repeating it here would say the same thing twice in a row. */}
+          Kinderland Educare offers consistent, high-standard early childhood
+          education for children from {centre.ages}, in a purpose-built centre
+          in {centre.address.city}.
         </p>
 
         <button
