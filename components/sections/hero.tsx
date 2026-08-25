@@ -63,12 +63,25 @@ export function Hero() {
           element that needs it and leaves the picture alone. Measured 11:1 at
           the darkest frame behind it.
         */}
-        {/*
-          mt-20 on mobile, mt-10 from sm up. On a phone this chip sat across the
-          middle of the clip; dropping it 40px clears the frame without moving
-          anything on desktop, where there is room for both.
-        */}
-        <p className="animate-fade-rise-delay-2 mt-20 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-background/75 px-5 py-2.5 text-sm text-ink backdrop-blur-sm sm:mt-10">
+      </div>
+
+      {/*
+        Pinned to the foot of the hero rather than sitting under the button.
+        In the flow it landed across the middle of the clip, which is the part
+        worth seeing; down here it reads as a caption to the whole frame and
+        leaves the valley clear.
+
+        Absolute, so the copy above keeps its own vertical rhythm and nothing
+        shifts as the line wraps. The column's pb-40 reserves the room it sits
+        in, so it never rides up over the button on a short screen.
+
+        A full-width wrapper centres it, rather than left-1/2 with a translate.
+        An absolutely positioned box given only `left` can shrink-to-fit no wider
+        than the space remaining to its right — half the section — so the chip
+        wrapped to two lines on a 1440px screen with room to spare either side.
+      */}
+      <div className="absolute inset-x-0 bottom-8 z-10 flex justify-center px-4 sm:bottom-10">
+        <p className="animate-fade-rise-delay-2 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-background/75 px-5 py-2.5 text-sm text-ink backdrop-blur-sm">
           <span>
             {centre.hours.days}, {centre.hours.open} – {centre.hours.close}
           </span>
