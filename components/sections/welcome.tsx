@@ -55,7 +55,35 @@ export function Welcome() {
           </RevealItem>
 
           <RevealItem>
-            <div className="space-y-4">
+            {/*
+              The greetings sit above the body copy, where the centre circled
+              them. Set in the display face between body and heading size: this
+              is a welcome in nine languages, not a subheading, and it should
+              read as warmth rather than as a label.
+
+              The bullets are separate aria-hidden spans rather than characters
+              in the text, so assistive tech announces nine greetings instead of
+              "Assalamu Aaikum bullet Kia ora bullet ...". flex-wrap breaks
+              between greetings rather than mid-phrase, which matters for
+              "Mālō e lelei" and "Sat Sri Akal".
+            */}
+            <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-display text-xl leading-relaxed text-brand-700 sm:text-2xl">
+              {welcome.greetings.map((g, i) => (
+                <span key={g} className="inline-flex items-center gap-x-2.5">
+                  {i > 0 && (
+                    <span aria-hidden className="text-brand-700/40">
+                      •
+                    </span>
+                  )}
+                  {g}
+                </span>
+              ))}
+            </p>
+            <p className="mt-3 text-[17px] leading-relaxed text-ink">
+              {welcome.greetingLead}
+            </p>
+
+            <div className="mt-6 space-y-4">
               {welcome.body.map((p) => (
                 <p key={p} className="text-[17px] leading-relaxed text-muted">
                   {p}

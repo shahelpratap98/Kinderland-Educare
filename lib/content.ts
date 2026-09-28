@@ -129,6 +129,25 @@ export const values = [
 export const welcome = {
   eyebrow: "Now open and taking new enrolments",
   title: "Safe, loved, and inspired — because every child deserves the very best start.",
+  /*
+    Nine greetings, in the order the centre supplied them (Shane, Sep 2026) and
+    spelled the way he wrote them: "Assalamu Aaikum" rather than the more usual
+    "Alaikum", and "Mālō e lelei" with its macrons. Held as a list rather than
+    one pre-joined string so the separator can stay decorative markup — a screen
+    reader should hear nine greetings, not nine bullet characters.
+  */
+  greetings: [
+    "Assalamu Aaikum",
+    "Kia ora",
+    "Namaste",
+    "Bula",
+    "Talofa",
+    "Mālō e lelei",
+    "Nomoshkar",
+    "Vanakkam",
+    "Sat Sri Akal",
+  ],
+  greetingLead: "Warm greetings and welcome to Kinderland Educare.",
   body: [
     "At Kinderland Educare, we believe early childhood is about so much more than care. It's about creating a place where children feel safe to explore, confident to learn, and deeply connected to the people around them.",
     "From the moment you walk through our doors, you'll find a warm and welcoming environment where children are known, valued, and encouraged to be themselves.",
