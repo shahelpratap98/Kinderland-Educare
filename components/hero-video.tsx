@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 /*
  * Served from /public rather than hotlinked.
@@ -10,27 +11,34 @@ import { useReducedMotion } from "framer-motion";
  * a different account — nothing we control, and the hero would have gone blank
  * the day that file was removed.
  *
- * The valley clip it replaces was an empty landscape. This one is a preschool
- * playground — children playing, teachers reading, a slow push in — so the hero
- * now shows what the centre actually is rather than only setting a mood.
+ * The centre itself, on Kohinoor Ave: the real building, the real mural, the
+ * real street. Two AI heroes preceded it — an illustrated valley and an
+ * illustrated playground — and a photoreal AI playground was generated and
+ * rejected. A photograph of the actual centre asks no one to believe that
+ * invented children are enrolled here, which neither AI option could claim.
  *
- * Re-encoded for the web rather than used as delivered: it arrived 1268x724 at
- * 14.2Mbps and 8.9MB. Scaled to a true 16:9 (scale to 1280 wide, then centre
- * crop the 10 spare rows, so nothing is stretched), audio-free, faststart.
+ * Animated from a still: the camera is locked and only the sky and the tree
+ * canopy move. That was not a stylistic choice. Given any camera travel the
+ * model reframes the shot and invents content to fill what it reveals, which
+ * is how an earlier ten-second attempt ended up teleporting children around a
+ * playground. Passing the same frame as both start and end pins it.
  *
- * Quality was measured, not eyeballed: against a lossless 720p reference,
- * crf 22/24/26 scored SSIM 0.9824/0.9781/0.9727 at 1353/1018/773KB. 24 is the
- * pick. The valley clip managed 0.980 at crf 26 and this one only 0.973 at the
- * same setting — a frame full of small figures costs more bits than an empty
- * hillside — so the setting that was right for the old clip is one step too far
- * for this one. At 1018KB it is still lighter than the 1345KB it replaces.
+ * Delivered at exactly 1280x720, so nothing is scaled or cropped here — only
+ * re-encoded, audio-free, faststart.
+ *
+ * Quality measured against a lossless reference: crf 20/22/24/26 scored SSIM
+ * 0.9933/0.9912/0.9884/0.9848 at 1126/751/480/308KB. 22 is the pick, and it is
+ * both smaller and sharper than either hero before it — a locked frame where
+ * only leaves and cloud move costs a fraction of the bits that a playground of
+ * running children did. For comparison the playground clip needed 1018KB to
+ * reach 0.978; this reaches 0.991 in 751KB.
  *
  * The filename carries the resolution so a cached copy of an older file cannot
  * be served in its place.
  */
-const VIDEO_SRC = "/video/hero-playground-720.mp4";
+const VIDEO_SRC = "/video/hero-centre-720.mp4";
 /* A frame from the clip, shown wherever the video will not or should not play. */
-const STILL_SRC = "/video/hero-playground-still";
+const STILL_SRC = "/video/hero-centre-still";
 
 const FADE = 0.5; // seconds of fade at each end
 const RESTART_DELAY = 100; // ms held at opacity 0 before looping
@@ -99,8 +107,26 @@ const VARIANTS = {
     */
     objectPosition: "50% 62%",
     mask: "linear-gradient(to bottom, transparent 0, #000 90px)",
+    /*
+      Two scrims, because the copy block is a very different height on a phone.
+
+      At 1440 the subhead runs to four lines and has cleared the scrim before it
+      thins. At 375 it runs to eight, and the last of them lands on the dark tree
+      canopy behind the centre. Measured by compositing the real gradient over
+      the real frame: lines 6-8 came in at 4.47, 4.42 and 2.76 against the 4.5
+      that 16px text needs.
+
+      This never showed on the two illustrated heroes because both had bright sky
+      all the way down the frame. A photograph of an actual street does not.
+
+      `scrim` keeps the desktop curve exactly as it was — extending the white
+      further down there would bleach the building, which is the subject. It is
+      only the narrow viewport that needs the longer hold.
+    */
     scrim:
       "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.34) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 62%, rgba(255,255,255,0) 88%, #fff 100%)",
+    scrimNarrow:
+      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.97) 26%, rgba(255,255,255,0.93) 40%, rgba(255,255,255,0.88) 52%, rgba(255,255,255,0.70) 62%, rgba(255,255,255,0.34) 72%, rgba(255,255,255,0) 82%, rgba(255,255,255,0) 92%, #fff 100%)",
   },
   compact: {
     top: "0",
@@ -115,6 +141,9 @@ const VARIANTS = {
     */
     scrim:
       "linear-gradient(100deg, rgba(61,27,80,0.90) 0%, rgba(61,27,80,0.82) 45%, rgba(61,27,80,0.66) 70%, rgba(61,27,80,0.28) 100%)",
+    /* Runs across rather than down, so viewport height does not change what sits
+       under the copy. No narrow variant needed. */
+    scrimNarrow: undefined,
   },
 } as const;
 
@@ -303,9 +332,15 @@ export function HeroVideo({
         clip, and `compact` darkens the left where its copy sits.
       */}
       <div
-        className="absolute inset-0"
+        className={cn("absolute inset-0", config.scrimNarrow && "hidden sm:block")}
         style={{ backgroundImage: config.scrim }}
       />
+      {config.scrimNarrow && (
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{ backgroundImage: config.scrimNarrow }}
+        />
+      )}
     </div>
   );
 }
