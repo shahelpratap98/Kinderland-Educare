@@ -48,17 +48,17 @@ const STILL_SRC = "/video/hero-centre-still";
  * paints inside it — which is why a photograph can sit in a slot built for a
  * video without the framing shifting as the deck turns.
  *
- * The clip leads because it is the real centre. The two playground frames after
- * it are generated, and are the pair the centre chose from six.
+ * The children lead. The two playground frames are generated, and are the pair
+ * the centre chose from six; the clip of the real building closes the deck.
  */
 type HeroSlide =
   | { kind: "video"; src: string; still: string }
   | { kind: "image"; src: string };
 
 const SLIDES: readonly HeroSlide[] = [
-  { kind: "video", src: VIDEO_SRC, still: STILL_SRC },
   { kind: "image", src: "/video/hero-play-a" },
   { kind: "image", src: "/video/hero-play-b" },
+  { kind: "video", src: VIDEO_SRC, still: STILL_SRC },
 ];
 
 /* A photograph has no natural length, so it is given one. Six seconds is long
@@ -275,13 +275,18 @@ export function HeroVideo({
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
 
+    /* Guarded rather than bare: `ended` should only turn the deck when the clip
+       is the slide on screen. Without this, any stray playback advances it. */
+    const onEnded = () => {
+      if (active.kind === "video") advance();
+    };
     const video = videoRef.current;
-    video?.addEventListener("ended", advance);
+    video?.addEventListener("ended", onEnded);
 
     return () => {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      video?.removeEventListener("ended", advance);
+      video?.removeEventListener("ended", onEnded);
       stopSlide();
     };
   }, [reduce, index, active.kind]);
@@ -345,7 +350,14 @@ export function HeroVideo({
                 src={slide.src}
                 muted
                 playsInline
-                autoPlay
+                /*
+                  Deliberately no autoPlay. The clip is no longer the first slide,
+                  and the attribute is not something this component controls: it
+                  would start the clip invisibly at mount and fire `ended` about
+                  ten seconds later, while a photograph was still on screen,
+                  advancing the deck a slide early and desynchronising it from
+                  then on. startSlide() plays the clip when its turn arrives.
+                */
                 /* metadata, not auto: this is decorative, and fetching the whole
                    clip eagerly would compete with the real content. */
                 preload="metadata"
