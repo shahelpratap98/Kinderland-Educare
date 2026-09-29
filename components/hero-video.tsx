@@ -205,7 +205,25 @@ export function HeroVideo({
     const root = rootRef.current;
     if (!root) return;
 
-    let onScreen = false;
+    /*
+      Visibility is measured when it is asked for, not cached from the observer.
+
+      It used to be a `let onScreen = false` that only the IntersectionObserver
+      callback ever wrote, and that stalled the deck in two ordinary situations.
+      The observer delivers nothing at all while a page is hidden, so opening the
+      site in a background tab and then switching to it left the flag false: the
+      visibilitychange that followed read the stale value and stopped the deck
+      instead of starting it. And because the flag is re-declared on every effect
+      run, each slide change reset it to false and waited on a fresh observer
+      callback to undo that.
+
+      The clip hid both, because `autoPlay` starts it whatever this code does —
+      so slide one always ran, and only the slides after it ever stuck.
+    */
+    const onScreen = () => {
+      const r = root.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    };
 
     const clearTimer = () => {
       if (timerRef.current !== null) {
@@ -241,18 +259,18 @@ export function HeroVideo({
     };
 
     const sync = () => {
-      if (onScreen && !document.hidden) startSlide();
+      if (onScreen() && !document.hidden) startSlide();
       else stopSlide();
     };
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        onScreen = entries[entries.length - 1].isIntersecting;
-        sync();
-      },
-      { threshold: 0 },
-    );
+    /* The observer is now only a trigger to re-check, never the source of
+       truth, so a missing or late callback cannot strand the deck. */
+    const io = new IntersectionObserver(() => sync(), { threshold: 0 });
     io.observe(root);
+
+    /* Start straight away rather than waiting on the observer's first callback:
+       the common case is a hero that is on screen the moment it mounts. */
+    sync();
 
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
