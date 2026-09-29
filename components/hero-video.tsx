@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -40,8 +40,34 @@ const VIDEO_SRC = "/video/hero-centre-720.mp4";
 /* A frame from the clip, shown wherever the video will not or should not play. */
 const STILL_SRC = "/video/hero-centre-still";
 
-const FADE = 0.5; // seconds of fade at each end
-const RESTART_DELAY = 100; // ms held at opacity 0 before looping
+/*
+ * The hero deck.
+ *
+ * A slide is either the clip or a photograph. They share one frame, one mask,
+ * one object-position and one scrim, so the only thing that differs is what
+ * paints inside it — which is why a photograph can sit in a slot built for a
+ * video without the framing shifting as the deck turns.
+ *
+ * The clip leads because it is the real centre. The two playground frames after
+ * it are generated, and are the pair the centre chose from six.
+ */
+type HeroSlide =
+  | { kind: "video"; src: string; still: string }
+  | { kind: "image"; src: string };
+
+const SLIDES: readonly HeroSlide[] = [
+  { kind: "video", src: VIDEO_SRC, still: STILL_SRC },
+  { kind: "image", src: "/video/hero-play-a" },
+  { kind: "image", src: "/video/hero-play-b" },
+];
+
+/* A photograph has no natural length, so it is given one. Six seconds is long
+   enough to read the picture and short enough that the deck never feels stalled;
+   the clip runs to its own ten instead. */
+const PHOTO_HOLD = 6000;
+/* Long enough to read as a dissolve rather than a cut, under copy that stays put
+   the whole way through. */
+const CROSSFADE = 900;
 
 /**
  * Cinematic background video with a manual fade-in / fade-out loop.
@@ -154,90 +180,69 @@ export function HeroVideo({
 }) {
   const config = VARIANTS[variant];
   const videoRef = useRef<HTMLVideoElement>(null);
-  const rafRef = useRef<number | null>(null);
-  const restartRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [index, setIndex] = useState(0);
   const reduce = useReducedMotion();
 
+  const active = SLIDES[index];
+
+  /*
+    Turning the deck, and gating it on visibility.
+
+    The hand-rolled requestAnimationFrame fade this replaces wrote
+    video.style.opacity on every frame — measured, 239 of 240 consecutive frames
+    wrote a value identical to the one already there. A CSS transition between
+    slides does the same job on the compositor and costs nothing per frame, so
+    the loop is gone rather than reworked.
+
+    The visibility gate stays, and matters more now than it did. This component
+    renders on every route, and without it the clip kept decoding while the hero
+    was nowhere near the screen — measured still playing 3384px down the page.
+  */
   useEffect(() => {
     if (reduce) return;
-    const video = videoRef.current;
-    if (!video) return;
-
-    /*
-      Two things this loop used to do that cost more than the fade is worth.
-
-      It wrote video.style.opacity on every frame. Measured on the home page:
-      239 of 240 consecutive frames wrote a value identical to the one already
-      there. Opacity only moves during the first and last 0.5s of a 10s clip, so
-      roughly 95% of those writes were dirtying style and compositing for
-      nothing. It now writes only on a change.
-
-      It also ran, and kept the video decoding, while the hero was nowhere near
-      the screen — measured still playing 3384px down the page — and this
-      component is on every route, so a 2560x1440 decode ran for as long as
-      somebody stayed on the site. An IntersectionObserver now stops both the
-      loop and the video when the hero leaves the viewport and restarts them
-      when it returns, and a hidden tab does the same.
-    */
-    let lastOpacity = "";
-    let running = false;
-
-    const tick = () => {
-      const { currentTime, duration } = video;
-
-      /* duration is NaN until metadata arrives; hold at 0 rather than flashing. */
-      let next = "0";
-      if (Number.isFinite(duration) && duration > 0) {
-        let opacity = 1;
-        if (currentTime < FADE) {
-          opacity = currentTime / FADE;
-        } else if (currentTime > duration - FADE) {
-          opacity = Math.max(0, (duration - currentTime) / FADE);
-        }
-        next = String(opacity);
-      }
-      if (next !== lastOpacity) {
-        video.style.opacity = next;
-        lastOpacity = next;
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    const start = () => {
-      if (running) return;
-      running = true;
-      void video.play().catch(() => {
-        /* Autoplay refused — leave the gradient ground visible. */
-      });
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    const stop = () => {
-      if (!running) return;
-      running = false;
-      video.pause();
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-    };
-
-    const onEnded = () => {
-      video.style.opacity = "0";
-      lastOpacity = "0";
-      restartRef.current = setTimeout(() => {
-        video.currentTime = 0;
-        if (running) {
-          void video.play().catch(() => {});
-        }
-      }, RESTART_DELAY);
-    };
+    const root = rootRef.current;
+    if (!root) return;
 
     let onScreen = false;
+
+    const clearTimer = () => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+
+    const advance = () => setIndex((i) => (i + 1) % SLIDES.length);
+
+    const startSlide = () => {
+      clearTimer();
+      if (active.kind === "image") {
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+        return;
+      }
+      const video = videoRef.current;
+      if (!video) return;
+      /* Always from the top: a clip resumed part-way reads as a glitch when the
+         slide before it has only just dissolved away. */
+      if (video.currentTime > 0.1) video.currentTime = 0;
+      void video.play().catch(() => {
+        /* Autoplay refused — Low Power Mode, data saver. The poster still
+           paints, so hold it like a photograph and keep the deck turning
+           rather than stopping on a frame that will never advance. */
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+      });
+    };
+
+    const stopSlide = () => {
+      clearTimer();
+      videoRef.current?.pause();
+    };
+
     const sync = () => {
-      if (onScreen && !document.hidden) start();
-      else stop();
+      if (onScreen && !document.hidden) startSlide();
+      else stopSlide();
     };
 
     const io = new IntersectionObserver(
@@ -247,89 +252,114 @@ export function HeroVideo({
       },
       { threshold: 0 },
     );
-    io.observe(video);
+    io.observe(root);
 
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
-    video.addEventListener("ended", onEnded);
+
+    const video = videoRef.current;
+    video?.addEventListener("ended", advance);
 
     return () => {
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      video.removeEventListener("ended", onEnded);
-      stop();
-      if (restartRef.current !== null) clearTimeout(restartRef.current);
+      video?.removeEventListener("ended", advance);
+      stopSlide();
     };
-  }, [reduce]);
+  }, [reduce, index, active.kind]);
+
+  /*
+    Shared by every slide, so the picture never shifts as the deck turns.
+
+    The height is derived from the offset rather than set to 100%: a replaced
+    element with h-full and a top offset overflows its container by exactly that
+    offset, and overflow-hidden throws the excess away.
+  */
+  const frame = {
+    inset: "auto 0 0 0",
+    top: config.top,
+    height: `calc(100% - ${config.top})`,
+    maskImage: config.mask,
+    WebkitMaskImage: config.mask,
+    objectPosition: config.objectPosition,
+  } as const;
+
+  /* The first slide always, and never more than one ahead. Three hero-sized
+     photographs fetched eagerly is roughly 600KB of decorative weight competing
+     with the fonts and the copy on a phone. */
+  const shouldLoad = (i: number) => i === 0 || i <= index + 1;
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+    <div
+      ref={rootRef}
+      aria-hidden
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+    >
       {reduce ? (
-        /* Same framing as the video: the mask, the object-position and the
-           300px/0 offset all have to match, or the still sits somewhere the
-           clip never does. */
+        /* Ambient motion is precisely what this preference exists to suppress,
+           so the deck does not turn — but it still shows a picture. Rendering
+           nothing here was a real bug rather than a nicety: Windows' "Animation
+           effects" toggle sets this preference, so a PC with it switched off got
+           a blank gradient where the hero should be while the same page on a
+           phone looked fine. */
         <picture>
           <source srcSet={`${STILL_SRC}.webp`} type="image/webp" />
           <img
             src={`${STILL_SRC}.jpg`}
             alt=""
             className="absolute w-full object-cover"
-            style={{
-              inset: "auto 0 0 0",
-              top: config.top,
-              height: `calc(100% - ${config.top})`,
-              maskImage: config.mask,
-              WebkitMaskImage: config.mask,
-              objectPosition: config.objectPosition,
-            }}
+            style={frame}
           />
         </picture>
       ) : (
-        <video
-          ref={videoRef}
-          src={VIDEO_SRC}
-          muted
-          playsInline
-          autoPlay
-          /*
-            metadata, not auto: the clip is ~30MB and this is decorative. Fetching
-            the whole thing eagerly would compete with the fonts and the real
-            content for bandwidth on a phone.
-          */
-          preload="metadata"
-          /* Paints immediately, and stands in if the clip is slow or refused. */
-          poster={`${STILL_SRC}.jpg`}
-          className="absolute w-full object-cover opacity-0"
-          style={{
-            /* inset first, then top — inset writes top:auto, so the order matters. */
-            inset: "auto 0 0 0",
-            top: config.top,
-            /*
-              Derived from the offset rather than set to 100%. A replaced element
-              with h-full and a top offset overflows the container by exactly that
-              offset, and overflow-hidden discards it — which is what was cutting
-              the children off the bottom of this clip.
-            */
-            height: `calc(100% - ${config.top})`,
-            /*
-              In the tall placement the clip begins abruptly at 300px, which reads
-              as a hard horizontal seam across the page, so its own top edge is
-              feathered — independently of the scrim, which is anchored to the
-              container rather than the video. The compact placement starts at 0
-              beneath the header and needs no mask.
-            */
-            maskImage: config.mask,
-            WebkitMaskImage: config.mask,
-            objectPosition: config.objectPosition,
-          }}
-        />
+        SLIDES.map((slide, i) => (
+          <div
+            key={slide.src}
+            className="absolute inset-0 transition-opacity ease-out-strong"
+            style={{
+              opacity: i === index ? 1 : 0,
+              transitionDuration: `${CROSSFADE}ms`,
+            }}
+          >
+            {slide.kind === "video" ? (
+              <video
+                ref={videoRef}
+                src={slide.src}
+                muted
+                playsInline
+                autoPlay
+                /* metadata, not auto: this is decorative, and fetching the whole
+                   clip eagerly would compete with the real content. */
+                preload="metadata"
+                /* Paints immediately, and stands in if the clip is refused. */
+                poster={`${slide.still}.jpg`}
+                className="absolute w-full object-cover"
+                style={frame}
+              />
+            ) : (
+              shouldLoad(i) && (
+                <picture>
+                  <source srcSet={`${slide.src}.webp`} type="image/webp" />
+                  <img
+                    src={`${slide.src}.jpg`}
+                    alt=""
+                    decoding="async"
+                    className="absolute w-full object-cover"
+                    style={frame}
+                  />
+                </picture>
+              )
+            )}
+          </div>
+        ))
       )}
 
       {/*
-        Scrim. Text over an unknown, moving frame is a contrast gamble that changes
-        shot to shot, so neither variant leaves copy sitting on bare video: `tall`
-        holds white through its text zone before clearing for the middle of the
-        clip, and `compact` darkens the left where its copy sits.
+        Scrim. Copy over a frame that changes from slide to slide is a contrast
+        gamble, so neither variant leaves text sitting on bare picture: `tall`
+        holds white through its text zone before clearing, and `compact` darkens
+        the left where its copy sits. It stacks above every slide, so one scrim
+        covers the whole deck.
       */}
       <div
         className={cn("absolute inset-0", config.scrimNarrow && "hidden sm:block")}
