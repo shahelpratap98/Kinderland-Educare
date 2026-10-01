@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -61,6 +61,42 @@ const VIDEO_SRC_NARROW = "/video/hero-play-720.mp4";
 const STILL_SRC = "/video/hero-play-still";
 /* Matches the sm breakpoint the scrim already switches on. */
 const NARROW = "(max-width: 639px)";
+
+/*
+  The hero deck: the clip, then three photographs of the actual centre.
+
+  The photographs come from a 172-frame professional shoot at 5760x3840 that the
+  site had never touched — everything else here had been built on 1200x1600 phone
+  pictures. They are emitted at 1920x1080, matching the clip's frame exactly, so
+  object-cover behaves identically on every slide and nothing shifts as the deck
+  turns.
+
+  Which three was decided by the crop, not by taste. The frame keeps roughly the
+  full width on a desktop but only the middle ~30% on a phone, so each candidate
+  was rendered at both. A covered-walkway shot lost everything but blank wall and
+  concrete; the languages wall lost its flags and became flat teal. These three
+  still read at 30%: the climbing frame, the entrance, the small-world table.
+
+  Order is deliberate — children, then where they play, then the building, then
+  inside it.
+*/
+type HeroSlide =
+  | { kind: "video" }
+  | { kind: "image"; src: string };
+
+const SLIDES: readonly HeroSlide[] = [
+  { kind: "video" },
+  { kind: "image", src: "/video/hero-r1-playground" },
+  { kind: "image", src: "/video/hero-r2-building" },
+  { kind: "image", src: "/video/hero-r3-inside" },
+];
+
+/* A photograph has no natural length, so it is given one. The clip runs to its
+   own ten seconds and advances on `ended`. */
+const PHOTO_HOLD = 6000;
+/* Long enough to read as a dissolve rather than a cut, under copy that stays put
+   the whole way through. */
+const CROSSFADE = 900;
 
 const VARIANTS = {
   /*
@@ -135,7 +171,11 @@ export function HeroVideo({
   const config = VARIANTS[variant];
   const videoRef = useRef<HTMLVideoElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [index, setIndex] = useState(0);
   const reduce = useReducedMotion();
+
+  const active = SLIDES[index];
 
   useEffect(() => {
     if (reduce) return;
@@ -144,13 +184,10 @@ export function HeroVideo({
     if (!root || !video) return;
 
     /*
-      The source is chosen here rather than in the markup.
-
-      `<source media="...">` is the obvious answer and does not work: Chrome
-      dropped support for media on a video's source elements, so it would quietly
-      serve whichever came first. Picking it on mount means exactly one file is
-      ever fetched — setting src in the markup and correcting it afterwards would
-      start the wrong download first.
+      The clip's source is chosen here rather than in the markup. `<source
+      media="...">` is the obvious answer and does not work: Chrome dropped
+      support for media on a video's source elements, so it would quietly serve
+      whichever came first. Choosing on mount means exactly one file is fetched.
     */
     if (!video.src) {
       video.src = window.matchMedia(NARROW).matches
@@ -158,58 +195,87 @@ export function HeroVideo({
         : VIDEO_SRC_WIDE;
     }
 
+    let stopped = false;
+
+    const clearTimer = () => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+
+    const advance = () => setIndex((i) => (i + 1) % SLIDES.length);
+
     /*
       Visibility is measured when asked for, not cached from the observer.
 
-      A cached flag stalled this twice: the observer delivers nothing at all while
-      a page is hidden, so opening the site in a background tab and then switching
-      to it left the flag false, and the visibilitychange that followed read the
-      stale value and paused instead of playing.
-
-      The gate itself matters because this component renders on every route, and
-      without it the clip kept decoding while the hero was nowhere near the screen
-      — measured still playing 3384px down the page.
+      A cached flag stalled this deck twice. The observer delivers nothing at all
+      while a page is hidden, so opening the site in a background tab and then
+      switching to it left the flag false, and the visibilitychange that followed
+      read the stale value and stopped the deck instead of starting it.
     */
     const onScreen = () => {
       const r = root.getBoundingClientRect();
       return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
     };
 
-    const sync = () => {
-      if (onScreen() && !document.hidden) {
-        void video.play().catch(() => {
-          /* Autoplay refused — Low Power Mode, data saver. The poster stays up,
-             which is why it is a real frame of the clip rather than a colour. */
-        });
-      } else {
-        video.pause();
+    const startSlide = () => {
+      clearTimer();
+      if (active.kind === "image") {
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+        return;
       }
+      if (video.currentTime > 0.1) video.currentTime = 0;
+      void video.play().catch(() => {
+        /* Autoplay refused — Low Power Mode, data saver. The poster still
+           paints, so hold it like a photograph and keep the deck turning rather
+           than stopping on a frame that will never end. */
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+      });
+    };
+
+    const stopSlide = () => {
+      clearTimer();
+      video.pause();
+    };
+
+    const sync = () => {
+      if (stopped) return;
+      if (onScreen() && !document.hidden) startSlide();
+      else stopSlide();
     };
 
     /* The observer is only a trigger to re-check, never the source of truth, so
-       a late or absent callback cannot leave the hero frozen. */
+       a late or absent callback cannot strand the deck. */
     const io = new IntersectionObserver(() => sync(), { threshold: 0 });
     io.observe(root);
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
 
-    /* Straight away rather than waiting on the observer's first callback: the
-       common case is a hero already on screen when it mounts. */
+    /* Guarded rather than bare: `ended` should only turn the deck while the clip
+       is the slide on screen. */
+    const onEnded = () => {
+      if (active.kind === "video") advance();
+    };
+    video.addEventListener("ended", onEnded);
+
+    /* Straight away rather than waiting on the observer's first callback. */
     sync();
 
     return () => {
+      stopped = true;
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      video.pause();
+      video.removeEventListener("ended", onEnded);
+      stopSlide();
     };
-  }, [reduce]);
+  }, [reduce, index, active.kind]);
 
   /*
-    Shared by the clip and the still, so the picture does not shift between them.
-
-    The height is derived from the offset rather than set to 100%: a replaced
-    element with h-full and a top offset overflows its container by exactly that
-    offset, and overflow-hidden throws the excess away.
+    Shared by every slide, so the picture does not shift as the deck turns. The
+    height is derived from the offset rather than set to 100%: a replaced element
+    with h-full and a top offset overflows its container by exactly that offset,
+    and overflow-hidden throws the excess away.
   */
   const frame = {
     inset: "auto 0 0 0",
@@ -220,6 +286,11 @@ export function HeroVideo({
     objectPosition: config.objectPosition,
   } as const;
 
+  /* The first slide always, and never more than one ahead — three hero-sized
+     photographs fetched eagerly is roughly a megabyte of decoration competing
+     with the fonts and the copy on a phone. */
+  const shouldLoad = (i: number) => i <= index + 1;
+
   return (
     <div
       ref={rootRef}
@@ -227,12 +298,12 @@ export function HeroVideo({
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
       {reduce ? (
-        /* Ambient motion is precisely what this preference exists to suppress,
-           so the clip is neither loaded nor played — but a picture still shows.
-           Rendering nothing here was a real bug rather than a nicety: Windows'
-           "Animation effects" toggle sets this preference, so a PC with it
-           switched off got a blank gradient where the hero should be while the
-           same page on a phone looked fine. */
+        /* Ambient motion is precisely what this preference exists to suppress, so
+           the deck does not turn — but a picture still shows. Rendering nothing
+           here was a real bug rather than a nicety: Windows' "Animation effects"
+           toggle sets this preference, so a PC with it switched off got a blank
+           gradient where the hero should be while the same page on a phone looked
+           fine. */
         <picture>
           <source srcSet={`${STILL_SRC}.webp`} type="image/webp" />
           <img
@@ -243,29 +314,54 @@ export function HeroVideo({
           />
         </picture>
       ) : (
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          /* Native loop, not a hand-rolled restart. The clip cuts between four
-             shots anyway, so the wrap reads as one more cut rather than a seam,
-             and there is nothing for a crossfade to soften. */
-          loop
-          /* No src here on purpose — see the effect. */
-          /* metadata, not auto: this is decorative, and fetching the whole clip
-             eagerly would compete with the fonts and the copy. */
-          preload="metadata"
-          /* Paints immediately, and stands in if the clip is slow or refused. */
-          poster={`${STILL_SRC}.jpg`}
-          className="absolute w-full object-cover"
-          style={frame}
-        />
+        SLIDES.map((slide, i) => (
+          <div
+            key={slide.kind === "video" ? "clip" : slide.src}
+            className="absolute inset-0 transition-opacity ease-out-strong"
+            style={{
+              opacity: i === index ? 1 : 0,
+              transitionDuration: `${CROSSFADE}ms`,
+            }}
+          >
+            {slide.kind === "video" ? (
+              <video
+                ref={videoRef}
+                muted
+                playsInline
+                /* No autoPlay: the attribute is acted on by the browser, not by
+                   this component, so it would start the clip while a photograph
+                   was showing and fire the ended event a slide early. */
+                /* metadata, not auto: decorative, and fetching the whole clip
+                   eagerly would compete with the real content. */
+                preload="metadata"
+                poster={`${STILL_SRC}.jpg`}
+                className="absolute w-full object-cover"
+                style={frame}
+              />
+            ) : (
+              shouldLoad(i) && (
+                <picture>
+                  <source srcSet={`${slide.src}.webp`} type="image/webp" />
+                  <img
+                    src={`${slide.src}.jpg`}
+                    alt=""
+                    decoding="async"
+                    className="absolute w-full object-cover"
+                    style={frame}
+                  />
+                </picture>
+              )
+            )}
+          </div>
+        ))
       )}
 
       {/*
-        Scrim. Copy over a moving frame is a contrast gamble, so neither variant
-        leaves text sitting on bare picture: `tall` holds white through its text
-        zone before clearing, and `compact` darkens the left where its copy sits.
+        Scrim. Copy over a frame that changes slide to slide is a contrast gamble,
+        so neither variant leaves text sitting on bare picture: `tall` holds white
+        through its text zone before clearing, and `compact` darkens the left
+        where its copy sits. It stacks above every slide, so one scrim covers the
+        whole deck.
       */}
       <div
         className={cn("absolute inset-0", config.scrimNarrow && "hidden sm:block")}
