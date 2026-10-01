@@ -139,10 +139,22 @@ const VARIANTS = {
       further down there would bleach the building, which is the subject. It is
       only the narrow viewport that needs the longer hold.
     */
+    /*
+      Holds dense through the whole copy block, then clears quickly.
+
+      The earlier curve was tuned when the hero was one clip with a pale sky, and
+      it thinned to 0.34 by 40% — fine over cloud, useless over a photograph. With
+      real pictures behind the deck the subhead measured 1.5:1 against the 4.5 it
+      needs, which is unreadable, because the scrim cannot be tuned per image when
+      the image keeps changing. It now stays above 0.9 until the copy has ended
+      and falls away over a short distance so the picture below is untouched.
+    */
     scrim:
-      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,0.72) 30%, rgba(255,255,255,0.34) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 62%, rgba(255,255,255,0) 88%, #fff 100%)",
+      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.97) 22%, rgba(255,255,255,0.94) 34%, rgba(255,255,255,0.90) 44%, rgba(255,255,255,0.62) 54%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 74%, rgba(255,255,255,0) 90%, #fff 100%)",
+    /* Same reasoning, held further still: the subhead runs to eight lines at
+       375px and so occupies far more of the frame. */
     scrimNarrow:
-      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.97) 26%, rgba(255,255,255,0.93) 40%, rgba(255,255,255,0.88) 52%, rgba(255,255,255,0.70) 62%, rgba(255,255,255,0.34) 72%, rgba(255,255,255,0) 82%, rgba(255,255,255,0) 92%, #fff 100%)",
+      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.98) 30%, rgba(255,255,255,0.96) 46%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.78) 68%, rgba(255,255,255,0.34) 78%, rgba(255,255,255,0) 88%, #fff 100%)",
   },
   compact: {
     top: "0",
