@@ -123,15 +123,21 @@ const VARIANTS = {
       it thinned to 0.34 by 40% — fine over cloud, useless over a photograph. With
       real pictures behind the deck the subhead measured 1.5:1 against the 4.5 it
       needs, which is unreadable, because the scrim cannot be tuned per image when
-      the image keeps changing. It now stays above 0.9 until the copy has ended
-      and falls away over a short distance so the picture below is untouched.
+      the image keeps changing.
+
+      It used to hold above 0.9 through the copy, which worked but bleached the
+      photographs almost white. The fix was the text rather than the gradient:
+      the subhead was grey (#6f6f6f) and needed 0.88-0.93 white behind it to
+      reach 4.5:1 over these four pictures. In ink (#3d0a58) it needs 0.00-0.25.
+      Darkening the copy is what buys the picture back, so this now peaks at 0.62
+      and clears by 70%.
     */
     scrim:
-      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.97) 22%, rgba(255,255,255,0.94) 34%, rgba(255,255,255,0.90) 44%, rgba(255,255,255,0.62) 54%, rgba(255,255,255,0.22) 64%, rgba(255,255,255,0) 74%, rgba(255,255,255,0) 90%, #fff 100%)",
+      "linear-gradient(to bottom, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.62) 18%, rgba(255,255,255,0.52) 34%, rgba(255,255,255,0.36) 46%, rgba(255,255,255,0.14) 58%, rgba(255,255,255,0) 70%, rgba(255,255,255,0) 90%, #fff 100%)",
     /* Same reasoning, held further still: the subhead runs to eight lines at
        375px and so occupies far more of the frame. */
     scrimNarrow:
-      "linear-gradient(to bottom, #fff 0%, rgba(255,255,255,0.98) 30%, rgba(255,255,255,0.96) 46%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.78) 68%, rgba(255,255,255,0.34) 78%, rgba(255,255,255,0) 88%, #fff 100%)",
+      "linear-gradient(to bottom, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.70) 22%, rgba(255,255,255,0.62) 42%, rgba(255,255,255,0.56) 56%, rgba(255,255,255,0.38) 68%, rgba(255,255,255,0.12) 80%, rgba(255,255,255,0) 90%, #fff 100%)",
   },
   compact: {
     top: "0",

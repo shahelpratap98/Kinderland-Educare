@@ -40,7 +40,11 @@ export function Hero() {
           <em className="italic text-brand-600">creativity</em> meet.
         </h1>
 
-        <p className="animate-fade-rise-delay mt-8 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+        {/* ink, not muted. The grey needed 0.88-0.93 white behind it to stay
+            legible over the hero photographs, which is what was bleaching them
+            out; ink needs 0.00-0.25. Darkening the text is what buys back the
+            picture. */}
+        <p className="animate-fade-rise-delay mt-8 max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
           {/* The age range and the city stay interpolated rather than typed out,
               so they cannot drift from the values the rest of the site uses. */}
           A place for children to belong, explore, learn and grow. Through play,
