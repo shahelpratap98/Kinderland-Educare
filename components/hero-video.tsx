@@ -37,62 +37,35 @@ import { cn } from "@/lib/utils";
  * be served in its place.
  */
 /*
-  Two encodes of one clip, not two clips.
+  Three photographs of the centre, from a 172-frame professional shoot at
+  5760x3840. Emitted at 1920x1080 so every slide shares one frame and nothing
+  shifts as the deck turns.
 
-  The source was a 896x512 generation, upscaled to 1920x1080 with Topaz. Encoding
-  harder past this point buys almost nothing: measured against the upscale, crf
-  16/18/20/22/24/26 scored SSIM 0.9927/0.9913/0.9895/0.9874/0.9847/0.9814 at
-  14.7/11.3/8.8/6.8/5.3/4.1MB. Going from crf 22 to crf 16 costs 8MB for 0.005
-  SSIM. 20 sits just before that wall.
+  Which three was decided by the crop. The hero keeps roughly the full width on a
+  desktop but only the middle ~30% on a phone, so each candidate was rendered at
+  both: a covered-walkway shot collapsed to blank wall and concrete, and the
+  languages wall lost its flags and became flat teal. These three still read at
+  30% — the climbing frame, the entrance, the table.
 
-  Worth being clear about what the number means: it is fidelity to the upscale,
-  which is itself invented detail over a 512p original. The perceptual ceiling
-  was fixed when the clip was generated, not by this encode, so more bitrate
-  cannot reach past it.
+  There is no clip any more. The hero ran generated video through several
+  iterations — an illustrated valley, an illustrated playground, then a
+  photoreal playground — and all of it is gone. What remains is the centre's own
+  photography.
 
-  The phone gets its own 720p encode rather than a lower-quality one. The hero
-  box is about 375 CSS pixels wide there, so 1080p is roughly five times the
-  pixels it can show — 8.8MB of them, on the connection least able to afford it.
-  3.1MB for a frame that still exceeds the display is the honest trade.
+  The honest consequence: none of these has a person in it. Not one frame of the
+  172 does. That gap is the reason generated imagery kept being reached for, and
+  it is now visible rather than papered over.
 */
-const VIDEO_SRC_WIDE = "/video/hero-play-1080.mp4";
-const VIDEO_SRC_NARROW = "/video/hero-play-720.mp4";
-/* A frame from the clip, shown wherever the video will not or should not play. */
-const STILL_SRC = "/video/hero-play-still";
-/* Matches the sm breakpoint the scrim already switches on. */
-const NARROW = "(max-width: 639px)";
+const SLIDES = [
+  "/video/hero-r1-playground",
+  "/video/hero-r2-building",
+  "/video/hero-r3-inside",
+] as const;
 
-/*
-  The hero deck: the clip, then three photographs of the actual centre.
+/* Shown under prefers-reduced-motion, where the deck does not turn at all. */
+const STILL_SRC = SLIDES[0];
 
-  The photographs come from a 172-frame professional shoot at 5760x3840 that the
-  site had never touched — everything else here had been built on 1200x1600 phone
-  pictures. They are emitted at 1920x1080, matching the clip's frame exactly, so
-  object-cover behaves identically on every slide and nothing shifts as the deck
-  turns.
-
-  Which three was decided by the crop, not by taste. The frame keeps roughly the
-  full width on a desktop but only the middle ~30% on a phone, so each candidate
-  was rendered at both. A covered-walkway shot lost everything but blank wall and
-  concrete; the languages wall lost its flags and became flat teal. These three
-  still read at 30%: the climbing frame, the entrance, the small-world table.
-
-  Order is deliberate — children, then where they play, then the building, then
-  inside it.
-*/
-type HeroSlide =
-  | { kind: "video" }
-  | { kind: "image"; src: string };
-
-const SLIDES: readonly HeroSlide[] = [
-  { kind: "video" },
-  { kind: "image", src: "/video/hero-r1-playground" },
-  { kind: "image", src: "/video/hero-r2-building" },
-  { kind: "image", src: "/video/hero-r3-inside" },
-];
-
-/* A photograph has no natural length, so it is given one. The clip runs to its
-   own ten seconds and advances on `ended`. */
+/* A photograph has no natural length, so it is given one. */
 const PHOTO_HOLD = 6000;
 /* Long enough to read as a dissolve rather than a cut, under copy that stays put
    the whole way through. */
@@ -181,31 +154,15 @@ export function HeroVideo({
   variant?: keyof typeof VARIANTS;
 }) {
   const config = VARIANTS[variant];
-  const videoRef = useRef<HTMLVideoElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [index, setIndex] = useState(0);
   const reduce = useReducedMotion();
 
-  const active = SLIDES[index];
-
   useEffect(() => {
     if (reduce) return;
     const root = rootRef.current;
-    const video = videoRef.current;
-    if (!root || !video) return;
-
-    /*
-      The clip's source is chosen here rather than in the markup. `<source
-      media="...">` is the obvious answer and does not work: Chrome dropped
-      support for media on a video's source elements, so it would quietly serve
-      whichever came first. Choosing on mount means exactly one file is fetched.
-    */
-    if (!video.src) {
-      video.src = window.matchMedia(NARROW).matches
-        ? VIDEO_SRC_NARROW
-        : VIDEO_SRC_WIDE;
-    }
+    if (!root) return;
 
     let stopped = false;
 
@@ -215,8 +172,6 @@ export function HeroVideo({
         timerRef.current = null;
       }
     };
-
-    const advance = () => setIndex((i) => (i + 1) % SLIDES.length);
 
     /*
       Visibility is measured when asked for, not cached from the observer.
@@ -231,30 +186,15 @@ export function HeroVideo({
       return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
     };
 
-    const startSlide = () => {
-      clearTimer();
-      if (active.kind === "image") {
-        timerRef.current = setTimeout(advance, PHOTO_HOLD);
-        return;
-      }
-      if (video.currentTime > 0.1) video.currentTime = 0;
-      void video.play().catch(() => {
-        /* Autoplay refused — Low Power Mode, data saver. The poster still
-           paints, so hold it like a photograph and keep the deck turning rather
-           than stopping on a frame that will never end. */
-        timerRef.current = setTimeout(advance, PHOTO_HOLD);
-      });
-    };
-
-    const stopSlide = () => {
-      clearTimer();
-      video.pause();
-    };
-
     const sync = () => {
       if (stopped) return;
-      if (onScreen() && !document.hidden) startSlide();
-      else stopSlide();
+      clearTimer();
+      if (onScreen() && !document.hidden) {
+        timerRef.current = setTimeout(
+          () => setIndex((i) => (i + 1) % SLIDES.length),
+          PHOTO_HOLD,
+        );
+      }
     };
 
     /* The observer is only a trigger to re-check, never the source of truth, so
@@ -264,13 +204,6 @@ export function HeroVideo({
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
 
-    /* Guarded rather than bare: `ended` should only turn the deck while the clip
-       is the slide on screen. */
-    const onEnded = () => {
-      if (active.kind === "video") advance();
-    };
-    video.addEventListener("ended", onEnded);
-
     /* Straight away rather than waiting on the observer's first callback. */
     sync();
 
@@ -278,10 +211,9 @@ export function HeroVideo({
       stopped = true;
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      video.removeEventListener("ended", onEnded);
-      stopSlide();
+      clearTimer();
     };
-  }, [reduce, index, active.kind]);
+  }, [reduce, index]);
 
   /*
     Shared by every slide, so the picture does not shift as the deck turns. The
@@ -326,43 +258,27 @@ export function HeroVideo({
           />
         </picture>
       ) : (
-        SLIDES.map((slide, i) => (
+        SLIDES.map((src, i) => (
           <div
-            key={slide.kind === "video" ? "clip" : slide.src}
+            key={src}
             className="absolute inset-0 transition-opacity ease-out-strong"
             style={{
               opacity: i === index ? 1 : 0,
               transitionDuration: `${CROSSFADE}ms`,
             }}
           >
-            {slide.kind === "video" ? (
-              <video
-                ref={videoRef}
-                muted
-                playsInline
-                /* No autoPlay: the attribute is acted on by the browser, not by
-                   this component, so it would start the clip while a photograph
-                   was showing and fire the ended event a slide early. */
-                /* metadata, not auto: decorative, and fetching the whole clip
-                   eagerly would compete with the real content. */
-                preload="metadata"
-                poster={`${STILL_SRC}.jpg`}
-                className="absolute w-full object-cover"
-                style={frame}
-              />
-            ) : (
-              shouldLoad(i) && (
-                <picture>
-                  <source srcSet={`${slide.src}.webp`} type="image/webp" />
-                  <img
-                    src={`${slide.src}.jpg`}
-                    alt=""
-                    decoding="async"
-                    className="absolute w-full object-cover"
-                    style={frame}
-                  />
-                </picture>
-              )
+            {shouldLoad(i) && (
+              <picture>
+                <source srcSet={`${src}.webp`} type="image/webp" />
+                <img
+                  src={`${src}.jpg`}
+                  alt=""
+                  decoding="async"
+                  fetchPriority={i === 0 ? "high" : "low"}
+                  className="absolute w-full object-cover"
+                  style={frame}
+                />
+              </picture>
             )}
           </div>
         ))
