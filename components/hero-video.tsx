@@ -60,6 +60,10 @@ const SLIDES = [
   "/video/hero-r1-playground",
   "/video/hero-r2-building",
   "/video/hero-r3-inside",
+  /* Our Whare. A tight detail rather than a scene, which normally fails the
+     phone crop -- but the sign sits dead centre, so the middle 30% a phone keeps
+     is the most legible band of any slide here. Measured 4.62:1 under the scrim. */
+  "/video/hero-r4-whare",
 ] as const;
 
 /* Shown under prefers-reduced-motion, where the deck does not turn at all. */
