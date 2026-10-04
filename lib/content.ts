@@ -145,7 +145,6 @@ export const welcome = {
     "Mālō e lelei",
     "Nomoshkar",
     "Vanakkam",
-    "Sat Sri Akal",
   ],
   greetingLead: "Warm greetings and welcome to Kinderland Educare.",
   body: [
