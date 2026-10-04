@@ -5,71 +5,70 @@ import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /*
- * Served from /public rather than hotlinked.
+ * Served from /public rather than hotlinked. An earlier version loaded the clip
+ * straight off a Higgsfield CDN path belonging to a different account — nothing
+ * we control, and the hero would have gone blank the day that file was removed.
  *
- * The original clip was loaded straight off a Higgsfield CDN path belonging to
- * a different account — nothing we control, and the hero would have gone blank
- * the day that file was removed.
+ * The clip is generated. The centre asked for the original valley hero back with
+ * two changes: the hut gone, and children playing on the grass. Both were done
+ * by generating a new still and animating it rather than by editing the old clip,
+ * so everything in frame is invented — the landscape, the five children, their
+ * clothes. Nobody enrolled here appears in it.
  *
- * The centre itself, on Kohinoor Ave: the real building, the real mural, the
- * real street. Two AI heroes preceded it — an illustrated valley and an
- * illustrated playground — and a photoreal AI playground was generated and
- * rejected. A photograph of the actual centre asks no one to believe that
- * invented children are enrolled here, which neither AI option could claim.
+ * The camera is locked and only the children, the grass and the cloud move. That
+ * is not a stylistic choice. Given any camera travel the model reframes the shot
+ * and invents content to fill what it reveals, which is how an earlier ten-second
+ * attempt ended up teleporting children around a playground; passing the same
+ * frame as both start and end pins it. Verified rather than assumed: all five
+ * children are present and consistent at t=0 and t=9.9, the hut is absent
+ * throughout, and mean frame drift between t=0 and t=6.6 is 1.52/255.
  *
- * Animated from a still: the camera is locked and only the sky and the tree
- * canopy move. That was not a stylistic choice. Given any camera travel the
- * model reframes the shot and invents content to fill what it reveals, which
- * is how an earlier ten-second attempt ended up teleporting children around a
- * playground. Passing the same frame as both start and end pins it.
+ * Generated at 2560x1440 and delivered at 1920x1080, matching the photographs
+ * exactly so object-cover behaves identically on every slide. Encoding harder
+ * buys little: measured against the source, crf 22/24/26 scored SSIM
+ * 0.9907/0.9886/0.9861 at 2980/2177/1584KB. 24 is the pick.
  *
- * Delivered at exactly 1280x720, so nothing is scaled or cropped here — only
- * re-encoded, audio-free, faststart.
+ * The photographs are of the actual centre, from a 172-frame professional shoot
+ * at 5760x3840. Which four was decided by the crop, not by taste: the frame keeps
+ * roughly the full width on a desktop but only the middle ~30% on a phone, so
+ * each candidate was rendered at both. A covered-walkway shot collapsed to blank
+ * wall and concrete; the languages wall lost its flags and became flat teal.
+ * These four still read at 30%.
  *
- * Quality measured against a lossless reference: crf 20/22/24/26 scored SSIM
- * 0.9933/0.9912/0.9884/0.9848 at 1126/751/480/308KB. 22 is the pick, and it is
- * both smaller and sharper than either hero before it — a locked frame where
- * only leaves and cloud move costs a fraction of the bits that a playground of
- * running children did. For comparison the playground clip needed 1018KB to
- * reach 0.978; this reaches 0.991 in 751KB.
- *
- * The filename carries the resolution so a cached copy of an older file cannot
- * be served in its place.
+ * The honest gap, and the reason generated imagery keeps being reached for: not
+ * one of those 172 frames has a person in it.
  */
-/*
-  Three photographs of the centre, from a 172-frame professional shoot at
-  5760x3840. Emitted at 1920x1080 so every slide shares one frame and nothing
-  shifts as the deck turns.
+type HeroSlide = { kind: "video" } | { kind: "image"; src: string };
 
-  Which three was decided by the crop. The hero keeps roughly the full width on a
-  desktop but only the middle ~30% on a phone, so each candidate was rendered at
-  both: a covered-walkway shot collapsed to blank wall and concrete, and the
-  languages wall lost its flags and became flat teal. These three still read at
-  30% — the climbing frame, the entrance, the table.
+/* The clip leads — it is what the centre asked for as the hero — and the real
+   building, rooms and whare follow it. */
+const VIDEO_SRC_WIDE = "/video/hero-valley-1080.mp4";
+/* The phone gets its own encode rather than a smaller box fetching the desktop
+   file: the hero is roughly 375 CSS pixels wide there, so 1080p is about five
+   times the pixels it can show, on the connection least able to afford them. */
+const VIDEO_SRC_NARROW = "/video/hero-valley-720.mp4";
+/* Matches the sm breakpoint the scrim already switches on. */
+const NARROW = "(max-width: 639px)";
 
-  There is no clip any more. The hero ran generated video through several
-  iterations — an illustrated valley, an illustrated playground, then a
-  photoreal playground — and all of it is gone. What remains is the centre's own
-  photography.
-
-  The honest consequence: none of these has a person in it. Not one frame of the
-  172 does. That gap is the reason generated imagery kept being reached for, and
-  it is now visible rather than papered over.
-*/
-const SLIDES = [
-  "/video/hero-r1-playground",
-  "/video/hero-r2-building",
-  "/video/hero-r3-inside",
+const SLIDES: readonly HeroSlide[] = [
+  { kind: "video" },
+  { kind: "image", src: "/video/hero-r1-playground" },
+  { kind: "image", src: "/video/hero-r2-building" },
+  { kind: "image", src: "/video/hero-r3-inside" },
   /* Our Whare. A tight detail rather than a scene, which normally fails the
      phone crop -- but the sign sits dead centre, so the middle 30% a phone keeps
      is the most legible band of any slide here. Measured 4.62:1 under the scrim. */
-  "/video/hero-r4-whare",
-] as const;
+  { kind: "image", src: "/video/hero-r4-whare" },
+];
 
-/* Shown under prefers-reduced-motion, where the deck does not turn at all. */
-const STILL_SRC = SLIDES[0];
+/* The clip's poster, and the single frame shown under prefers-reduced-motion
+   where the deck does not turn at all. A frame of the first slide rather than a
+   photograph, so a reader who suppresses motion sees the same hero as everyone
+   else, only still. */
+const STILL_SRC = "/video/hero-valley-still";
 
-/* A photograph has no natural length, so it is given one. */
+/* A photograph has no natural length, so it is given one. The clip runs to its
+   own ten seconds and advances on `ended`. */
 const PHOTO_HOLD = 6000;
 /* Long enough to read as a dissolve rather than a cut, under copy that stays put
    the whole way through. */
@@ -165,14 +164,32 @@ export function HeroVideo({
 }) {
   const config = VARIANTS[variant];
   const rootRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [index, setIndex] = useState(0);
   const reduce = useReducedMotion();
 
+  const active = SLIDES[index];
+
   useEffect(() => {
     if (reduce) return;
     const root = rootRef.current;
-    if (!root) return;
+    const video = videoRef.current;
+    if (!root || !video) return;
+
+    /*
+      The clip's source is chosen here rather than in the markup. `<source
+      media="...">` is the obvious answer and does not work: Chrome dropped
+      support for media on a video's source elements, so it would quietly serve
+      whichever came first. Choosing on mount means exactly one file is fetched —
+      setting src in the markup and correcting it afterwards would start the
+      wrong download first.
+    */
+    if (!video.src) {
+      video.src = window.matchMedia(NARROW).matches
+        ? VIDEO_SRC_NARROW
+        : VIDEO_SRC_WIDE;
+    }
 
     let stopped = false;
 
@@ -182,6 +199,8 @@ export function HeroVideo({
         timerRef.current = null;
       }
     };
+
+    const advance = () => setIndex((i) => (i + 1) % SLIDES.length);
 
     /*
       Visibility is measured when asked for, not cached from the observer.
@@ -196,15 +215,32 @@ export function HeroVideo({
       return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
     };
 
+    const startSlide = () => {
+      clearTimer();
+      if (active.kind === "image") {
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+        return;
+      }
+      /* Back to the top when the deck wraps round to it, so the clip is not
+         picked up mid-shot from wherever it was last paused. */
+      if (video.currentTime > 0.1) video.currentTime = 0;
+      void video.play().catch(() => {
+        /* Autoplay refused — Low Power Mode, a data saver. The poster still
+           paints, so hold it like a photograph and keep the deck turning rather
+           than stranding it on a frame whose `ended` will never fire. */
+        timerRef.current = setTimeout(advance, PHOTO_HOLD);
+      });
+    };
+
+    const stopSlide = () => {
+      clearTimer();
+      video.pause();
+    };
+
     const sync = () => {
       if (stopped) return;
-      clearTimer();
-      if (onScreen() && !document.hidden) {
-        timerRef.current = setTimeout(
-          () => setIndex((i) => (i + 1) % SLIDES.length),
-          PHOTO_HOLD,
-        );
-      }
+      if (onScreen() && !document.hidden) startSlide();
+      else stopSlide();
     };
 
     /* The observer is only a trigger to re-check, never the source of truth, so
@@ -214,6 +250,13 @@ export function HeroVideo({
     const onVisibility = () => sync();
     document.addEventListener("visibilitychange", onVisibility);
 
+    /* Guarded rather than bare: `ended` should only turn the deck while the clip
+       is the slide on screen, so stray playback cannot desynchronise it. */
+    const onEnded = () => {
+      if (active.kind === "video") advance();
+    };
+    video.addEventListener("ended", onEnded);
+
     /* Straight away rather than waiting on the observer's first callback. */
     sync();
 
@@ -221,9 +264,10 @@ export function HeroVideo({
       stopped = true;
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      clearTimer();
+      video.removeEventListener("ended", onEnded);
+      stopSlide();
     };
-  }, [reduce, index]);
+  }, [reduce, index, active.kind]);
 
   /*
     Shared by every slide, so the picture does not shift as the deck turns. The
@@ -240,9 +284,9 @@ export function HeroVideo({
     objectPosition: config.objectPosition,
   } as const;
 
-  /* The first slide always, and never more than one ahead — three hero-sized
-     photographs fetched eagerly is roughly a megabyte of decoration competing
-     with the fonts and the copy on a phone. */
+  /* Never more than one slide ahead — four hero-sized photographs fetched
+     eagerly is over a megabyte of decoration competing with the fonts and the
+     copy on a phone. */
   const shouldLoad = (i: number) => i <= index + 1;
 
   return (
@@ -268,27 +312,51 @@ export function HeroVideo({
           />
         </picture>
       ) : (
-        SLIDES.map((src, i) => (
+        SLIDES.map((slide, i) => (
           <div
-            key={src}
+            key={slide.kind === "video" ? "clip" : slide.src}
             className="absolute inset-0 transition-opacity ease-out-strong"
             style={{
               opacity: i === index ? 1 : 0,
               transitionDuration: `${CROSSFADE}ms`,
             }}
           >
-            {shouldLoad(i) && (
-              <picture>
-                <source srcSet={`${src}.webp`} type="image/webp" />
-                <img
-                  src={`${src}.jpg`}
-                  alt=""
-                  decoding="async"
-                  fetchPriority={i === 0 ? "high" : "low"}
-                  className="absolute w-full object-cover"
-                  style={frame}
-                />
-              </picture>
+            {slide.kind === "video" ? (
+              <video
+                ref={videoRef}
+                muted
+                playsInline
+                /*
+                  Deliberately no autoPlay, and no src in the markup. The
+                  attribute is acted on by the browser rather than by this
+                  component, so it would also start the clip on a route where the
+                  hero is off screen, and — the moment the deck is reordered —
+                  fire `ended` while a photograph was showing, advancing a slide
+                  early. startSlide() plays it when its turn arrives.
+                */
+                /* metadata, not auto: decorative, and fetching two megabytes
+                   eagerly would compete with the real content. */
+                preload="metadata"
+                /* Paints immediately, and stands in if the clip is slow or
+                   refused — which is why it is a real frame, not a colour. */
+                poster={`${STILL_SRC}.jpg`}
+                className="absolute w-full object-cover"
+                style={frame}
+              />
+            ) : (
+              shouldLoad(i) && (
+                <picture>
+                  <source srcSet={`${slide.src}.webp`} type="image/webp" />
+                  <img
+                    src={`${slide.src}.jpg`}
+                    alt=""
+                    decoding="async"
+                    fetchPriority="low"
+                    className="absolute w-full object-cover"
+                    style={frame}
+                  />
+                </picture>
+              )
             )}
           </div>
         ))

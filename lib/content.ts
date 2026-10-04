@@ -91,28 +91,44 @@ export const heroPills = [
 export const values = [
   {
     icon: "Compass",
-    /* Was "Vision & Mission", which paraphrased text now shown in full directly
-       above this grid. Retargeted to the mission's learner-agency idea, which no
-       other card covers. */
-    title: "Capable, competent learners",
-    body: "Children who see themselves as capable and competent — able to direct and control their own learning as they grow, with the initiative and critical thinking to follow their own questions.",
+    title: "Capable, confident & competent learners",
+    body: [
+      "We believe every child is capable, curious, and full of potential. Children learn best when they are given the confidence, freedom, and support to explore the world around them, make choices, solve problems, and express their ideas.",
+      "We encourage children to take an active role in their own learning — following their interests, asking questions, trying new things, and learning from their experiences. Our teachers provide guidance, encouragement, and meaningful opportunities that help children develop independence, initiative, creativity, resilience, and critical thinking skills.",
+    ],
   },
   {
     icon: "Moon",
     title: "An Islamic environment",
-    body: "A nurturing setting that weaves an Islamic perspective through everyday learning, alongside the principles of Te Whāriki.",
+    body: [
+      "We believe children thrive in an environment where they feel loved, valued, respected, and connected to their faith and identity.",
+      "Alongside the principles of Te Whāriki, our centre provides a warm and nurturing setting that weaves an Islamic perspective through everyday learning. We encourage children to develop qualities such as kindness, respect, compassion, honesty, gratitude, responsibility, and care for others.",
+    ],
   },
   {
     icon: "UtensilsCrossed",
     title: "Nutrition & halal catering",
-    body: "Fresh, nutritious halal meals prepared daily.",
+    body: [
+      "We believe healthy children are happy children. Our centre provides fresh, nutritious and halal meals prepared daily, with a focus on balanced nutrition, variety, and wholesome ingredients.",
+      "Mealtimes are also an important part of learning and connection. Children are encouraged to develop healthy eating habits, explore different foods, practise independence, and enjoy positive social experiences around the table. We aim to make mealtimes enjoyable, relaxed, and inclusive while respecting children's individual dietary needs and requirements.",
+    ],
   },
   {
     icon: "Blocks",
-    title: "Room to learn",
-    body: "A purpose-built centre with safe, spacious indoor rooms and outdoor play areas, designed for children from three months to six years old.",
+    title: "Room to learn, explore & grow",
+    body: [
+      "Our purpose-built centre has been thoughtfully designed to provide children with safe, spacious, and stimulating environments where they can learn, play, discover, and grow.",
+      "From our welcoming indoor rooms to our expansive outdoor play areas, children have opportunities to engage in both planned and spontaneous learning experiences. Our spaces are designed to encourage movement, creativity, exploration, social interaction, and independent discovery.",
+      "Catering for children from three months to six years, our centre provides age-appropriate environments and experiences that support children through every stage of their early learning journey.",
+    ],
   },
 ] as const;
+
+/* Closes the section, beneath the four cards. Supplied with them (Shane, Oct
+   2026) as the line the whole section builds to, so it sits on its own rather
+   than being folded into the last card. */
+export const valuesClosing =
+  "We believe every child has something special to contribute — and our role is to help them discover it, nurture it, and let it grow.";
 
 /**
  * The welcome panel on the home page, directly above the slideshow.
