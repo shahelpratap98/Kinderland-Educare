@@ -119,8 +119,23 @@ const VARIANTS = {
       "linear-gradient(to bottom, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.70) 22%, rgba(255,255,255,0.62) 42%, rgba(255,255,255,0.56) 56%, rgba(255,255,255,0.38) 68%, rgba(255,255,255,0.12) 80%, rgba(255,255,255,0) 90%, #fff 100%)",
   },
   compact: {
-    top: "0",
-    objectPosition: "50% 50%",
+    /*
+      "0px", not "0". The shared frame below builds height from this with
+      calc(100% - ${top}), and calc() cannot subtract a unitless number from a
+      percentage — calc(100% - 0) is invalid, so the browser dropped the whole
+      height declaration and the clip fell back to its intrinsic 16:9 height.
+      That rendered it 802px tall inside a 456px box anchored at the top, and
+      overflow-hidden discarded the bottom 346px — precisely the band the
+      children are in, which is why the inner pages showed only sky and peaks.
+    */
+    top: "0px",
+    /*
+      62%, matching the tall variant rather than centring the frame. Dead centre
+      left the children at 57-78% down this shallow band -- in frame, but sitting
+      on its bottom edge. Biasing the crop down the source lifts them to 48-69%,
+      which is where the eye lands, at the cost of the mountain peaks.
+    */
+    objectPosition: "50% 62%",
     mask: undefined,
     /*
       Stays dense to ~70%, because the headline runs to about 65% of the width at
@@ -221,7 +236,10 @@ export function HeroVideo({
   const frame = {
     inset: "auto 0 0 0",
     top: config.top,
-    height: `calc(100% - ${config.top})`,
+    /* Guarded rather than trusting the token to carry a unit: calc() rejects a
+       unitless subtrahend outright, and a rejected height silently falls back to
+       the intrinsic aspect, which is a crop bug rather than a visible error. */
+    height: config.top === "0px" ? "100%" : `calc(100% - ${config.top})`,
     maskImage: config.mask,
     WebkitMaskImage: config.mask,
     objectPosition: config.objectPosition,
