@@ -10,42 +10,47 @@ import { cn } from "@/lib/utils";
  * we control, and the hero would have gone blank the day that file was removed.
  *
  * One clip, looping, and nothing else. The hero has been a deck twice — four
- * photographs of the real centre, and then those photographs behind this clip —
+ * photographs of the real centre, and then those photographs behind a clip —
  * and both are gone at the centre's request. The photographs are still in
- * /public/video (hero-r1..r4) and nothing references them.
+ * /public/video (hero-r1..r4), as is the clip this one replaces
+ * (hero-valley-*), and nothing references either.
  *
- * The clip is generated. The centre asked for the original valley hero back with
- * two changes: the hut gone, and children playing on the grass. Both were done
- * by generating a new still and animating it rather than by editing the old clip,
- * so everything in frame is invented — the landscape, the five children, their
- * clothes. Nobody enrolled here appears in it, and with the photographs gone the
- * hero no longer shows the actual centre at all.
+ * The clip is generated, and so is the still behind it. The centre asked for the
+ * valley hero with the tree cluster on the left replaced by open hills and
+ * mountains, and the five children actually playing rather than running about.
+ * Everything in frame is invented — the landscape, the five children, the
+ * skipping rope, the seesaw, the swing, the kite. Nobody enrolled here appears
+ * in it, and the hero no longer shows the actual centre at all.
  *
- * The camera is locked and only the children, the grass and the cloud move. That
- * is not a stylistic choice. Given any camera travel the model reframes the shot
- * and invents content to fill what it reveals, which is how an earlier ten-second
- * attempt ended up teleporting children around a playground; passing the same
- * frame as both start and end pins it. Verified rather than assumed: all five
- * children are present and consistent at t=0 and t=9.9, the hut is absent
- * throughout, and mean frame drift between t=0 and t=6.6 is 1.52/255.
+ * It is 2.46 seconds, not ten, and that is salvage rather than design. The model
+ * was asked for a single locked ten-second shot and instead cut to a close-up of
+ * one child's face at frame 59 (2.458s) and stayed there for the remaining 7.6
+ * seconds. The cut is hard, with no blended frames — measured as a 74.29/255 jump
+ * between frames 58 and 59 against 0.47–1.04 for every neighbouring pair — so the
+ * wide shot could be taken off the front cleanly. A clean ten-second version
+ * needs a regeneration, which the daily limit blocked.
  *
- * That matched start and end frame is also what makes a plain `loop` viable here.
- * A locked continuous shot normally shows its wrap as a jump, but measured at
- * 480x270 the last frame differs from the first by a mean of 1.70/255, against
- * 2.81 for five seconds of the clip's own motion — a softer step than the clip
- * itself takes, so the seam does not need a crossfade.
+ * Within those 59 frames the camera is genuinely locked: drift from the first
+ * frame measures 1.99/255 at 0.5s and 2.95 at 2.38s, which is the grass, clouds
+ * and children moving rather than the frame shifting.
  *
- * Generated at 2560x1440, delivered at 1920x1080. Encoding harder buys little:
- * measured against the source, crf 22/24/26 scored SSIM 0.9907/0.9886/0.9861 at
- * 2980/2177/1584KB. 24 is the pick.
+ * The short length is the cost of the salvage: this wraps roughly every two and a
+ * half seconds instead of every ten. The wrap itself holds up — the last frame
+ * differs from the first by a mean of 3.35/255 against 4.36 for 1.2 seconds of
+ * the clip's own motion, so the loop point is a smaller step than the motion
+ * around it.
+ *
+ * Generated at 2560x1440, delivered at 1920x1080. Encoded at crf 22 rather than
+ * the 24 the ten-second clip used: a quarter of the duration leaves room to spend
+ * on quality, and it still lands at 1.2MB against that clip's 2.2MB.
  */
-const VIDEO_SRC_WIDE = "/video/hero-valley-1080.mp4";
+const VIDEO_SRC_WIDE = "/video/hero-meadow-1080.mp4";
 /* The phone gets its own encode rather than a smaller box fetching the desktop
    file: the hero is roughly 375 CSS pixels wide there, so 1080p is about five
    times the pixels it can show, on the connection least able to afford them. */
-const VIDEO_SRC_NARROW = "/video/hero-valley-720.mp4";
+const VIDEO_SRC_NARROW = "/video/hero-meadow-720.mp4";
 /* The poster, and the frame shown under prefers-reduced-motion. */
-const STILL_SRC = "/video/hero-valley-still";
+const STILL_SRC = "/video/hero-meadow-still";
 /* Matches the sm breakpoint the scrim already switches on. */
 const NARROW = "(max-width: 639px)";
 
