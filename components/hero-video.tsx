@@ -12,45 +12,58 @@ import { cn } from "@/lib/utils";
  * One clip, looping, and nothing else. The hero has been a deck twice — four
  * photographs of the real centre, and then those photographs behind a clip —
  * and both are gone at the centre's request. The photographs are still in
- * /public/video (hero-r1..r4), as is the clip this one replaces
- * (hero-valley-*), and nothing references either.
+ * /public/video (hero-r1..r4), as are the two clips this one replaces
+ * (hero-valley-*, hero-meadow-*), and nothing references any of them.
  *
- * The clip is generated, and so is the still behind it. The centre asked for the
- * valley hero with the tree cluster on the left replaced by open hills and
- * mountains, and the five children actually playing rather than running about.
- * Everything in frame is invented — the landscape, the five children, the
- * skipping rope, the seesaw, the swing, the kite. Nobody enrolled here appears
- * in it, and the hero no longer shows the actual centre at all.
+ * Everything in frame is generated: the valley, the five children, the skipping
+ * rope, the seesaw, the swing and the kite. Nobody enrolled here appears in it,
+ * and the hero does not show the actual centre at all. That is a deliberate
+ * choice by the centre, but it is worth not forgetting.
  *
- * It is 2.46 seconds, not ten, and that is salvage rather than design. The model
- * was asked for a single locked ten-second shot and instead cut to a close-up of
- * one child's face at frame 59 (2.458s) and stayed there for the remaining 7.6
- * seconds. The cut is hard, with no blended frames — measured as a 74.29/255 jump
- * between frames 58 and 59 against 0.47–1.04 for every neighbouring pair — so the
- * wide shot could be taken off the front cleanly. A clean ten-second version
- * needs a regeneration, which the daily limit blocked.
+ * Two rerolls got it here, and both were for reasons worth recording.
  *
- * Within those 59 frames the camera is genuinely locked: drift from the first
- * frame measures 1.99/255 at 0.5s and 2.95 at 2.38s, which is the grass, clouds
- * and children moving rather than the frame shifting.
+ * First the scene: the centre asked for the original tree cluster on the left to
+ * be replaced by open hills and mountains, and for the children to be properly
+ * playing rather than running about.
  *
- * The short length is the cost of the salvage: this wraps roughly every two and a
- * half seconds instead of every ten. The wrap itself holds up — the last frame
- * differs from the first by a mean of 3.35/255 against 4.36 for 1.2 seconds of
- * the clip's own motion, so the loop point is a smaller step than the motion
- * around it.
+ * Then the faces. The first pass produced distorted, uncanny faces — worst on
+ * the girl on the swing — so the still was regenerated with the prompt leaning
+ * hard on well-formed symmetrical features, and with an instruction to render a
+ * face simpler rather than more detailed when in doubt. Four candidates were
+ * compared by cropping each child's face and upscaling it, rather than judging
+ * them at thumbnail size, which is how the bad faces got through the first time.
  *
- * Generated at 2560x1440, delivered at 1920x1080. Encoded at crf 22 rather than
- * the 24 the ten-second clip used: a quarter of the duration leaves room to spend
- * on quality, and it still lands at 1.2MB against that clip's 2.2MB.
+ * The camera is locked because the model reframes and invents content to fill
+ * whatever a moving camera reveals; passing the same frame as both start and end
+ * pins it. The previous attempt also has to be remembered in the prompt: listing
+ * each child's action as a bullet read as a shot list, and the model cut to a
+ * close-up at 2.458s and stayed there, leaving only 2.46 usable seconds. Writing
+ * the motion as one continuous tableau sentence, under an explicit single-shot
+ * instruction, fixed it.
+ *
+ * Verified rather than assumed, scanning every frame at 8fps: no shot change
+ * anywhere, with the largest frame-to-frame jump 4.01/255 against the 74.29 the
+ * bad cut measured. The camera holds — the mountain band drifts 2.57/255 between
+ * t=0 and t=5, so nothing reframed — while the clip as a whole moves 9.38/255
+ * over the same span, which is the children, grass and cloud. The wrap is the
+ * best of any hero here: the last frame differs from the first by 2.13/255,
+ * roughly a fifth of the clip's own motion, so the loop point passes unnoticed.
+ *
+ * Generated at 2560x1440, delivered at 1920x1080. This clip is genuinely harder
+ * to encode than its predecessors because far more of the frame actually moves:
+ * measured against a crf 14 reference, crf 22/23/24/26 scored SSIM
+ * 0.9878/0.9863/0.9846/0.9804 at 4649/4006/3441/2531KB. crf 24 is the knee —
+ * dropping to 22 costs 1.2MB for 0.003 SSIM. At 3.4MB it is the heaviest hero
+ * yet, which is the price of the motion; preload is metadata and the clip is
+ * only fetched once the hero is actually on screen.
  */
-const VIDEO_SRC_WIDE = "/video/hero-meadow-1080.mp4";
+const VIDEO_SRC_WIDE = "/video/hero-play-1080.mp4";
 /* The phone gets its own encode rather than a smaller box fetching the desktop
    file: the hero is roughly 375 CSS pixels wide there, so 1080p is about five
    times the pixels it can show, on the connection least able to afford them. */
-const VIDEO_SRC_NARROW = "/video/hero-meadow-720.mp4";
+const VIDEO_SRC_NARROW = "/video/hero-play-720.mp4";
 /* The poster, and the frame shown under prefers-reduced-motion. */
-const STILL_SRC = "/video/hero-meadow-still";
+const STILL_SRC = "/video/hero-play-still";
 /* Matches the sm breakpoint the scrim already switches on. */
 const NARROW = "(max-width: 639px)";
 
