@@ -98,11 +98,12 @@ export const values = [
     ],
   },
   {
-    icon: "Moon",
-    title: "An Islamic environment",
+    icon: "Blocks",
+    title: "Room to learn, explore & grow",
     body: [
-      "We believe children thrive in an environment where they feel loved, valued, respected, and connected to their faith and identity.",
-      "Alongside the principles of Te Whāriki, our centre provides a warm and nurturing setting that weaves an Islamic perspective through everyday learning. We encourage children to develop qualities such as kindness, respect, compassion, honesty, gratitude, responsibility, and care for others.",
+      "Our purpose-built centre has been thoughtfully designed to provide children with safe, spacious, and stimulating environments where they can learn, play, discover, and grow.",
+      "From our welcoming indoor rooms to our expansive outdoor play areas, children have opportunities to engage in both planned and spontaneous learning experiences. Our spaces are designed to encourage movement, creativity, exploration, social interaction, and independent discovery.",
+      "Catering for children from three months to six years, our centre provides age-appropriate environments and experiences that support children through every stage of their early learning journey.",
     ],
   },
   {
@@ -114,12 +115,11 @@ export const values = [
     ],
   },
   {
-    icon: "Blocks",
-    title: "Room to learn, explore & grow",
+    icon: "Moon",
+    title: "An Islamic environment",
     body: [
-      "Our purpose-built centre has been thoughtfully designed to provide children with safe, spacious, and stimulating environments where they can learn, play, discover, and grow.",
-      "From our welcoming indoor rooms to our expansive outdoor play areas, children have opportunities to engage in both planned and spontaneous learning experiences. Our spaces are designed to encourage movement, creativity, exploration, social interaction, and independent discovery.",
-      "Catering for children from three months to six years, our centre provides age-appropriate environments and experiences that support children through every stage of their early learning journey.",
+      "We believe children thrive in an environment where they feel loved, valued, respected, and connected to their faith and identity.",
+      "Alongside the principles of Te Whāriki, our centre provides a warm and nurturing setting that weaves an Islamic perspective through everyday learning. We encourage children to develop qualities such as kindness, respect, compassion, honesty, gratitude, responsibility, and care for others.",
     ],
   },
 ] as const;
