@@ -156,14 +156,20 @@ export const welcome = {
   eyebrow: "Now open and taking new enrolments",
   title: "Safe, loved, and inspired — because every child deserves the very best start.",
   /*
-    Nine greetings, in the order the centre supplied them (Shane, Sep 2026) and
-    spelled the way he wrote them: "Assalamu Aaikum" rather than the more usual
-    "Alaikum", and "Mālō e lelei" with its macrons. Held as a list rather than
-    one pre-joined string so the separator can stay decorative markup — a screen
-    reader should hear nine greetings, not nine bullet characters.
+    Eight greetings, in the order the centre supplied them (Shane, Sep 2026).
+
+    "Assalamu Alaikum" is corrected from the "Aaikum" the centre originally
+    wrote. It was left verbatim at first and flagged to them; they asked for it
+    fixed in Oct 2026. Do not "restore" it — the original was a misspelling of
+    the greeting, on the most prominent line of the home page, in front of the
+    families most likely to notice.
+
+    "Mālō e lelei" keeps its macrons. Held as a list rather than one pre-joined
+    string so the separator can stay decorative markup — a screen reader should
+    hear eight greetings, not eight bullet characters.
   */
   greetings: [
-    "Assalamu Aaikum",
+    "Assalamu Alaikum",
     "Kia ora",
     "Namaste",
     "Bula",
@@ -685,7 +691,7 @@ export const SLIDESHOW_AUDIO_SRC: string | null = null;
 export const approach = {
   title: "About Us",
   intro: [
-    "At Kinderland Educare, we provide high-quality early childhood education and care in Mangere, Auckland, offering a nurturing environment where children thrive as confident, curious, and capable learners. Our ECE center welcomes families from diverse backgrounds and provides a place where children feel a strong sense of belonging, identity, and connection.",
+    "At Kinderland Educare, we provide high-quality early childhood education and care in Māngere, Auckland, offering a nurturing environment where children thrive as confident, curious, and capable learners. Our ECE centre welcomes families from diverse backgrounds and provides a place where children feel a strong sense of belonging, identity, and connection.",
     "Our values of compassion, kindness, respect, and responsibility guide everything we do. These universal values are woven throughout our daily practices and align with both Te Whāriki and our Islamic Special Character. We believe every child is a taonga (treasure), bringing their own culture, strengths, interests, and experiences. Through meaningful relationships and intentional teaching, children are empowered to be active participants in their learning.",
   ],
   sections: [
@@ -693,7 +699,7 @@ export const approach = {
       title: "Children",
       body: [
         "At Kinderland Educare, children are at the heart of everything we do. We believe children are capable and confident learners who bring their own knowledge, ideas, and curiosity to their learning journey.",
-        "Our daycare and preschool in Mangere provides a play-based learning environment where children are encouraged to explore, ask questions, make choices, solve problems, and develop independence. Through caring relationships and meaningful experiences, children build confidence, creativity, resilience, and a lifelong love of learning.",
+        "Our daycare and preschool in Māngere provides a play-based learning environment where children are encouraged to explore, ask questions, make choices, solve problems, and develop independence. Through caring relationships and meaningful experiences, children build confidence, creativity, resilience, and a lifelong love of learning.",
         "We celebrate each child's unique identity, language, culture, and family background, supporting them to develop a strong sense of belonging.",
       ],
     },
@@ -722,7 +728,7 @@ export const approach = {
     {
       title: "Community",
       body: [
-        "Kinderland Educare is part of a diverse and connected South Auckland community. Located near Al-Madinah School, Zayed College for Girls, and Mangere Central Primary School, Kinderland Educare is part of a connected South Auckland community.",
+        "Kinderland Educare is part of a diverse and connected South Auckland community, located near Al-Madinah School, Zayed College for Girls, and Māngere Central Primary School.",
         "We honour Te Tiriti o Waitangi and respect Māori as tangata whenua. We celebrate the languages, cultures, and identities of all families and create an inclusive environment where every child feels valued.",
         "Our connections with local schools, community organisations, and families help support children as they grow, learn, and prepare for their next learning journey.",
       ],
@@ -730,7 +736,7 @@ export const approach = {
     {
       title: "Our Learning Environment",
       body: [
-        "Our early childhood centre in Mangere provides a safe, welcoming, and engaging environment where children can explore, create, discover, and develop independence.",
+        "Our early childhood centre in Māngere provides a safe, welcoming, and engaging environment where children can explore, create, discover, and develop independence.",
         "Through purposeful spaces, meaningful resources, and respectful relationships, we support children's wellbeing, belonging, exploration, and confidence as they grow into lifelong learners.",
       ],
     },
@@ -975,9 +981,11 @@ export const enrolmentSteps = [
   },
   {
     title: "Settle in",
-    /* Verbatim from the centre's copy, including "organize" — flagged to them,
-       since every other spelling on the site is NZ English. */
-    body: "We'll agree to a start date and organize some shorter settling in visits so you and your child are comfortable with the room before the first full day.",
+    /* "organise" and "settling-in" are corrected from the centre's copy, which
+       had the American spelling and the unhyphenated compound. Flagged to them
+       at the time and fixed at their request in Oct 2026; every other spelling
+       on the site is NZ English. */
+    body: "We'll agree to a start date and organise some shorter settling-in visits so you and your child are comfortable with the room before the first full day.",
   },
 ] as const;
 

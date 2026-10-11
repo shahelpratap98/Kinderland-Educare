@@ -63,7 +63,7 @@ export function Welcome() {
 
               The bullets are separate aria-hidden spans rather than characters
               in the text, so assistive tech announces nine greetings instead of
-              "Assalamu Aaikum bullet Kia ora bullet ...". flex-wrap breaks
+              "Assalamu Alaikum bullet Kia ora bullet ...". flex-wrap breaks
               between greetings rather than mid-phrase, which matters for
               "Mālō e lelei" and "Sat Sri Akal".
             */}
