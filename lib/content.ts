@@ -88,6 +88,16 @@ export const heroPills = [
   { label: "Purpose-built in Māngere", icon: "Building2" },
 ] as const;
 
+/*
+ * The canonical origin, used by the sitemap, robots file and anything else that
+ * has to emit an absolute URL.
+ *
+ * www, not the bare domain: the apex 308-redirects to www, so listing apex URLs
+ * in the sitemap would hand Google a list of redirects to follow and split the
+ * ranking signals across two hostnames.
+ */
+export const siteUrl = "https://www.kinderlandeducare.co.nz";
+
 export const values = [
   {
     icon: "Compass",
