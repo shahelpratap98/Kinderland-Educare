@@ -4,6 +4,7 @@ import "./globals.css";
 import { TourModalProvider } from "@/components/tour-modal-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Analytics } from "@/components/analytics";
 import { centre, fullAddress } from "@/lib/content";
 
 /* Body copy and navigation. */
@@ -120,6 +121,7 @@ export default function RootLayout({
 
           <SiteFooter />
         </TourModalProvider>
+        <Analytics />
       </body>
     </html>
   );
