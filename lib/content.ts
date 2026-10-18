@@ -618,13 +618,6 @@ export const centreSlides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "world-map-wall",
-    alt: "A wall map showing the countries our families come from, with greetings in each language and a carved waka below.",
-    caption: "Every family on the map",
-    hasChildren: false,
-  },
-  {
-    kind: "photo",
     src: "log-stools",
     alt: "Log stools arranged on the grass under a covered outdoor area.",
     caption: "Somewhere to sit and watch",
@@ -632,22 +625,9 @@ export const centreSlides: readonly Slide[] = [
   },
   {
     kind: "photo",
-    src: "dream-display",
-    alt: "A quiet corner with a curved table, children's artwork and a display headed 'Dream — Eid Al Adha'.",
-    hasChildren: false,
-  },
-  {
-    kind: "photo",
     src: "dining-room",
     alt: "The dining and activity room, with low tables and chairs set out beneath a birthdays display.",
     caption: "Fresh halal meals, every day",
-    hasChildren: false,
-  },
-  {
-    kind: "photo",
-    src: "reading-nook",
-    alt: "A reading nook tucked beneath the stairs, with framed documents, books and a small table.",
-    caption: "Our philosophy, on the wall",
     hasChildren: false,
   },
   {
